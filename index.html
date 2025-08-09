@@ -475,9 +475,11 @@
         </p>
         
         
+
+        <div class="duck-comment">
+            <p># 🦆 says ⮞ I use 20x magnification when I code and debug. I use emoji to simplify logs for myself. If you can't handle my code style you can disable most of it on this website by toggling the button in the navbar. Shall duck continue? </p>
+        </div>
         <p>
-            BEFORE WE START:<br>
-            I use 20x magnification when I code and debug. I use emoji to simplify logs for myself. If you can't handle my code style you can disable most of it on this website by toggling the button in the navbar. Can I continue now? <br>
             Let's rewind a bit. I've always had a soft spot for doing things the stupid way. Not "stupid" as in broken, but "stupid" as in... unorthodox, unnecessary, and definitely not optimized for scale. The kind of stupid that makes you ask: "Wait, you did what in Bash?!"<br><br>
             
         </p>
@@ -516,9 +518,27 @@
         
         
         <p>
-            This post walks you through the actual code behind a voice-command-esque CLI script framework I built using Nix to organize, parse, cache, and test structured sentence intents.
+            This blog post walks you through the actual code behind a voice-command-esque CLI script framework I built using Nix to organize, parse, cache, and test structured sentence intents to build and execute Shell commands.<br>
         </p>
         
+        <div class="duck-comment">
+            <p>
+              🦆🏠  HOME via 🐍 v3.12.10 
+              01:41:26 ❯ yo bitch "please stop test auto 5 yes wild card testing here"        
+              ┌─(yo-demo)
+              │🦆
+              └─⮞ --action stop
+              └─⮞ --target test
+              └─⮞ --mode auto
+              └─⮞ --duration 5
+              └─⮞ --confirm yes
+              └─⮞ --wild wild card testing here
+              [🦆📜] [01:41:31] ⁉️DEBUG⁉️ ⮞ +0.007 s Script Started!
+              [🦆📜] [01:41:31] ⁉️DEBUG⁉️ ⮞ +0.013 s SCript Executed!
+              [🦆📜] [01:41:31] ⁉️DEBUG⁉️ ⮞ +0.020 s Script finished!                         
+            </p>
+        </div>        
+            
         <h2 class="section-title">Nix Configuration: Declaring Intents</h2>
         
         <div class="code-block-container">
@@ -527,36 +547,63 @@
             </div>
             <div class="code-block">
                 <pre>
-yo.scripts = {
-  lights = {
-    parameters = [
-      { name = "device"; description = "Device to control"; optional = true; }
-      { name = "state"; description = "State of the device or group"; default = "on"; } 
-      { name = "brightness"; description = "Brightness value of the device or group"; optional = true; type = "int"; }    
-    ]; 
-    data = [{
-      sentences = [
-        "{device} {state} and brightness {brightness} procent"
-      ];   
-      lists = {
-        state.values = [
-          { "in" = "[turn on|light up|start|power on]"; out = "ON"; }             
-          { "in" = "[turn off|extinguish|lick|off|shut|shut off]"; out = "OFF"; } 
+  yo = {
+    scripts = {
+      demo = {
+        parameters = [
+          { name = "action"; description = "Action to perform"; default = "run"; }
+          { name = "target"; description = "Target of the action"; }
+          { name = "intensity"; description = "Level of intensity"; type = "int"; optional = true; }
+          { name = "duration"; description = "Duration in seconds"; type = "int"; optional = true; }
+          { name = "mode"; description = "Mode of operation"; optional = true; }
+          { name = "confirm"; description = "Whether to confirm the action"; optional = true; }
+          { name = "wild"; description = "Wildcard testing"; optional = true; }     
         ];
-        brightness.values = builtins.genList (i: {
-          "in" = toString (i + 1);
-          out = toString (i + 1);
-        }) 100;
-        device.values = let
-          reservedNames = [ "hall" "kök" "sovrum" "toa" "wc" "vardagsrum" "kitchen" "switch" ];
-          sanitize = str:
-            lib.replaceStrings [ "/" ] [ "" ] str;
-        in [
-          { "in" = "[vardagsrum|vardagsrummet]"; out = "livingroom"; }
-          { "in" = "[kök|köket]"; out = "kitchen"; }
-          { "in" = "[sovrum|sovrummet]"; out = "bedroom"; }
-    }];
+        code = ''
+          echo "Script executed!"
+        '';
+      };
+    };
+    bitch = {
+      intents = {
+        demo = {
+          data = [{
+            sentences = [
+              "please {action} {target} {mode} {duration} {confirm} {wild}"
+            ];
+            lists = {
+              action.values = [
+                { "in" = "[run|execute|start]"; out = "RUN"; }
+                { "in" = "[stop|terminate|halt]"; out = "STOP"; }
+              ];
+              target.values = [
+                { "in" = "[process|program|sequence]"; out = "PROCESS"; }
+                { "in" = "[test|check|validation]"; out = "TEST"; }
+              ];
+              mode.values = [
+                { "in" = "[auto|automatic]"; out = "AUTO"; }
+                { "in" = "[manual|manually]"; out = "MANUAL"; }
+              ];
+              confirm.values = [
+                { "in" = "[yes|confirm|sure]"; out = "YES"; }
+                { "in" = "[no|cancel|decline]"; out = "NO"; }
+              ];
+              intensity.values = builtins.genList (i: {
+                "in" = toString (i + 1);
+                out = toString (i + 1);
+                }) 10;
+              duration.values = builtins.genList (i: {
+                "in" = toString ((i + 1) * 10);
+                out = toString ((i + 1) * 10);
+              }) 6;
+              wild.wildcard = true;
+            };
+          }];
+        };  
+      };
+    };      
   };
+  
 };</pre>
             </div>
         </div>
