@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voice-Driven CLI: Building with Nix and Bash</title>
+    <title>🦆🧑‍🦯blog</title>
     <style>
         :root {
             --primary: #2c3e50;
@@ -25,9 +25,9 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            background: var(--light); /* Solid white background */
+            background: var(--light);
             padding: 20px;
-            padding-top: 80px; /* Space for fixed navbar */
+            padding-top: 80px;
             max-width: 1000px;
             margin: 0 auto;
         }
@@ -113,7 +113,17 @@
             gap: 15px;
             margin: 20px 0;
         }
-        
+        .source-link {
+            font-weight: 500;
+            color: #0366d6;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: color 0.2s ease, border-bottom 0.2s ease;
+        }
+        .source-link:hover {
+            color: #023e8a;
+            border-bottom: 1px solid #023e8a;
+        }
         .toggle-btn {
             background: linear-gradient(to bottom, #3498db, #2980b9);
             color: white;
@@ -230,7 +240,25 @@
         .string {
             color: #ce9178;
         }
-        
+        .tags {
+        display: flex;
+         flex-wrap: wrap;
+          gap: 0.5em;
+              margin-top: 1em;
+         }
+         .tag {
+            display: inline-block;
+            padding: 0.3em 0.7em;
+            background-color: #eef;
+            color: #225;
+            border-radius: 12px;
+            font-size: 0.9em;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        .tag:hover {
+            background-color: #cdd;
+        }        
         .function {
             color: #dcdcaa;
         }
@@ -356,7 +384,7 @@
         
         .duck-animation {
             display: inline-block;
-            animation: duckFloat 3s infinite ease-in-out;
+            animation: duckFloat 4s infinite ease-in-out;
         }
         
         @keyframes duckFloat {
@@ -367,7 +395,7 @@
         @media (max-width: 768px) {
             body {
                 padding: 10px;
-                padding-top: 70px; /* Adjusted for navbar */
+                padding-top: 70px;
             }
             
             .content {
@@ -443,14 +471,15 @@
     <div class="content">
         <h2 class="title">Developing a dependency-free Natural Language Processor in Bash & Nix</h2>
         <p>
-            I've always been drawn to voice commands. Maybe it's because of the extended use cases that come with being blind - or maybe it's just the appeal of being able to multitask with a third hand that doesn't exist. Either way, the idea of speaking to my computer and having it do things has always fascinated me. Voice as an interface feels natural, powerful... and deeply underutilized.
+            I've always been drawn to voice commands. Maybe it's because of the extended use cases that come with being blind - you can imagine fumbling around for the TV remote when not being able to see? That sucks! Now I can simply tell the TV to start. Or if I prefer, simply ask where the remote is and the Nvidia Shield Remote plays a sound. Maybe it's just the appeal of being able to multitask with a third hand that doesn't exist. Either way, the idea of speaking to my computer and having it do things has always fascinated me. Voice as an interface feels natural, powerful... and deeply underutilized.
         </p>
         
         
         <p>
-            But let's rewind a bit. I've always had a soft spot for doing things the stupid way. Not "stupid" as in broken, but "stupid" as in... unorthodox, unnecessary, and definitely not optimized for scale. The kind of stupid that makes you ask: "Wait, you did what in Bash?"<br><br>
+            BEFORE WE START:<br>
+            I use 20x magnification when I code and debug. I use emoji to simplify logs for myself. If you can't handle my code style you can disable most of it on this website by toggling the button in the navbar. Can I continue now? <br>
+            Let's rewind a bit. I've always had a soft spot for doing things the stupid way. Not "stupid" as in broken, but "stupid" as in... unorthodox, unnecessary, and definitely not optimized for scale. The kind of stupid that makes you ask: "Wait, you did what in Bash?!"<br><br>
             
-            Spoiler: I needed jq for cachin'.
         </p>
         
         <h2 class="section-title">The Genesis: Bash Meets Nix</h2>
@@ -532,20 +561,19 @@ yo.scripts = {
             </div>
         </div>
         
-
         
         <p>
             Early on, I realized Nix could give me a ton of structure and organization. Nix is a purely functional package manager that lets you define software configurations declaratively. I'm abusing it for voice logic. I wanted to declaratively define scripts and bind natural language intents to each of them - and Nix is great at producing structured derivations.
         </p>
         
         <p>
-            Each script gets a name, description, category, and a set of example sentences. These are eventually transformed into regular expressions, cached, and tested.
+            Each script gets a name, description, category, and as many parameter options as prefered., Add a set of intent sentences to that. <br> These are eventually transformed into regular expressions, cached, and tested. Lists can optionally be defined mapping in words to out words. Or set the list value as a wildcard if input for the parameter should be a wildcard and accept any input.
         </p>
         
         <h2 class="section-title">From Sentences to Shell Scripts</h2>
         
         <p>
-            The core idea was: take a sentence from the user, figure out what script it maps to, and run it with the correct arguments. Sounds simple? It wasn't.
+            The core idea was: take a sentence from the user, figure out what script it maps to, and run it with the correct arguments. Sounds simple? I wouldn't really call it easy, but okay.
         </p>
         
         
@@ -745,7 +773,6 @@ let
               '') paramList}
               dt_debug "REMATCH 1: ''${BASH_REMATCH[1]}"
               dt_debug "REMATCH 2: ''${BASH_REMATCH[2]}"
-              dt_debug "REMATCH 3: ''${BASH_REMATCH[3]}"
               dt_debug "MATCHED SCRIPT: ${scriptName}"
               dt_debug "ARGS: ''${cmd_args[@]}"
               return 0
@@ -982,11 +1009,11 @@ lists = {
         <div class="callout">
             <h3>Combinational explosion:</h3>
             <ul>
-                <li><strong>Sentence 4:</strong>Fixed Variants: 16. Param combos: 240. Total variants: 16 × 240 = 3,840  </li>
-                <li><strong>Sentence 3:</strong>Fixed variants: 32. Param combos:	240. Total variants:	32 × 240 = 7,680</li>
-                <li><strong>Sentence 2:</strong>Fixed variants: 128. Param combos: 240 × 240 = 57,600. Total variants: 128 × 57,600 = 7,372,800 </li>
-                <li><strong>Sentence 1:</strong>Fixed variants: 128. Param combos: 96 × 240 × 240 = 5,529,600. Total variants: 128 × 5,529,600 = 707,788,800 (!)</li>
-                <li><strong>Total number of unique sentence variations:</strong>715,173,120</li>   
+                <li><strong>Sentence 4:</strong><br>Fixed Variants: 16. Param combos: 240. Total variants: 16 × 240 = 3,840  </li>
+                <li><strong>Sentence 3:</strong><br>Fixed variants: 32. Param combos:	240. Total variants:	32 × 240 = 7,680</li>
+                <li><strong>Sentence 2:</strong><br>Fixed variants: 128. Param combos: 240 × 240 = 57,600. Total variants: 128 × 57,600 = 7,372,800 </li>
+                <li><strong>Sentence 1:</strong><br>Fixed variants: 128. Param combos: 96 × 240 × 240 = 5,529,600. Total variants: 128 × 5,529,600 = 707,788,800 (!)</li>
+                <li><strong>Total number of unique sentence variations:</strong><br>715,173,120</li>   
             </ul>
         </div>        
 
@@ -1100,7 +1127,7 @@ trigram_similarity() {
   # 🦆 says ⮞ no trigrams?
   (( total == 0 )) && echo 0 && return
   # 🦆 says ⮞ return dice’s coefficient similarity × 100 
-  echo $(( 100 * 2 * matches / total ))  <span class="comment"># 0-100 scale</span>
+  echo $(( 100 * 2 * matches / total ))  <span class="comment"># 🦆 says ⮞ 0-100 scale</span>
 }
         
 levenshtein_similarity() {
@@ -1187,7 +1214,7 @@ EOF
         ${cmdHelpers} # 🦆 says ⮞load required bash helper functions 
         FUZZY_THRESHOLD="''${fuzzyThreshold:-15}"
         intent_data_file="${intentDataFile}" # 🦆 says ⮞ cache dat JSON wisdom, duck hates slowridez
-        YO_FUZZY_INDEX="${fuzzyIndexFile}" # For fuzzy nutty duckz
+        YO_FUZZY_INDEX="${fuzzyIndexFile}" # 🦆 says ⮞ for fuzzy nutty duckz
         text="$input" # 🦆 says ⮞ for once - i'm lettin' u doin' da talkin'
         match_result_flag=$(mktemp)
         trap 'rm -f "$match_result_flag"' EXIT
@@ -1368,25 +1395,6 @@ EOF
                    
             # 🦆 says ⮞ final product - hope u like say duck!
             paramz="''${args[@]}" && echo
-            echo "   ┌─(yo-$matched_script)"
-            echo "   │🦆 Fuzzy"
-            if [ ''${#args[@]} -eq 0 ]; then
-              echo "   └─🦆 says ⮞ no parameters yo"
-            else
-              for ((i=0; i<''${#args[@]}; i+=2)); do
-                if [ $i -eq 0 ]; then
-                  echo -n "   └─⮞ "
-                else
-                  echo -n "   └─⮞ "
-                fi
-                echo -n "''${args[$i]}"
-                if [ $((i+1)) -lt ''${#args[@]} ]; then
-                  echo " ''${args[$((i+1))]}"
-                else
-                  echo
-                fi
-              done
-            fi
             dt_info "Executing: yo $matched_script $paramz" 
             # 🦆 says ⮞ EXECUTEEEEEEEAAA  – HERE WE QUAAAAACKAAAOAA
             exec "yo-$matched_script" "''${args[@]}"
@@ -1606,11 +1614,6 @@ EOF
         </div>
 
 
-
-        
-        
-        
-        
         <h2 class="section-title">Automated Sentence Testing</h2>
         
         <p>
@@ -1859,11 +1862,11 @@ EOF
         
         # 🦆 says ⮞ colorize based on percentage
         if [ "$percent" -ge 80 ]; then 
-            color="$GREEN" && duck_report="YO! ⭐ duck approoves! u reallzy knowz ur stuff! u makin' duckie happy"
+            color="$GREEN" && duck_report="⭐"
         elif [ "$percent" -ge 60 ]; then 
-            color="$YELLOW" && duck_report="not too bad! u ok buddy"
+            color="$YELLOW" && duck_report="🟢"
         else 
-            color="$RED" && duck_report="sad duck.... 😭 u should reallzy look over yo sentences and mayb i can stop cry =("
+            color="$RED" && duck_report="😭"
         fi
         
         # 🦆 says ⮞ display failed tests report
@@ -2149,7 +2152,11 @@ EOF
         <div class="key-features">
             <div class="feature-card">
                 <h3>Dynamic Pattern Matching</h3>
-                <p>Unlimited parameter extraction through dynamically generated regex patterns</p>
+                <p>Unlimited automatic parameter resolution & entity substitutions through dynamically generated regex patterns matching against declarative sentence definition. </p>
+                <p>Shell command construction & dispatcher. </p>
+
+
+
             </div>
             
             <div class="feature-card">
@@ -2159,30 +2166,42 @@ EOF
             
             <div class="feature-card">
                 <h3>Comprehensive Testing</h3>
-                <p>Automated test harness covering all edge cases</p>
+                <p>Automated test harness covering all edge cases with detailed reporting for every defined sentences.</p>
             </div>
         </div>
         
         
         <p>
-            The result is a voice-command system that feels like magic when it works and teaches you humility when it doesn't. It's unorthodox, occasionally infuriating, but ultimately empowering - letting me command my computer in a way that feels truly natural.<br><br>
+            The result is a voice-command ready system that feels like magic when it works and teaches you humility when it doesn't. It's unorthodox, occasionally infuriating, but ultimately empowering - letting me command my computer in a way that feels truly natural and powerful.<br>
+            Even with a lot of bad Whisper transcriptions we are looking at a low 2% failure rate for called intents.<br>
+            I can be really drunk and speak Japanese and it would still properly match and extract all parameters.<br> 
             
             <div class="duck-comment">
                 <p># 🦆 says ⮞ "What's the stupidest way YOU could solve your next problem?"</p>
             </div>
             
-            I'd advice to go stupid!<br>
-            Look how well this turned out. And if you don't believe me, I'll return with benchmarking of how this kicks Hassil's (HA) pythonic ass, in every single way that matters.<br> Yes really.<br><br>
+            Please go stupid!<br>
+            Look how well this turned out. And if you don't believe me, I'll return with benchmarking of how this kicks Hassil's (HA) pythonic ass, in all the ways that matters.<br> Yes really.<br><br>
             Peace and love QuackHack-McBLindy out yo!<br><br>
 
             
-            View the entire code on GitHub <br>
-            #Nix #NLP #Bash 
+            <a href="https://github.com/QuackHack-McBlindy/dotfiles/blob/main/bin/config/nlp.nix" class="source-link">
+              View source code on GitHub
+            </a><br>
+
+            <div class="tags">
+              <a href="/tags/nix" class="tag">#nix</a>
+              <a href="/tags/nlp" class="tag">#nlp</a>
+              <a href="/tags/bash" class="tag">#bash</a>
+              <a href="/tags/flake" class="tag">#flake</a>         
+              <a href="/tags/nixos" class="tag">#nixos</a>     
+              <a href="/tags/dotfiles" class="tag">#dotfiles</a>                   
+            </div>
         </p>
     </div>
     
     <footer>
-        <p>Built with Nix, Bash, and too many <span class="duck-animation">🦆</span> duck comments • © 2023</p>
+        <p>All thoughts are my own and should not be considered advice of any kind.</p>
     </footer>
 
     <script>
@@ -2205,8 +2224,8 @@ EOF
                 });
                 
                 duckToggle.innerHTML = ducksHidden ? 
-                    '<span class="duck-icon">🦆</span> Show Duck Comments' : 
-                    '<span class="duck-icon">🦆</span> Hide Duck Comments';
+                    '<span class="duck-icon"></span> Show 🦆 commentary' : 
+                    '<span class="duck-icon"></span> Hide 🦆 commentary';
                     
                 const duckIcon = duckToggle.querySelector('.duck-icon');
                 duckIcon.style.transform = 'scale(1.2)';
