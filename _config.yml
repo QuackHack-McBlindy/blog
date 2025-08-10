@@ -1,0 +1,10 @@
+
+plugins:
+  - jekyll-archives
+
+jekyll-archives:
+  enabled: [tags]
+  layouts:
+    tag: tag
+  permalinks:
+    tag: '/tags/:name/'

@@ -1,4 +1,0 @@
-collections:
-  tags:
-    output: true
-    permalink: /tags/:name/

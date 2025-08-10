@@ -2246,20 +2246,19 @@ EOF
               {% endfor %}
             </div>
 
+            <section id="comments">
+              <h2>Comments on this blog post</h2>
+              <script 
+                src="https://utteranc.es/client.js"
+                repo="QuackHack-McBlindy/blog"
+                issue-term="pathname"
+                theme="github-dark"
+                crossorigin="anonymous"
+                async>
+              </script>
+            </section>
         </p>
     </div>
-
-    <section id="comments">
-      <h2>Comments</h2>
-      <script 
-        src="https://utteranc.es/client.js"
-        repo="QuackHack-McBlindy/blog"
-        issue-term="pathname"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-      </script>
-    </section>
 
 
 
@@ -2267,8 +2266,7 @@ EOF
     <footer>
         <p>All thoughts are my own and should not be considered advice of any kind.</p>
     </footer>
-    <script src="https://utteranc.es/client.js" repo="quackhack-mcblindy/blog" issue-term="pathname" label="comments" theme="github-light" crossorigin="anonymous" async>
-    </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const duckToggle = document.getElementById('duckToggle');
