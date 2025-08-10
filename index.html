@@ -524,7 +524,7 @@
         <div class="duck-comment">
             <p>
               🦆🏠  HOME via 🐍 v3.12.10 <br>
-              01:41:26 ❯ yo bitch "please stop test auto 5 yes wild card testing here" <br>     
+              01:41:26 ❯ yo do "please stop test auto 5 yes wild card testing here" <br>     
               ┌─(yo-demo) <br>
               │🦆 <br>
               └─⮞ --action stop <br>
@@ -564,7 +564,7 @@
         '';
       };
     };
-    bitch = {
+    do = {
       intents = {
         demo = {
           data = [{
@@ -639,7 +639,7 @@ let
   scripts = config.yo.scripts; # 🦆 says ⮞ import all dem scripts
   scriptNames = builtins.attrNames scripts; # 🦆 says ⮞ names can be useful too
   scriptNamesWithIntents = builtins.filter (scriptName:
-    builtins.hasAttr scriptName config.yo.bitch.intents
+    builtins.hasAttr scriptName config.yo.do.intents
   ) scriptNames; # 🦆 says ⮞ scripts with no sentences - skippin' dem yo
   
 </span><span class="clean-version hidden">
@@ -647,7 +647,7 @@ let
   scripts = config.yo.scripts;
   scriptNames = builtins.attrNames scripts;
   scriptNamesWithIntents = builtins.filter (scriptName:
-    builtins.hasAttr scriptName config.yo.bitch.intents
+    builtins.hasAttr scriptName config.yo.do.intents
   ) scriptNames;
   
 </span></pre>
@@ -669,7 +669,7 @@ let
                 <pre><span class="duck-version">
   <span class="comment"># 🦆 says ⮞ where da magic dynamic regex iz at </span>
   makePatternMatcher = scriptName: let
-    dataList = config.yo.bitch.intents.${scriptName}.data;    
+    dataList = config.yo.do.intents.${scriptName}.data;    
   in '' <span class="comment"># 🦆 says ⮞ diz iz how i pick da script u want </span>
     match_${scriptName}() { <span class="comment"># 🦆 says ⮞ shushin' da caps – lowercase life 4 cleaner dyn regex zen ✨</span>
       local input="$(echo "$1" | tr '[:upper:]' '[:lower:]')" 
@@ -756,7 +756,7 @@ let
   ''; <span class="comment"># 🦆 says ⮞ dat was fun! let'z do it again some time</span>
 </span><span class="clean-version hidden">
   makePatternMatcher = scriptName: let
-    dataList = config.yo.bitch.intents.${scriptName}.data;    
+    dataList = config.yo.do.intents.${scriptName}.data;    
   in '' 
     match_${scriptName}() { 
       local input="$(echo "$1" | tr '[:upper:]' '[:lower:]')" 
@@ -874,7 +874,7 @@ let
       tokens = lib.splitString " " sentence;      
       <span class="comment"># 🦆 says ⮞ definin' dem wordz in da (braces) taggin' dem' wordz az (ALTERNATIVES) lettin' u choose one of dem wen triggerin' </span>
       isRequiredGroup = t: lib.hasPrefix "(" t && lib.hasSuffix ")" t;
-      <span class="comment"># 🦆 says ⮞ puttin' sentence wordz in da [bracket] makin' em' [OPTIONAL] when bitchin' u don't have to be pickin' woooho </span>
+      <span class="comment"># 🦆 says ⮞ puttin' sentence wordz in da [bracket] makin' em' [OPTIONAL] when doin' u don't have to be pickin' woooho </span>
       isOptionalGroup = t: lib.hasPrefix "[" t && lib.hasSuffix "]" t;   
       expandToken = token: <span class="comment"># 🦆 says ⮞ dis gets all da real wordz out of one token (yo!)</span>
         if isRequiredGroup token then
@@ -962,7 +962,7 @@ let
         
         <p>
             This is where the bomb went off. The module went from being instant to extremely slow. <br>
-            Even with a very detailed debugging system in place, when you are gemeratomg code with this extensiveness, finding the problematic line can take time, later i found that it was caused by a single intent definition, my timer intent.... <br><br>
+            Even with a very detailed debugging system in place, when you are generating code with this extensiveness, finding the problematic line can take time, later i found that it was caused by a single intent definition, my timer intent.... <br><br>
             I was defining this intent in the most genius way, something similar to:        
         </p>
 
@@ -1084,14 +1084,14 @@ lists = {
   scriptRecordsWithIntents = 
     let # 🦆 says ⮞ calculate priority
       calculatePriority = scriptName:
-        config.yo.bitch.intents.${scriptName}.priority or 3; # 🦆 says ⮞ default medium
+        config.yo.do.intents.${scriptName}.priority or 3; # 🦆 says ⮞ default medium
       # 🦆 says ⮞ create script records metadata
       makeRecord = scriptName: rec {
         name = scriptName;
         priority = calculatePriority scriptName;
         hasComplexPatterns = 
           let 
-            intent = config.yo.bitch.intents.${scriptName};
+            intent = config.yo.do.intents.${scriptName};
             patterns = lib.concatMap (d: d.sentences) intent.data;
           in builtins.any (p: lib.hasInfix "{" p || lib.hasInfix "[" p) patterns;
       };    
@@ -1109,13 +1109,13 @@ lists = {
   scriptRecordsWithIntents = 
     let
       calculatePriority = scriptName:
-        config.yo.bitch.intents.${scriptName}.priority or 3; 
+        config.yo.do.intents.${scriptName}.priority or 3; 
       makeRecord = scriptName: rec {
         name = scriptName;
         priority = calculatePriority scriptName;
         hasComplexPatterns = 
           let 
-            intent = config.yo.bitch.intents.${scriptName};
+            intent = config.yo.do.intents.${scriptName};
             patterns = lib.concatMap (d: d.sentences) intent.data;
           in builtins.any (p: lib.hasInfix "{" p || lib.hasInfix "[" p) patterns;
       };    
@@ -1239,7 +1239,7 @@ levenshtein_similarity() {
                 <pre><span class="duck-version">
 in { # 🦆 says ⮞ YOOOOOOOOOOOOOOOOOO    
   yo.scripts = { # 🦆 says ⮞ quack quack quack quack quack.... qwack 
-    bitch = { # 🦆 says ⮞ wat ='( 
+    do = { # 🦆 says ⮞ wat ='( 
       description = "Natural language to Shell script translator with dynamic regex matching and automatic parameter resolutiion";
       aliases = ["b"];
       category = "⚙️ Configuration"; # 🦆 says ⮞ duckgorize iz zmart wen u hab many scriptz i'd say!
@@ -1249,7 +1249,7 @@ in { # 🦆 says ⮞ YOOOOOOOOOOOOOOOOOO
         { name = "input"; description = "Text to parse into a yo command"; optional = false; }
         { name = "fuzzyThreshold"; description = "Minimum procentage for considering fuzzy matching sucessful. (1-100)"; default = "15"; }
       ]; 
-      # 🦆 says ⮞ run yo bitch --help to display all defined voice commands
+      # 🦆 says ⮞ run yo do --help to display all defined voice commands
       helpFooter = ''
         WIDTH=$(tput cols) # 🦆 duck say ⮞ Auto detect width
         cat <<EOF | ${pkgs.glow}/bin/glow --width $WIDTH -
@@ -1460,7 +1460,7 @@ EOF
 </span><span class="clean-version hidden">
 in {
   yo.scripts = { 
-    bitch = { 
+    do = { 
       description = "Natural language to Shell script translator with dynamic regex matching and automatic parameter resolutiion";
       aliases = ["b"];
       category = "⚙️ Configuration";
@@ -1684,7 +1684,7 @@ EOF
             </div>
             <div class="code-block">
                 <pre><span class="duck-version">
-    # 🦆 says ⮞ automatic bitchin' sentencin' testin'
+    # 🦆 says ⮞ automatic doin' sentencin' testin'
     tests = { # 🦆 says ⮞ just run yo tests to do an extensive automated test based on your defined sentence data 
       description = "Extensive automated sentence testing for the NLP"; 
       category = "⚙️ Configuration";
