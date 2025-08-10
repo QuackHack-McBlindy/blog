@@ -191,7 +191,9 @@
             height: 3px;
             background: var(--accent);
         }
-        
+        details.code-block-container {
+            margin-bottom: 30px;
+        }        
         .code-block-container {
             position: relative;
             margin: 30px 0;
@@ -213,6 +215,8 @@
         }
         
         .code-header {
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
             background: #252526;
             padding: 10px 15px;
             display: flex;
@@ -220,13 +224,20 @@
             align-items: center;
             border-bottom: 1px solid #3c3c3c;
         }
+        .code-header:hover {
+            box-shadow: 0 0 5px rgba(0, 255, 170, 0.8);
+        }
         
         .code-lang {
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
             color: #9cdcfe;
             font-weight: bold;
             font-size: 0.9rem;
         }
-        
+        .code-lang:hover {
+            box-shadow: 0 0 10px rgba(0, 255, 170, 0.8);
+        }        
         .code-block pre {
             margin: 0;
             white-space: pre-wrap;
@@ -473,7 +484,7 @@
     
     
     <div class="content">
-        <h2 class="title">Developing a dependency-free Natural Language Processor in Bash & Nix</h2>
+        <h2 class="title">Developing a feature rich Natural Language Processor with just Bash, jq & Nix</h2>
         <p>
             I've always been drawn to voice commands. Maybe it's because of the extended use cases that come with being blind - you can imagine fumbling around for the TV remote when not being able to see? That sucks! Now I can simply tell the TV to start. Or if I prefer, simply ask where the remote is and the Nvidia Shield Remote plays a sound. Maybe it's just the appeal of being able to multitask with a third hand that doesn't exist. Either way, the idea of speaking to my computer and having it do things has always fascinated me. Voice as an interface feels natural, powerful... and deeply underutilized.
         </p>
@@ -614,7 +625,7 @@
         
         
         <p>
-            Early on, I realized Nix could give me a ton of structure and organization. Nix is a purely functional package manager that lets you define software configurations declaratively. I'm abusing it for voice logic. I wanted to declaratively define scripts and bind natural language intents to each of them - and Nix is great at producing structured derivations.
+            Early on, I realized Nix could give me a ton of structure and organization. Since I have been running NixOS system wide for some years now, I have grown comfortable writing Nix expressions. Nix will let user define software configurations declaratively. I'm abusing it for voice logic. I wanted to declaratively define scripts and bind natural language intents to each of them - and Nix is great at producing structured derivations.
         </p>
         
         <p>
@@ -1230,20 +1241,43 @@ levenshtein_similarity() {
         <h2 class="section-title">Bash script workflow</h2>
         
         <p>
-            The actual workflow of the NLP script has looked pretty much the same the entire development period.<br>
+           Takes --input "some natural language command" from the user.<br><br>
+
+           Load intent data from a JSON file (includes regex patterns, substitutions, etc.).<br>
+           Load fuzzy index for fallback fuzzy matching.<br>
+           For each defined script: Load regex substitutions (entities) and store them in an associative array.<br><br>
+
+           Exact Match Phase (Runs in Background): <br>
+           Iterate through all known scripts (in order of priority).<br>
+           Apply regex substitutions to input text.<br>
+           Try to match input via corresponding match_script functions.<br>
+           If matched:<br>
+             Apply substitutions.<br>
+             Prepare arguments.<br>
+             Execute yo-script with those arguments.<br>
+             Signal fuzzy handler to stop<br><br>
+
+           Fuzzy Match Phase (Runs Concurrently):<br>
+           Normalize input text.<br>
+           Compute trigram + Levenshtein similarity scores against defined sentences.<br>
+           Select best match above the threshold.<br>
+           Apply the same substitution logic.<br>
+           Match using match_fuzzy_script function.<br>
+           If matched:<br>
+             Wait for exact matcher to finish.<br>
+             If exact didn’t match, execute yo-script with resolved args.<br>
                       
         </p>        
         
-
-        <div class="code-block-container">
-            <div class="code-header">
-                <div class="code-lang">Bash workflow</div>
-            </div>
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+            <div class="code-lang">▶ View the Bash script for the NLP module</div>
+          </summary>
             <div class="code-block">
-                <pre><span class="duck-version">
+              <pre><span class="duck-version">
 in { # 🦆 says ⮞ YOOOOOOOOOOOOOOOOOO    
   yo.scripts = { # 🦆 says ⮞ quack quack quack quack quack.... qwack 
-    do = { # 🦆 says ⮞ wat ='( 
+    do = {
       description = "Natural language to Shell script translator with dynamic regex matching and automatic parameter resolutiion";
       aliases = ["b"];
       category = "⚙️ Configuration"; # 🦆 says ⮞ duckgorize iz zmart wen u hab many scriptz i'd say!
@@ -1663,6 +1697,8 @@ EOF
 </span></pre>
             </div>
         </div>
+    </details>
+
 
 
         <h2 class="section-title">Automated Sentence Testing</h2>
@@ -1682,11 +1718,11 @@ EOF
         </div>
         
     
-        <div class="code-block-container">
-            <div class="code-header">
-                <div class="code-lang">Bash (Automated Testing)</div>
-            </div>
-            <div class="code-block">
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">▶ View the Bash script for Automated Testing</div>
+          </summary>
+              <div class="code-block">
                 <pre><span class="duck-version">
     # 🦆 says ⮞ automatic doin' sentencin' testin'
     tests = { # 🦆 says ⮞ just run yo tests to do an extensive automated test based on your defined sentence data 
@@ -2194,7 +2230,7 @@ EOF
 </span></pre>
             </div>
         </div>
-        
+    </details>        
     
     
     
@@ -2232,11 +2268,14 @@ EOF
             </div>
             
             Please go stupid!<br>
-            Look how well this turned out. And if you don't believe me, I'll return with benchmarking of how this kicks Hassil's (HA) pythonic ass, in all the ways that matters.<br> Yes really.<br><br>
+            Look how well this turned out. <br>
+            After over five years of exmperementing with building that voice command empire, <br>
+            I can safely say that this module is the by far most accurate intent handler I have tried so far. <br>
+            I wish it would handle speeds a little better when scaling, but that might be a project for another day.<br>
             
             Well, I hope you enjoyed the funky ride and hopefully learned something. <br>
             Maybe I'll throw up some more texts if this was liked, because I do have a ton of strange modules like this laying around.<br>  <br>
-            Peace and love QuackHack-McBLindy out yo!<br><br>
+            Peace and code QuackHack-McBLindy out yo!<br><br>
 
             
             <a href="https://github.com/QuackHack-McBlindy/dotfiles/blob/main/bin/config/nlp.nix" class="source-link">
@@ -2265,6 +2304,33 @@ EOF
     </footer>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeBlocks = document.querySelectorAll('details.code-block-container');
+            
+            codeBlocks.forEach(block => {
+                const summary = block.querySelector('summary');
+                const codeLang = summary.querySelector('.code-lang');
+                const toggleIcon = summary.querySelector('.toggle-icon');
+                
+                const originalText = codeLang.innerHTML;
+                const viewText = originalText.replace('Hide', 'View').replace('▶', '▼');
+                const hideText = originalText.replace('View', 'Hide').replace('▼', '▶');
+                
+                if (block.open) {
+                    codeLang.innerHTML = hideText;
+                } else {
+                    codeLang.innerHTML = viewText;
+                }
+                
+                block.addEventListener('toggle', function() {
+                    if (this.open) {
+                        codeLang.innerHTML = hideText;
+                    } else {
+                        codeLang.innerHTML = viewText;
+                    }
+                });
+            });
+        });
         document.addEventListener('DOMContentLoaded', function() {
             const duckToggle = document.getElementById('duckToggle');
             let ducksHidden = false;
