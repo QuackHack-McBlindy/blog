@@ -20,7 +20,11 @@
             margin: 0;
             padding: 0;
         }
-        
+        #comments {
+          margin-top: 3rem;
+          padding-top: 2rem;
+          border-top: 1px solid #eee;
+        }        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -2237,20 +2241,34 @@ EOF
             </a><br>
 
             <div class="tags">
-              <a href="/tags/nix" class="tag">#nix</a>
-              <a href="/tags/nlp" class="tag">#nlp</a>
-              <a href="/tags/bash" class="tag">#bash</a>
-              <a href="/tags/flake" class="tag">#flake</a>         
-              <a href="/tags/nixos" class="tag">#nixos</a>     
-              <a href="/tags/dotfiles" class="tag">#dotfiles</a>                   
+              {% for tag in page.tags %}
+                <a href="/tags/{{ tag | slugify }}" class="tag">#{{ tag }}</a>
+              {% endfor %}
             </div>
+
         </p>
     </div>
+
+    <section id="comments">
+      <h2>Comments</h2>
+      <script 
+        src="https://utteranc.es/client.js"
+        repo="QuackHack-McBlindy/blog"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+      </script>
+    </section>
+
+
+
     
     <footer>
         <p>All thoughts are my own and should not be considered advice of any kind.</p>
     </footer>
-
+    <script src="https://utteranc.es/client.js" repo="quackhack-mcblindy/blog" issue-term="pathname" label="comments" theme="github-light" crossorigin="anonymous" async>
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const duckToggle = document.getElementById('duckToggle');
