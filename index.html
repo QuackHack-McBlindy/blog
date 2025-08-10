@@ -1144,7 +1144,6 @@ lists = {
             </div>
         </div>        
         
-
       
         <h2 class="section-title">Fuzzy Matching</h2>
         
@@ -1248,7 +1247,7 @@ levenshtein_similarity() {
            For each defined script: Load regex substitutions (entities) and store them in an associative array.<br><br>
 
            Exact Match Phase (Runs in Background): <br>
-           Iterate through all known scripts (in order of priority).<br>
+           Iterate through all defined scripts (in order of priority).<br>
            Apply regex substitutions to input text.<br>
            Try to match input via corresponding match_script functions.<br>
            If matched:<br>
