@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog about declarative home automation, smart home systems, and avoiding vendor lock-in with Nix-based solutions">
+    <meta property="og:title" content="Declarative Home Automation with Nix">
+    <meta property="og:description" content="Learn how to define your smart home devices and avoid vendor lock-in">
+    <meta property="og:type" content="article">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>🦆🧑‍🦯'blog</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="navbar-content">
+            <a href="https://github.com/QuackHack-McBlindy" title="GitHub">
+                <img src="../img/github_teal.png" alt="GitHub" class="github-icon" style="height: 32px;" onmouseover="this.src='../img/github_magenta.png';" onmouseout="this.src='../img/github_teal.png';"> </img>
+            </a>
+            
+            <div class="navbar-title">
+                <span>🦆</span>🧑‍🦯 <a href="https://quackhack-mcblindy.github.io/blog/">QuackHack-McBlindy blog</a>
+            </div>
+            <img src="../img/logo.png" height="48" width="48" >
+            <button id="duckToggle" class="toggle-btn" aria-label="Toggle duck commentary">
+
+                <span class="duck-icon">🦆</span>
+                Hide duck commentary
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="toc-container">
+        <details class="toc-details">
+            <summary class="toc-header">
+                <span class="toc-duck">🦆</span>
+                <h3>Navigation</h3>
+                <span class="toc-man">🧑‍🦯</span>
+                <span class="toc-toggle">⮟</span>
+            </summary>
+            <nav class="toc-nav">
+                <a href="../yo/index.html" class="toc-item">
+                    <span class="toc-icon">🫀</span>
+                    Yo - Define & Unify
+                </a>
+                <a href="../do/index.html" class="toc-item">
+                    <span class="toc-icon">🧠</span>
+                    Do - Listen, Process, Act & Learn
+                </a>
+                <a href="index.html" class="toc-item current">
+                    <span class="toc-icon">🏠</span>
+                    House - Declarative Home Automation
+                    <span class="current-marker">⮜🦆</span>
+                </a>
+               <a href="../docs/index.html" class="toc-item">
+                    <span class="toc-icon">📚</span>
+                    Documentation - Automating the README
+                </a>
+                <a href="../misc/index.html" class="toc-item">
+                    <span class="toc-icon">🧩</span>
+                    Miscellaneous 
+                </a>
+            </nav>
+            <div class="toc-footer">
+                <span class="toc-quack">🦆 says ⮞ qwack qwack, plx pick!</span>
+            </div>
+        </details>
+    </div>
+    
+  
+    <div class="content">
+        <header class="category-title">
+            <h1>Defining Your Home</h1>
+            <p class="subtitle">The module I am configuring today is: <a href="https://github.com/QuackHack-McBlindy/dotfiles/blob/main/modules/house.nix">modules/house.nix</a><br></p>
+        </header>
+
+        
+        <div class="duck-comment">
+            <p>says ⮞ I use 20x magnification when I code and debug. I use emoji to simplify logs for myself. If you can't handle my code style you can disable most of it on this website by toggling the button in the navbar. Shall duck continue? </p>
+        </div>
+
+  
+        <p>
+            Today we are defining our Smart Home devices, scenes, and configure other options that helps setup our home.<br>
+            I will try to keep this as short as possible as there is not much to say about defining devices - and to reduce the risk of this becoming a massive series.<br> 
+            
+        </p>
+        
+        <h2 class="section-title">Rooms</h2>
+        
+        <p>
+            Let's start with the basic building blocks - defining the rooms in your home.<br>
+            This creates logical groups for your devices and enables room-specific automations.<br>
+            
+        </p>
+        
+        <details class="code-block-container" style="margin-bottom: 1em;" open>
+          <summary class="code-header">
+              <div class="code-lang">⮞ View room code block</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{ # 🦆 duck say ⮞ my house - qwack 
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in { # 🦆 duck say ⮞ qwack
+  house = {
+    rooms = {
+      bedroom.icon    = "mdi:bedroom";
+      hallway.icon    = "mdi:hallway";
+      kitchen.icon    = "mdi:food-fork-drink";
+      livingroom.icon = "mdi:sofa";
+      wc.icon         = "mdi:toilet";
+      other.icon      = "mdi:misc";
+    };
+   
+</span><span class="clean-version hidden">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in {
+  house = {
+    rooms = {
+      bedroom.icon    = "mdi:bedroom";
+      hallway.icon    = "mdi:hallway";
+      kitchen.icon    = "mdi:food-fork-drink";
+      livingroom.icon = "mdi:sofa";
+      wc.icon         = "mdi:toilet";
+      other.icon      = "mdi:misc";
+    };
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+    <p>Each room gets a fancy icon! Makes the dashboard much cleaner and more enjoyable to use.<br>
+
+
+        <div class="callout">
+            <p>
+                Using consistent room naming makes automations much easier to manage and understand later.
+            </p>
+        </div>
+        <br>      
+               
+        <div class="duck-comment">
+            <p>⮞ qwack simple huh? - letz move on</p>
+        </div>
+        <br><br>
+
+
+
+        <h2 class="section-title">Coordinator Configuration - Symlinking the Serial Port</h2>
+        
+        <p>
+            Zigbee <i>(IEEE 802.15.4)</i> provides the wireless mesh network that connects all our devices, <br>
+            You need a coordinator to be able to communicate with your Zigbee devices.<br>
+            Since we are writing a reproducible declarative configuration, it should not matter which USB port the coordinator is connected to.<br>
+            That is why we are symlinking the serial port to a specific address.<br>
+            In the example below I will be symlinking my Sonoff Zigbee 3.0 USB Dongle Plus from "/dev/ttyUSB0" to "/dev/zigduck" 
+        </p>
+        
+        <details class="code-block-container" style="margin-bottom: 1em;" open>
+          <summary class="code-header">
+              <div class="code-lang">⮞ View coordinator code block</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{ # 🦆 duck say ⮞ my house - qwack 
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in { # 🦆 duck say ⮞ qwack
+  house = {   
+# 🦆 ⮞ ZIGBEE ⮜ 🐝
+    zigbee = {
+  # 🦆 ⮞ COORDINATOR ⮜      
+      coordinator = { 
+        vendorId = "10c4"; # 🦆 duck say ⮞ use `lsusb`
+        productId = "ea60"; # 🦆 duck say ⮞ or `udevadm info -q property -n /dev/ttyUSB0`
+        symlink = "zigduck"; # 🦆 duck say ⮞ now you can use as /dev/zigduck
+      };  
+</span><span class="clean-version hidden">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in {
+  house = {   
+    zigbee = { 
+      coordinator = { 
+        vendorId = "10c4";
+        productId = "ea60";
+        symlink = "zigduck";
+      };  
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+     
+    <p>
+        Cool huh? But you are thinking "What if i don't know the vendorId or productId?"<br>
+        No worries, I will show you two approaches to finding them.<br> 
+        Make sure your Zigbee coordinator is connected to the serial port on the host that you are running the commands from.<br>
+    </p> 
+
+
+
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View `lsusb` output</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+QuackHack-McBlindy in 🌐 homie in 🦆🏠 HOME 
+21:54:54 ❯ lsusb 
+Bus 001 Device 004: ID 05e3:0608 
+Bus 001 Device 003: ID 08bb:2902 
+Bus 001 Device 001: ID 1d6b:0002 
+                      # ⮟ 🦆 says ⮞ diz iz da vendorId
+Bus 001 Device 002: ID 10c4:ea60 
+                           # ⮝ 🦆 says ⮞ diz iz da productId
+Bus 002 Device 001: ID 1d6b:0003
+</span><span class="clean-version hidden">
+QuackHack-McBlindy in 🌐 homie in 🦆🏠 HOME 
+21:54:54 ❯ lsusb 
+Bus 001 Device 004: ID 05e3:0608 
+Bus 001 Device 003: ID 08bb:2902 
+Bus 001 Device 001: ID 1d6b:0002 
+Bus 001 Device 002: ID 10c4:ea60 
+Bus 002 Device 001: ID 1d6b:0003
+</span></pre>
+            </div>
+        </div>
+    </details>   
+
+        
+        <p>
+            As you can see in the `lsusb` output the first four characters in the ID is the vendorId, and the four last characters the productId.<br> 
+            If you are looking for another solution, using the `udevadm info` command is also a simple way of getting the ID's.<br> 
+        </p>
+
+
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View `udevadm info -q property -n /dev/ttyUSB0` output</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+QuackHack-McBlindy in 🌐 homie in 🦆🏠  HOME 
+✦ 22:12:53 ❯ udevadm info -q property -n /dev/ttyUSB0
+DEVPATH=/devices/pci0000:00/0000:00:14.0/usb1/1-1/1-1:1.0/ttyUSB0/tty/ttyUSB0
+DEVNAME=/dev/ttyUSB0
+MAJOR=188
+MINOR=0
+SUBSYSTEM=tty
+USEC_INITIALIZED=6546849
+PATH=/nix/store/gmydihdyaskbwkqwkn5w8yjh9nzjz56p-udev-path/bin:/nix/store/gmydi>
+ID_BUS=usb
+ID_MODEL=Sonoff_Zigbee_3.0_USB_Dongle_Plus # 🦆 duck say ⮞ obviously correct port
+ID_MODEL_ENC=Sonoff\x20Zigbee\x203.0\x20USB\x20Dongle\x20Plus
+ID_MODEL_ID=ea60
+ID_SERIAL=Silicon_Labs_Sonoff_Zigbee_3.0_USB_Dongle_Plus_0001
+ID_SERIAL_SHORT=0001
+ID_VENDOR=Silicon_Labs
+ID_VENDOR_ENC=Silicon\x20Labs
+ID_VENDOR_ID=10c4 # 🦆 duck say ⮞ here is da vendorId
+ID_REVISION=0100
+ID_TYPE=generic
+ID_USB_MODEL=Sonoff_Zigbee_3.0_USB_Dongle_Plus
+ID_USB_MODEL_ENC=Sonoff\x20Zigbee\x203.0\x20USB\x20Dongle\x20Plus
+ID_USB_MODEL_ID=ea60 # 🦆 duck say ⮞ here is da productId
+ID_USB_SERIAL=Silicon_Labs_Sonoff_Zigbee_3.0_USB_Dongle_Plus_0001
+ID_USB_SERIAL_SHORT=0001
+</span><span class="clean-version hidden">
+QuackHack-McBlindy in 🌐 homie in 🦆🏠  HOME 
+✦ 22:12:53 ❯ udevadm info -q property -n /dev/ttyUSB0
+DEVPATH=/devices/pci0000:00/0000:00:14.0/usb1/1-1/1-1:1.0/ttyUSB0/tty/ttyUSB0
+DEVNAME=/dev/ttyUSB0
+MAJOR=188
+MINOR=0
+SUBSYSTEM=tty
+USEC_INITIALIZED=6546849
+PATH=/nix/store/gmydihdyaskbwkqwkn5w8yjh9nzjz56p-udev-path/bin:/nix/store/gmydi>
+ID_BUS=usb
+ID_MODEL=Sonoff_Zigbee_3.0_USB_Dongle_Plus
+ID_MODEL_ENC=Sonoff\x20Zigbee\x203.0\x20USB\x20Dongle\x20Plus
+ID_MODEL_ID=ea60
+ID_SERIAL=Silicon_Labs_Sonoff_Zigbee_3.0_USB_Dongle_Plus_0001
+ID_SERIAL_SHORT=0001
+ID_VENDOR=Silicon_Labs
+ID_VENDOR_ENC=Silicon\x20Labs
+ID_VENDOR_ID=10c4
+ID_REVISION=0100
+ID_TYPE=generic
+ID_USB_MODEL=Sonoff_Zigbee_3.0_USB_Dongle_Plus
+ID_USB_MODEL_ENC=Sonoff\x20Zigbee\x203.0\x20USB\x20Dongle\x20Plus
+ID_USB_MODEL_ID=ea60
+ID_USB_SERIAL=Silicon_Labs_Sonoff_Zigbee_3.0_USB_Dongle_Plus_0001
+ID_USB_SERIAL_SHORT=0001
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+
+        <div class="duck-comment">
+            <p>says ⮞ woow! u can now reference da stick as `/dev/zigduck` in ur z2m configuration!<br>i will talk about dat in teh next post - promise! </p>
+        </div>
+
+      
+        <h2 class="section-title">Devices - Lights, Sensors, Dimmers etc</h2>
+        
+        <p>
+            I hope you have a bunch of devices ready! Here's where we define every Zigbee device in the home.<br>
+            Each device is defined by their unique identifier, the devices IEEE address.<br>
+        </p>
+        
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View device code block</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{ # 🦆 duck say ⮞ my house - qwack 
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in { # 🦆 duck say ⮞ qwack
+  house = {   
+# 🦆 ⮞ ZIGBEE ⮜ 🐝
+    zigbee = {
+  # 🦆 ⮞ DEVICES ⮜      
+      devices = { 
+        # 🦆 says ⮞ Kitchen   
+        "0x0017880103ca6e95" = { # 🦆 says ⮞ 64bit IEEE address (this is the unique device ID)  
+          friendly_name = "Dimmer Switch Kök"; # 🦆 says ⮞ simple human readable friendly name
+          room = "kitchen"; # 🦆 says ⮞ bind to group
+          type = "dimmer"; # 🦆 says ⮞ set da device type (lib.types.enum [ "light" "dimmer" "sensor" "motion" "outlet" "remote" "pusher" "blind" ];)
+          icon = "mdi-toggle-switch"; # 🦆 says ⮞ for da frontend yo
+          endpoint = 1; # 🦆 says ⮞ endpoint to call the device on
+          batteryType = "CR2450"; # 🦆 says ⮞ optional yo
+        }; # 🦆 says ⮞ see dat batteryType? duck never surprised by dead devices! sneaky track battery sweet QWACK!
+        "0x0017880102f0848a" = { 
+          friendly_name = "Spotlight kök 1";
+          room = "kitchen";
+          type = "light";
+          supports_color = true; # 🦆 says ⮞ default to false
+          icon = "mdi-spotlight";
+          endpoint = 11;
+        };
+        # 🦆 says ⮞ next device here
+</span><span class="clean-version hidden">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in {
+  house = {   
+    zigbee = { 
+      devices = { 
+        "0x0017880103ca6e95" = {  
+          friendly_name = "Dimmer Switch Kök";
+          room = "kitchen";
+          type = "dimmer";
+          icon = "mdi-toggle-switch";
+          endpoint = 1;
+          batteryType = "CR2450"; # 🦆 says ⮞ optional yo
+        };
+        "0x0017880102f0848a" = { 
+          friendly_name = "Spotlight kök 1";
+          room = "kitchen";
+          type = "light";
+          supports_color = true;
+          icon = "mdi-spotlight";
+          endpoint = 11;
+        };
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+     
+    <p>
+        Keep adding the rest of your devices - if you are anything like me - the list will be long and take a while.<br>
+        We're moving on to:
+    </p> 
+
+
+    <div class="callout">
+        <p>
+            <strong>Smart Validation:</strong> The system automatically validates your configuration - 
+            checking room existence, device names, scene consistency, and catching duplicates before 
+            you even deploy. No more mysterious "device not found" errors!
+        </p>
+    </div>
+
+
+        <h2 class="section-title">Scenes - Setting the Mood</h2>
+        
+        <p>
+            Scenes allow you to configure multiple lights with specific colors, brightness, and transitions.<br> 
+            Perfect for different activities and moods.
+        
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View scenes code block</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{ # 🦆 duck say ⮞ my house - qwack 
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in { # 🦆 duck say ⮞ qwack
+  house = {   
+# 🦆 ⮞ ZIGBEE ⮜ 🐝
+    zigbee = {
+  # 🦆 ⮞ SCENES ⮜      
+      scenes = {
+        # 🦆 says ⮞ Scene name
+        "Duck Scene" = {
+          # 🦆 says ⮞ Device friendly_name
+          "Light1" = { 
+            state = "ON"; # 🦆 says ⮞ Device state
+            brightness = 200; # 🦆 says ⮞ brightness (0-255)
+            color = { hex = "#00FF00"; }; # 🦆 says ⮞ only if support_color is true for the device
+            transition = 10; # 🦆 says ⮞ state change transition time in seconds 
+          };
+          "Light2" = {
+            state = "ON";
+            brightness = 200;
+            color = { hex = "#00FF00"; };
+          };          
+        };
+        # 🦆 says ⮞ next scene
+</span><span class="clean-version hidden">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in {
+  house = {   
+    zigbee = {   
+      scenes = {
+        "Duck Scene" = {
+          "Light1" = {
+            state = "ON";
+            brightness = 200;
+            color = { hex = "#00FF00"; };
+            transition = 10; 
+          };
+          "Light2" = {
+            state = "ON";
+            brightness = 200;
+            color = { hex = "#00FF00"; };
+          };          
+        };
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+     
+    <p>
+        Keep typing up and defining all your favourite scenes. <br>
+        It might be a bit of a drag if you have a lot of devices/scenes, <br>
+        but it's totally worth it because this time - You know it will be your last time!<br>
+        This completes our zigbee configuration for now. <br>
+        We have our hosts defined in Nix, we have our lightbulbs, our scenes, our sensors and other Zigbee devices.<br>
+        You really thought I was going to let you go without defining our TV's?! - Since I can't see I rarely watch myself - but I hear the TV is quite popular.<br>
+        Let's get to it.
+    </p> <br>
+
+
+        <h2 class="section-title">Bonus - TV Devices & Channel Definitions</h2>
+        
+        <p>
+            Who needs cable when you have Nix? Let's define our TV devices with the same declarative approach.<br>
+            This gives us unified control over our Android TV devices using Android Debug Bridge, complete with per-device channel definitions and automated TV guides.<br>
+        
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View TV code block</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{ # 🦆 duck say ⮞ my house - qwack 
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in { # 🦆 duck say ⮞ qwack
+  house = {   
+  # 🦆 ⮞ TV ⮜
+    tv = {
+      shield = { # 🦆 says ⮞ Device name 
+        enable = true;
+        room = "livingroom";
+        ip = "192.168.1.223";
+        apps = { # 🦆 says ⮞ define applications
+          telenor = "se.telenor.stream/.MainActivity";
+          tv4 = "se.tv4.tv4playtab/se.tv4.tv4play.ui.mobile.main.BottomNavigationActivity";
+        }; # 🦆 says ⮞ per-device channel definitions
+        channels = {     
+          "1" = {
+            name = "SVT1";
+            id = 1; # 🦆 says ⮞ adb channel ID
+            # 🦆 says ⮞ OR
+            # stream_url = "https://url.com/"; # 🦆 recommendz ⮞ if u can, use diz arrr! 🏴‍☠️🦆
+            cmd = "open_telenor && wait 5 && start_channel_1";
+            # 🦆 says ⮞ automagi generated tv-guide web & EPG          
+            icon = ./themes/icons/tv/1.png;
+            scrape_url = "https://tv-tabla.se/tabla/svt1/";          
+          }; # 🦆 says ⮞ next channel
+          "2" = {
+            id = 2; 
+            name = "SVT2";
+            cmd = "open_telenor && wait 5 && start_channel_2";
+            icon = ./themes/icons/tv/2.png;          
+            scrape_url = "https://tv-tabla.se/tabla/svt2/";
+          };
+        };
+      };
+      # 🦆 says ⮞ next TV device
+</span><span class="clean-version hidden">
+{ 
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in {
+  house = {   
+    tv = {
+      shield = { 
+        enable = true;
+        room = "livingroom";
+        ip = "192.168.1.223";
+        apps = { 
+          telenor = "se.telenor.stream/.MainActivity";
+          tv4 = "se.tv4.tv4playtab/se.tv4.tv4play.ui.mobile.main.BottomNavigationActivity";
+        };
+        channels = {     
+          "1" = {
+            name = "SVT1";
+            id = 1;
+            # stream_url = "https://url.com/";
+            cmd = "open_telenor && wait 5 && start_channel_1";        
+            icon = ./themes/icons/tv/1.png;
+            scrape_url = "https://tv-tabla.se/tabla/svt1/";          
+          };
+          "2" = {
+            id = 2; 
+            name = "SVT2";
+            cmd = "open_telenor && wait 5 && start_channel_2";
+            icon = ./themes/icons/tv/2.png;          
+            scrape_url = "https://tv-tabla.se/tabla/svt2/";
+          };
+        };
+      };
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+        
+        <p>
+    
+            This was fun huh?<br><br>
+            And this is just the beginning - trust me!<br>
+            
+            <div class="duck-comment">
+                <p>
+                    says ⮞ be sure to stick around!<br>
+                    in da next qwack attack duck shows how to configure MQTT & Z2M!<br> 
+                    and duck show's how to finally write home automations in Nix yaay!
+                </p>
+            </div>
+
+            <a href ="part1.html">Part 1. The module, the options and defining devices</a> <span class="current-marker">⮜🦆here u are</span><br>
+            <a href ="part2.html">Part 2. Configure your Mosquitto/Z2MQTT</a><br>
+            <a href ="part3.html">Part 3. Nix Configured Automations</a>  <br>              
+            <a href ="part4.html">Part 4. Writing a Server Service - In Rust</a><br>          
+            <a href ="part5.html">Part 5. Writing a Client - With Voice Commands</a>   <br>   
+            <a href ="part6.html">Part 6. The Auto-Generated Dashboard</a><br>        
+
+            <br><br><br>
+    
+              
+            <a href="https://github.com/QuackHack-McBlindy/dotfiles/blob/main/modules/house.nix" class="source-link">
+              View source code on GitHub
+            </a><br>
+
+
+            <section id="comments">
+              <h2>Comments on this blog post</h2>
+              <script 
+                src="https://utteranc.es/client.js"
+                repo="QuackHack-McBlindy/blog"
+                issue-term="pathname"
+                theme="github-light"
+                crossorigin="anonymous"
+                async>
+              </script>
+            </section>
+        </p>
+    </div>
+
+
+
+    </div>
+    
+    <footer>
+        <p>All thoughts are my own and should not be considered advice of any kind. More likely the opposite.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeBlocks = document.querySelectorAll('details.code-block-container');
+            
+            codeBlocks.forEach(block => {
+                const summary = block.querySelector('summary');
+                const codeLang = summary.querySelector('.code-lang');
+                const toggleIcon = summary.querySelector('.toggle-icon');
+                
+                const originalText = codeLang.innerHTML;
+                const viewText = originalText.replace('Hide', 'View').replace('⮞', '⮟');
+                const hideText = originalText.replace('View', 'Hide').replace('⮟', '⮞');
+                
+                if (block.open) {
+                    codeLang.innerHTML = hideText;
+                } else {
+                    codeLang.innerHTML = viewText;
+                }
+                
+                block.addEventListener('toggle', function() {
+                    if (this.open) {
+                        codeLang.innerHTML = hideText;
+                    } else {
+                        codeLang.innerHTML = viewText;
+                    }
+                });
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const duckToggle = document.getElementById('duckToggle');
+            let ducksHidden = false;
+            
+            function toggleCodeDucks() {
+                ducksHidden = !ducksHidden;
+                
+                const duckVersions = document.querySelectorAll('.duck-version');
+                const cleanVersions = document.querySelectorAll('.clean-version');
+                
+                duckVersions.forEach(version => {
+                    version.classList.toggle('hidden', ducksHidden);
+                });
+                
+                cleanVersions.forEach(version => {
+                    version.classList.toggle('hidden', !ducksHidden);
+                });
+                
+                duckToggle.innerHTML = ducksHidden ? 
+                    '<span class="duck-icon"></span> Show 🦆 commentary' : 
+                    '<span class="duck-icon"></span> Hide 🦆 commentary';
+                    
+                const duckIcon = duckToggle.querySelector('.duck-icon');
+                duckIcon.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    duckIcon.style.transform = 'scale(1)';
+                }, 300);
+            }
+            
+            duckToggle.addEventListener('click', toggleCodeDucks);
+            
+            document.querySelectorAll('.clean-version').forEach(version => {
+                version.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>

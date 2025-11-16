@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog about declarative home automation, smart home systems, and avoiding vendor lock-in with Nix-based solutions">
+    <meta property="og:title" content="Declarative Home Automation with Nix">
+    <meta property="og:description" content="Learn how to define your smart home devices and avoid vendor lock-in">
+    <meta property="og:type" content="article">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>🦆🧑‍🦯'blog</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="navbar-content">
+            <a href="https://github.com/QuackHack-McBlindy" title="GitHub">
+                <img src="../img/github_teal.png" alt="GitHub" class="github-icon" style="height: 32px;" onmouseover="this.src='../img/github_magenta.png';" onmouseout="this.src='../img/github_teal.png';"> </img>
+            </a>
+            
+            <div class="navbar-title">
+                <span>🦆</span>🧑‍🦯 <a href="https://quackhack-mcblindy.github.io/blog/">QuackHack-McBlindy blog</a>
+            </div>
+            <img src="../img/logo.png" height="48" width="48" >
+            <button id="duckToggle" class="toggle-btn" aria-label="Toggle duck commentary">
+
+                <span class="duck-icon">🦆</span>
+                Hide duck commentary
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="toc-container">
+        <details class="toc-details">
+            <summary class="toc-header">
+                <span class="toc-duck">🦆</span>
+                <h3>Navigation</h3>
+                <span class="toc-man">🧑‍🦯</span>
+                <span class="toc-toggle">⮟</span>
+            </summary>
+            <nav class="toc-nav">
+                <a href="../yo/index.html" class="toc-item">
+                    <span class="toc-icon">🫀</span>
+                    Yo - Define & Unify
+                </a>
+                <a href="../do/index.html" class="toc-item">
+                    <span class="toc-icon">🧠</span>
+                    Do - Listen, Process, Act & Learn
+                </a>
+                <a href="index.html" class="toc-item current">
+                    <span class="toc-icon">🏠</span>
+                    House - Declarative Home Automation
+                    <span class="current-marker">⮜🦆</span>
+                </a>
+                <a href="../docs/index.html" class="toc-item">
+                    <span class="toc-icon">📚</span>
+                    Documentation - Automating the README
+                </a>
+                <a href="../misc/index.html" class="toc-item">
+                    <span class="toc-icon">🧩</span>
+                    Miscellaneous 
+                </a>
+            </nav>
+            <div class="toc-footer">
+                <span class="toc-quack">🦆 says ⮞ qwack qwack, plx pick!</span>
+            </div>
+        </details>
+    </div>
+    
+  
+    <div class="content">
+        <header class="category-title">
+            <h1>Configuring Your Zigbee Services</h1>
+            <p class="subtitle">Quick instructions of how to configure Mosquitto and Zigbee2MQQTT ensuring it to work with this Smart Home setup.</p>
+        </header>
+
+        
+        <div class="duck-comment">
+            <p>says ⮞ I use 20x magnification when I code and debug. I use emoji to simplify logs for myself. If you can't handle my code style you can disable most of it on this website by toggling the button in the navbar. Shall duck continue? </p>
+        </div>
+
+
+        <p>
+            Today we are defining our Smart Home dependencies, Mosquitto and Z2M.<br>
+            I believe you can have them configured in many ways and still be compatible, but to ensure proper integration the configuration below is the duck recommended.<br>
+            Feel free to play around to see what is working for your specific needs. <br> 
+            No delay - let's get the qwackin' started!<br>
+            
+        </p>
+        
+        <h2 class="section-title">Mosquitto</h2>
+        
+        <p>
+            Not really anything special going on here.<br>
+            <br>
+            
+        </p>
+        
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View Mosquitto code block</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{ # 🦆 duck say ⮞ my house - qwack 
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in { # 🦆 duck say ⮞ qwack
+  services.mosquitto = {
+    enable = true;
+    listeners = [
+      { # 🦆 says ⮞ mqtt:// @ 1883
+        acl = [ "pattern readwrite #" ];
+        port = 1883;
+        omitPasswordAuth = false; # 🦆 says ⮞ safety first!
+        users.mqtt.passwordFile = config.sops.secrets.mosquitto.path;
+        settings.allow_anonymous = false; # 🦆 says ⮞ never forget, never forgive right?
+#        settings.require_certificate = true; # 🦆 says ⮞ T to the L to the S spells wat? DUCK! 
+#        settings.use_identity_as_username = true;
+      }   
+      { # 🦆 says ⮞ ws:// @ 9001
+        acl = [ "pattern readwrite #" ];
+        port = 9001;
+        settings.protocol = "websockets";
+        omitPasswordAuth = false; # 🦆 says ⮞ safety first!
+        users.mqtt.passwordFile = config.sops.secrets.mosquitto.path;
+        settings.allow_anonymous = false; # 🦆 says ⮞ never forget, never forgive right?
+        #settings.require_certificate = false; # 🦆 says ⮞ T to the L to the S spells wat? DUCK! 
+      } 
+    ];
+  };  
+</span><span class="clean-version hidden">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in {
+  services.mosquitto = {
+    enable = true;
+    listeners = [
+      {
+        acl = [ "pattern readwrite #" ];
+        port = 1883;
+        omitPasswordAuth = false;
+        users.mqtt.passwordFile = config.sops.secrets.mosquitto.path;
+        settings.allow_anonymous = false;
+#        settings.require_certificate = true;
+#        settings.use_identity_as_username = true;
+      }   
+      {
+        acl = [ "pattern readwrite #" ];
+        port = 9001;
+        settings.protocol = "websockets";
+        omitPasswordAuth = false;
+        users.mqtt.passwordFile = config.sops.secrets.mosquitto.path;
+        settings.allow_anonymous = false;
+        #settings.require_certificate = false; 
+      } 
+    ];
+  };
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+    <p>The extra websocket listener is used for communicating with your browser when you are on the dashboard.  <br>
+
+           
+        <div class="duck-comment">
+            <p>⮞ qwack simple huh? - letz move on</p>
+        </div>
+        <br><br>
+
+
+        <h2 class="section-title">Zigbee2MQTT Configuration</h2>
+        
+        <p>
+            Next service in line to get configured is Z2MQTT - and this is a bit more advanced,<br>
+            I will start by showing the entire code block that I use for Zigbee2MQTT, but if this get's overwhelming for you, that's fine.<br>
+            Don't worry though. We'll go through each line so you can decide for yourself how you wish to configure it.<br>
+        </p>
+        
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View Zigbee2MQTT code block</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+  # 🦆 says ⮞ define Zigbee devices here yo 
+  zigbeeDevices = config.house.zigbee.devices;
+  
+  # 🦆 says ⮞ Filter devices by rooms
+  byRoom = lib.foldlAttrs (acc: id: dev:
+    lib.recursiveUpdate acc {
+      ${dev.room} = (acc.${dev.room} or []) ++ [ id ];
+    }) {} zigbeeDevices;
+
+  # 🦆 says ⮞ dis creates group configuration for Z2M yo
+  groupConfig = lib.mapAttrs' (room: ids: {
+    name = room;
+    value = {
+      friendly_name = room;
+      devices = map (id: 
+        let dev = zigbeeDevices.${id};
+        in "${id}/${toString dev.endpoint}"
+      ) ids;
+    };
+  }) byRoom;
+
+  # 🦆 says ⮞ dis creates device configuration for Z2M yo
+  deviceConfig = lib.mapAttrs (id: dev: {
+    friendly_name = dev.friendly_name;
+  }) zigbeeDevices;
+
+in { # 🦆 says ⮞ Z2MQTT configurations
+  services.zigbee2mqtt = { # 🦆 says ⮞ dis is server configuration and only needed on one host
+    enable = true;
+    dataDir = "/var/lib/zigbee";
+    settings = {
+        experimental.output = "json";
+        homeassistant = false; # 🦆 says ⮞ no thnx....
+        mqtt = {
+          server = "mqtt://localhost:1883";
+          user = "mqtt";
+          password =  config.sops.secrets.mosquitto.path; # 🦆 says ⮞ no support for passwordFile?! sneaky duckiie use dis as placeholder lol
+          base_topic = "zigbee2mqtt";
+        };
+        # 🦆 says ⮞ physical port mapping
+        serial = { # 🦆 says ⮞ either USB port (/dev/ttyUSB0), network Zigbee adapters (tcp://192.168.1.1:6638) or mDNS adapter (mdns://my-adapter).       
+         port = "/dev/${config.house.zigbee.coordinator.symlink}"; # 🦆 says ⮞ use symlinked serial port!!!1 
+         disable_led = true; # 🦆 says ⮞ save quack on electricity bill yo  
+        };
+        frontend = { # 🦆 says ⮞ u don't needz diz
+          enabled = false;
+          host = "0.0.0.0";   
+          port = 8099; 
+        };
+        advanced = { # 🦆 says ⮞ dis is advanced? ='( duck tearz of sadness
+          export_state = true;
+          export_state_path = "${zigduckDir}/zigbee_devices.json";
+          homeassistant_legacy_entity_attributes = false; # 🦆 says ⮞ wat the duck?! told u i don't like ha but i do like to laugh ha ha ha
+          legacy_api = false;
+          legacy_availability_payload = false;
+          log_syslog = { # 🦆 says ⮞ log settings
+            app_name = "Zigbee2MQTT";
+            eol = "/n";
+            host = "localhost";
+            localhost = "localhost";
+            path = "/dev/log";
+            pid = "process.pid"; # 🦆 says ⮞ process id
+            port = 123;
+            protocol = "tcp4";# 🦆 says ⮞ TCP4pcplife
+            type = "5424";
+          };
+          transmit_power = 9; # 🦆 says ⮞ to avoid brain damage, set low power
+          channel = 15; # 🦆 says ⮞ channel 15 optimized for minimal interference from other 2.4Ghz devices, provides good stability  
+          last_seen = "ISO_8601_local";
+          # 🦆 says ⮞ zigbee encryption key.. quack? - better not expose it yo - letz handle dat down below
+            # network_key = [ "..." ]
+            pan_id = 60410;
+          };
+          device_options = { legacy = false; };
+          availability = false;
+          permit_join = false; # 🦆 says ⮞ allow new devices, not suggested for thin wallets - this can be false and you can still pair - don't see point?
+          devices = deviceConfig; # 🦆 says ⮞ inject defined Zigbee D!
+          groups = groupConfig // { # 🦆 says ⮞ inject defined Zigbee G, yo!
+            all_lights = { # 🦆 says ⮞ + create a group containing all light devices
+              friendly_name = "all";
+              devices = lib.concatMap (id: 
+                let dev = zigbeeDevices.${id};
+                in if dev.type == "light" then ["${id}/${toString dev.endpoint}"] else []
+              ) (lib.attrNames zigbeeDevices);
+            };
+          };
+        };
+      }; 
+
+  # 🦆 says ⮞ let's do some ducktastic decryption magic into yaml files before we boot services up duck duck yo
+  systemd.services.zigbee2mqtt = {
+    wantedBy = [ "multi-user.target" ];
+    after = [ "sops-nix.service" "network.target" ];
+    environment.ZIGBEE2MQTT_DATA = config.services.zigbee2mqtt.dataDir;
+    preStart = '' 
+      mkdir -p ${config.services.zigbee2mqtt.dataDir}    
+      # 🦆 says ⮞ our real mosquitto password quack quack
+      mosquitto_password=$(cat ${config.sops.secrets.z2m_mosquitto.path}) 
+      # 🦆 says ⮞ Injecting password into config...
+      sed -i "s|/run/secrets/mosquitto|$mosquitto_password|" ${config.services.zigbee2mqtt.dataDir}/configuration.yaml  
+      # 🦆 says ⮞ da real zigbee network key boom boom quack quack yo yo
+      TMPFILE="${config.services.zigbee2mqtt.dataDir}/tmp.yaml"
+      CFGFILE="${config.services.zigbee2mqtt.dataDir}/configuration.yaml"
+      # 🦆 says ⮞ starting awk decryption magic..."
+      ${pkgs.gawk}/bin/awk -v keyfile="${config.sops.secrets.z2m_network_key.path}" '
+        /(^|[[:space:]])network_key:/ { found = 1 }
+
+        { lines[NR] = $0 }
+
+        END {
+          if (found) {
+            for (i = 1; i <= NR; i++) print lines[i]
+          } else {
+            print lines[1]
+            print "  network_key:"
+            while ((getline line < keyfile) > 0) {
+              print "    " line
+            }
+            close(keyfile)
+            for (i = 2; i <= NR; i++) print lines[i]
+          }
+        }
+      ' "$CFGFILE" > "$TMPFILE"      
+      mv "$TMPFILE" "$CFGFILE"
+    ''; # 🦆 says ⮞ thnx fo quackin' along!
+  };} # ... 🛌🦆💤
+
+</span><span class="clean-version hidden">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+  zigbeeDevices = config.house.zigbee.devices;
+  
+  byRoom = lib.foldlAttrs (acc: id: dev:
+    lib.recursiveUpdate acc {
+      ${dev.room} = (acc.${dev.room} or []) ++ [ id ];
+    }) {} zigbeeDevices;
+
+  groupConfig = lib.mapAttrs' (room: ids: {
+    name = room;
+    value = {
+      friendly_name = room;
+      devices = map (id: 
+        let dev = zigbeeDevices.${id};
+        in "${id}/${toString dev.endpoint}"
+      ) ids;
+    };
+  }) byRoom;
+
+  deviceConfig = lib.mapAttrs (id: dev: {
+    friendly_name = dev.friendly_name;
+  }) zigbeeDevices;
+
+in {
+  services.zigbee2mqtt = {
+    enable = true;
+    dataDir = "/var/lib/zigbee";
+    settings = {
+        experimental.output = "json";
+        homeassistant = false;
+        mqtt = {
+          server = "mqtt://localhost:1883";
+          user = "mqtt";
+          password =  config.sops.secrets.mosquitto.path;
+          base_topic = "zigbee2mqtt";
+        };
+        serial = {       
+         port = "/dev/${config.house.zigbee.coordinator.symlink}";
+         disable_led = true;  
+        };
+        frontend = {
+          enabled = false;
+          host = "0.0.0.0";   
+          port = 8099; 
+        };
+        advanced = {
+          export_state = true;
+          export_state_path = "${zigduckDir}/zigbee_devices.json";
+          homeassistant_legacy_entity_attributes = false;
+          legacy_api = false;
+          legacy_availability_payload = false;
+          log_syslog = {
+            app_name = "Zigbee2MQTT";
+            eol = "/n";
+            host = "localhost";
+            localhost = "localhost";
+            path = "/dev/log";
+            pid = "process.pid";
+            port = 123;
+            protocol = "tcp4";
+            type = "5424";
+          };
+          transmit_power = 9;
+          channel = 15;
+          last_seen = "ISO_8601_local";
+            # network_key = [ "..." ]
+            pan_id = 60410;
+          };
+          device_options = { legacy = false; };
+          availability = false;
+          permit_join = false;
+          devices = deviceConfig;
+          groups = groupConfig // {
+            all_lights = {
+              friendly_name = "all";
+              devices = lib.concatMap (id: 
+                let dev = zigbeeDevices.${id};
+                in if dev.type == "light" then ["${id}/${toString dev.endpoint}"] else []
+              ) (lib.attrNames zigbeeDevices);
+            };
+          };
+        };
+      }; 
+
+  systemd.services.zigbee2mqtt = {
+    wantedBy = [ "multi-user.target" ];
+    after = [ "sops-nix.service" "network.target" ];
+    environment.ZIGBEE2MQTT_DATA = config.services.zigbee2mqtt.dataDir;
+    preStart = '' 
+      mkdir -p ${config.services.zigbee2mqtt.dataDir}    
+      mosquitto_password=$(cat ${config.sops.secrets.z2m_mosquitto.path}) 
+      sed -i "s|/run/secrets/mosquitto|$mosquitto_password|" ${config.services.zigbee2mqtt.dataDir}/configuration.yaml  
+      TMPFILE="${config.services.zigbee2mqtt.dataDir}/tmp.yaml"
+      CFGFILE="${config.services.zigbee2mqtt.dataDir}/configuration.yaml"
+
+      ${pkgs.gawk}/bin/awk -v keyfile="${config.sops.secrets.z2m_network_key.path}" '
+        /(^|[[:space:]])network_key:/ { found = 1 }
+
+        { lines[NR] = $0 }
+
+        END {
+          if (found) {
+            for (i = 1; i <= NR; i++) print lines[i]
+          } else {
+            print lines[1]
+            print "  network_key:"
+            while ((getline line < keyfile) > 0) {
+              print "    " line
+            }
+            close(keyfile)
+            for (i = 2; i <= NR; i++) print lines[i]
+          }
+        }
+      ' "$CFGFILE" > "$TMPFILE"      
+      mv "$TMPFILE" "$CFGFILE"
+    '';
+  };}
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+     
+    <p>
+        So what is actually going on here?<br>
+        `zigbeeDevices` pulls the user defined Zigbee device map from your configuration (Part 1 in this series)<br>
+        `byRoom` Groups devices by room.<br>
+        `groupConfig` builds properly structured group configuration for Z2MQTT. Each group gets:<br>
+        - friendly_name = room name <br>
+        - devices = a list of "<device-id>/<endpoint>" strings<br><br>
+        `deviceConfig` Is a simplified device configuration only giving a friendly_name to the device.<br>
+        In the service definition we use `deviceConfig` & `groupConfig` to create a fully declarative Zigbee2MQTT configuration, automatically generating:<br>
+        - Device definitions<br>
+        - Room-based groups<br>
+        - A special all_lights group containing all devices where type == "light"<br>
+        Everything under settings is written to configuration.yaml in Zigbee2MQTT’s data directory.<br><br>
+        
+        <strong>Systemd preStart script</strong><br>
+        The prestart script does the follow things:<br>
+        Creates the Zigbee2MQTT data directory if it does not exist.<br>
+        Reads the MQTT password from the decrypted secret.<br>
+        Replaces placeholder /run/secrets/mosquitto in configuration.yaml with the real password.<br>
+        Injects the Zigbee network key into the YAML if it’s missing using the awk script.<br><br>
+        
+
+    </p> 
+
+        <div class="duck-comment">
+            <p>says ⮞ duck hopez diz explain how it all workz now!<br>
+            no fancy pantzy stuffz or complex qwack rly - it just workz!! <br></p>
+        </div>
+
+
+        <p>
+    
+            I hope this was quick and painless.<br><br>
+            This was probably a quite boring read without any real action.<br>But....<br><br>
+            
+            
+            <div class="duck-comment">
+                <p>
+                    says ⮞ be sure to stick around fwend!<br>
+                    in da next quackyhacky episode duck starts the real enjoyable parts i swear!<br>
+                    🥁 🥁 duck iz showin' how u writez da nix defined automationz!! 
+                    seee yo on da nexxt page yo QuackHack-McBlindy out - peace
+                </p>
+            </div>
+
+            <a href ="part1.html">Part 1. The module, the options and defining devices</a><br>
+            <a href ="part2.html">Part 2. Configure your Mosquitto/Z2MQTT</a>  <span class="current-marker">⮜🦆here u are</span><br>
+            <a href ="part3.html">Part 3. Nix Configured Automations</a>  <br>              
+            <a href ="part4.html">Part 4. Writing a Server Service - In Rust</a><br>          
+            <a href ="part5.html">Part 5. Writing a Client - With Voice Commands</a>   <br>   
+            <a href ="part6.html">Part 6. The Auto-Generated Dashboard</a><br>        
+
+            <br><br><br>
+    
+              
+            <a href="https://github.com/QuackHack-McBlindy/dotfiles/blob/main/modules/house.nix" class="source-link">
+              View source code on GitHub
+            </a><br>
+
+
+            <section id="comments">
+              <h2>Comments on this blog post</h2>
+              <script 
+                src="https://utteranc.es/client.js"
+                repo="QuackHack-McBlindy/blog"
+                issue-term="pathname"
+                theme="github-light"
+                crossorigin="anonymous"
+                async>
+              </script>
+            </section>
+        </p>
+    </div>
+
+
+
+    </div>
+    
+    <footer>
+        <p>All thoughts are my own and should not be considered advice of any kind. More likely the opposite.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeBlocks = document.querySelectorAll('details.code-block-container');
+            
+            codeBlocks.forEach(block => {
+                const summary = block.querySelector('summary');
+                const codeLang = summary.querySelector('.code-lang');
+                const toggleIcon = summary.querySelector('.toggle-icon');
+                
+                const originalText = codeLang.innerHTML;
+                const viewText = originalText.replace('Hide', 'View').replace('⮞', '⮟');
+                const hideText = originalText.replace('View', 'Hide').replace('⮟', '⮞');
+                
+                if (block.open) {
+                    codeLang.innerHTML = hideText;
+                } else {
+                    codeLang.innerHTML = viewText;
+                }
+                
+                block.addEventListener('toggle', function() {
+                    if (this.open) {
+                        codeLang.innerHTML = hideText;
+                    } else {
+                        codeLang.innerHTML = viewText;
+                    }
+                });
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const duckToggle = document.getElementById('duckToggle');
+            let ducksHidden = false;
+            
+            function toggleCodeDucks() {
+                ducksHidden = !ducksHidden;
+                
+                const duckVersions = document.querySelectorAll('.duck-version');
+                const cleanVersions = document.querySelectorAll('.clean-version');
+                
+                duckVersions.forEach(version => {
+                    version.classList.toggle('hidden', ducksHidden);
+                });
+                
+                cleanVersions.forEach(version => {
+                    version.classList.toggle('hidden', !ducksHidden);
+                });
+                
+                duckToggle.innerHTML = ducksHidden ? 
+                    '<span class="duck-icon"></span> Show 🦆 commentary' : 
+                    '<span class="duck-icon"></span> Hide 🦆 commentary';
+                    
+                const duckIcon = duckToggle.querySelector('.duck-icon');
+                duckIcon.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    duckIcon.style.transform = 'scale(1)';
+                }, 300);
+            }
+            
+            duckToggle.addEventListener('click', toggleCodeDucks);
+            
+            document.querySelectorAll('.clean-version').forEach(version => {
+                version.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>

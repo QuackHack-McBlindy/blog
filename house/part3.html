@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog about declarative home automation, smart home systems, and avoiding vendor lock-in with Nix-based solutions">
+    <meta property="og:title" content="Declarative Home Automation with Nix">
+    <meta property="og:description" content="Learn how to define your smart home devices and avoid vendor lock-in">
+    <meta property="og:type" content="article">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>🦆🧑‍🦯'blog</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="navbar-content">
+            <a href="https://github.com/QuackHack-McBlindy" title="GitHub">
+                <img src="../img/github_teal.png" alt="GitHub" class="github-icon" style="height: 32px;" onmouseover="this.src='../img/github_magenta.png';" onmouseout="this.src='../img/github_teal.png';"> </img>
+            </a>
+            
+            <div class="navbar-title">
+                <span>🦆</span>🧑‍🦯 <a href="https://quackhack-mcblindy.github.io/blog/">QuackHack-McBlindy blog</a>
+            </div>
+            <img src="../img/logo.png" height="48" width="48" >
+            <button id="duckToggle" class="toggle-btn" aria-label="Toggle duck commentary">
+
+                <span class="duck-icon">⮜🦆</span>
+                Hide duck commentary
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="toc-container">
+        <details class="toc-details">
+            <summary class="toc-header">
+                <span class="toc-duck">🦆</span>
+                <h3>Navigation</h3>
+                <span class="toc-man">🧑‍🦯</span>
+                <span class="toc-toggle">⮟</span>
+            </summary>
+            <nav class="toc-nav">
+                <a href="../yo/index.html" class="toc-item">
+                    <span class="toc-icon">🫀</span>
+                    Yo - Define & Unify
+                </a>
+                <a href="../do/index.html" class="toc-item">
+                    <span class="toc-icon">🧠</span>
+                    Do - Listen, Process, Act & Learn
+                </a>
+                <a href="index.html" class="toc-item current">
+                    <span class="toc-icon">🏠</span>
+                    House - Declarative Home Automation
+                    <span class="current-marker">🦆</span>
+                </a>
+                <a href="../docs/index.html" class="toc-item">
+                    <span class="toc-icon">📚</span>
+                    Documentation - Automating the README
+                </a>
+                <a href="../misc/index.html" class="toc-item">
+                    <span class="toc-icon">🧩</span>
+                    Miscellaneous 
+                </a>
+            </nav>
+            <div class="toc-footer">
+                <span class="toc-quack">🦆 says ⮞ qwack qwack, plx pick!</span>
+            </div>
+        </details>
+    </div>
+    
+  
+    <div class="content">
+        <header class="category-title">
+            <h1>Defining Your Home</h1>
+            <p class="subtitle"> Part 3 - Write Automations in Nix</p>
+        </header>
+
+        
+        <div class="duck-comment">
+            <p>says ⮞ I use 20x magnification when I code and debug. I use emoji to simplify logs for myself. If you can't handle my code style you can disable most of it on this website by toggling the button in the navbar. Shall duck continue? </p>
+        </div>
+
+
+  
+        <p>
+            You can have a lot of fun here for sure.<br>
+            Let the qwackin' begin!<br>
+            
+        </p>
+
+
+        <h2 class="section-title">Action Types Supported</h2>
+        
+        <p>
+            All automations can execute actions.<br>
+            There are <strong>four</strong> different types of actions that can be executed.<br>
+            <strong>1. Shell Commands</strong>
+            <br>
+            
+        </p>
+        
+        <details class="code-block-container" style="margin-bottom: 1em;" open>
+          <summary class="code-header">
+              <div class="code-lang">⮞ View Shell Commands Action Type Example</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{
+  type = "shell";
+  command = "echo 'Hello World'";
+}
+</span><span class="clean-version hidden">
+{
+  type = "shell";
+  command = "echo 'Hello World'";
+}
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+        <p>
+            <strong>2. MQTT Messages</strong>
+            <br>
+            
+        </p>
+        <details class="code-block-container" style="margin-bottom: 1em;" open>
+          <summary class="code-header">
+              <div class="code-lang">⮞ View MQTT Message Action Type Example</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{
+  type = "mqtt";
+  topic = "zigbee2mqtt/device/set";
+  message = ''{"state":"ON"}'';
+}
+</span><span class="clean-version hidden">
+{
+  type = "mqtt";
+  topic = "zigbee2mqtt/device/set";
+  message = ''{"state":"ON"}'';
+}
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+
+        <p>
+            <strong>3. Scene Activation</strong>
+            <br>
+            
+        </p>
+        <details class="code-block-container" style="margin-bottom: 1em;" open>
+          <summary class="code-header">
+              <div class="code-lang">⮞ View Scene Action Type Example</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{
+  type = "scene"; 
+  scene = "movie_time";
+}
+</span><span class="clean-version hidden">
+{
+  type = "scene"; 
+  scene = "movie_time";
+}
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+
+        <p>
+            <strong>4. Simple String <i>(legacy)</i></strong>
+            <br>
+            
+        </p>
+        <details class="code-block-container" style="margin-bottom: 1em;" open>
+          <summary class="code-header">
+              <div class="code-lang">⮞ View Simple String Action Type Example</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+"echo 'Hello Ducks'"
+</span><span class="clean-version hidden">
+"echo 'Hello Ducks'"
+</span></pre>
+            </div>
+        </div>
+    </details> 
+
+
+
+        <h2 class="section-title">Dark Time</h2>
+        
+        <p>
+            It might be one of the most important automation. Short and boring - but important.<br>
+            Define when motion sensors should trigger lights, and for how long they should be turned on.<br>
+            <br>
+            
+        </p>
+        
+        <details class="code-block-container" style="margin-bottom: 1em;" open>
+          <summary class="code-header">
+              <div class="code-lang">⮞ View `config.house.darkTime` code block</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{ # 🦆 duck say ⮞ my house - qwack 
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in { # 🦆 duck say ⮞ autoqwack
+  house = {
+    darkTime = {
+      enable = true;
+      after = "14"; # 🦆 duck say ⮞ 2 PM
+      before = "9"; # 🦆 duck say ⮞ 9 AM
+      duration = "900"; # 🦆 duck say ⮞ defined in seconds, before turning off again
+    };  
+    
+  };}
+</span><span class="clean-version hidden">
+{ 
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in {
+  house = {
+    darkTime = {
+      enable = true;
+      after = "14";
+      before = "9";
+      duration = "900";
+    };  
+    
+  };}
+</span></pre>
+            </div>
+        </div>
+    </details>        
+     
+
+  
+  
+  
+        <h2 class="section-title">Greeting</h2>
+        
+        <p>
+            When no motion has been detected in your house for x seconds - welcome you home with a greeting!<br>
+            <br>
+            
+        </p>
+        
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View `config.house.zigbee.automations.greeting` code block</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{ # 🦆 duck say ⮞ my house - qwack 
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in { # 🦆 duck say ⮞ autoqwack
+  house = {
+    zigbee = {
+      automations = {
+        greeting = {
+          enable = true;
+          awayDuration = "7200"; # 🦆 duck say ⮞ how many seconds away before trigger
+          greeting = "Welcome back! Starting the party!"; # 🦆 duck say ⮞ greeting message that will be spoken over TTS
+          delay = "10"; # 🦆 duck say ⮞ time in seconds before calling the greeting
+          sayOnHost = "desktop"; # 🦆 duck say ⮞ on what host to play the TTS
+          action = { 
+            type = "shell"; # 🦆 duck say ⮞ or "mqtt" or "scene"
+            command = ''
+              # 🦆 duck say ⮞ imagination is the key
+            '';
+          };
+        };   
+      };
+    };
+    
+  };}
+</span><span class="clean-version hidden">
+{ 
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in {
+  house = {
+    zigbee = {
+      automations = {
+        greeting = {
+          enable = true;
+          awayDuration = "7200";
+          greeting = "Welcome back! Starting the party!";
+          sayOnHost = "desktop";
+          delay = "5";
+          action = {
+            type = "shell";
+            command = ''
+              ...
+            '';
+          };
+        };   
+      };
+    };
+    
+  };}
+</span></pre>
+            </div>
+        </div>
+    </details>        
+                 
+        <div class="duck-comment">
+            <p>⮞ simple huh? - i enjoy this auto a lot qwack</p>
+        </div>
+        <br><br>
+
+
+        <h1 class="section-title">Automation Types</h2>
+        <p>
+            There are currently <strong>five</strong> different automation types:<br>
+        </p>
+        
+        <h2 class="section-title">Dimmer Action Automations</h2>
+        
+        <p>
+            Configure your dimmers.<br>
+            This is optional, as they have default action's pre-configured in zigduck-rs (next page).<br><br>
+            <strong><u>Default actions are:</u></strong><br>
+            <strong>on_press_release:</strong> Turn on all zigbee devices with type 'light' in the dimmers room at last known state.<br>
+            <strong>on_hold_release:</strong> Turn on all zigbee devices with type 'light' at maximum brightness.<br>
+            <strong>up_press_release:</strong> Increase brightness of all zigbee devices with type 'light' in dimmers room.<br>
+            <strong>up_hold_release:</strong> None.<br>
+            <strong>down_press_release:</strong> Decrease brightness of all zigbee devices with type 'light' in dimmers room.<br>
+            <strong>down_hold_release:</strong> None.<br>
+            <strong>off_press_release:</strong> Turn off all zigbee devices with type 'light' in dimmer's room.<br>
+            <strong>off_hold_release:</strong> Turn off all zigbee devices with type 'light'.<br>
+            <br>
+            
+        </p>
+        
+        <p>This is an example snippet of how a dimmer override automation may look: </p>
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View `config.house.zigbee.automations.dimmer_actions` code example</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{ # 🦆 duck say ⮞ my house - qwack 
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in { # 🦆 duck say ⮞ autoqwack
+  house = {
+    zigbee = {
+      automations = {
+        dimmer_actions = {
+          livingroom = { # 🦆 duck say ⮞ room
+            off_hold_release = { # 🦆 duck say ⮞ or "on_press_release" or "on_hold_release" or "up_press_release" or "up_hold_release" or "down_press_release" or "down_hold_release" or "off_press_release" 
+              enable = true;
+              description = "Turn off all configured light devices";
+              extra_actions = []; # 🦆 duck say ⮞ writing your actions here won't override default actions
+              override_actions = [ # 🦆 duck say ⮞ writing them here will
+                {
+                  type = "mqtt";
+                  topic = "zigbee2mqtt/Fläkt/set";
+                  message = ''{"state":"OFF"}'';
+                }
+                {
+                  type = "scene";
+                  scene = "dark";
+                }
+              ];
+            }; 
+          };  
+        };    
+      };
+    };
+    
+  };}
+</span><span class="clean-version hidden">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in {
+  house = {
+    zigbee = {
+      automations = {
+        dimmer_actions = {
+          livingroom = {
+            off_hold_release = { 
+              enable = true;
+              description = "Description of automation";
+              extra_actions = [];
+              override_actions = [
+                {
+                  type = "mqtt";
+                  topic = "zigbee2mqtt/Fläkt/set";
+                  message = ''{"state":"OFF"}'';
+                }
+                {
+                  type = "scene";
+                  scene = "dark";
+                }
+              ];
+            }; 
+          };  
+        };    
+      };
+    };
+    
+  };}
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+
+
+        <h2 class="section-title">Global Action Automations</h2>
+        
+        <p>
+            <strong><u>Supported Global Action Triggers:</u></strong><br>
+            <strong>"leak_detected"</strong> - When water sensors detect leaks.<br>
+            <strong>"smoke_detected"</strong> - When smoke detectors trigger.<br>
+            <br>
+            
+        </p>
+        <p>If you have smoke detectors or water sensors, this is a very important example:</p>
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View `config.house.zigbee.automations.global_actions` code example</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{ # 🦆 duck say ⮞ my house - qwack 
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in { # 🦆 duck say ⮞ autoqwack
+  house = {
+    zigbee = {
+      automations = {
+        global_actions = { # 🦆 duck say ⮞ not room specific
+          leak_detected = [ # 🦆 duck say ⮞ WATER?! WARNING! - then take bath yay
+            {
+              type = "shell";
+              command = "${config.pkgs.yo}/bin/yo-notify '🚨 WATER LEAK DETECTED!'";
+            }
+            {
+              type = "mqtt";
+              topic = "zigbee2mqtt/all_valves/set";
+              message = ''{"state":"OFF"}'';
+            }
+            "echo 'EMERGENCY: Water leak!' | wall"
+          ];
+  
+          smoke_detected = [ 
+            { # 🦆 duck say ⮞ dont like fire =(
+              type = "shell"; 
+              command = "${pkgs.paplay}/bin/paplay ${config.this.user.me.dotfilesDir}/modules/themes/sounds/fire-alarm.wav";
+            }
+            {
+              type = "mqtt";
+              topic = "zigbee2mqtt/all_lights/set";
+              message = ''{"state":"ON", "brightness": 255, "color": {"hex": "FF0000"}}'';
+            }
+            "curl -X POST http://localhost:8080/emergency/fire"
+          ];
+        };
+      };
+    };
+    
+  };}
+</span><span class="clean-version hidden">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in {
+  house = {
+    zigbee = {
+      automations = {
+        global_actions = {
+          leak_detected = [
+            {
+              type = "shell";
+              command = "${config.pkgs.yo}/bin/yo-notify '🚨 WATER LEAK DETECTED!'";
+            }
+            {
+              type = "mqtt";
+              topic = "zigbee2mqtt/all_valves/set";
+              message = ''{"state":"OFF"}'';
+            }
+            "echo 'EMERGENCY: Water leak!' | wall"
+          ];
+  
+          smoke_detected = [
+            {
+              type = "shell"; 
+              command = "${pkgs.paplay}/bin/paplay ${config.this.user.me.dotfilesDir}/modules/themes/sounds/fire-alarm.wav";
+            }
+            {
+              type = "mqtt";
+              topic = "zigbee2mqtt/all_lights/set";
+              message = ''{"state":"ON", "brightness": 255, "color": {"hex": "FF0000"}}'';
+            }
+            "curl -X POST http://localhost:8080/emergency/fire"
+          ];
+        };
+      };
+    };
+    
+  };}
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+
+
+
+        <h2 class="section-title">Room Action Automations</h2>
+        
+        <p>
+            <strong><u>Supported Room Action Triggers:</u></strong><br>
+            <strong>"motion_detected"</strong> - When motion sensors detect movement.<br>
+            Default Action: Turn on all light devices in the motion sensors room. <i>(if darkTime)</i> <br>
+            <strong>"motion_not_detected"</strong> - When motion stops being detected.<br>
+            Default Action: Turn off all light devices in the motion sensors room. <i>(after time configured in darkTime)</i> <br>
+            <strong>"door_opened"</strong> - When door/window sensors open.<br>
+            <strong>"door_closed"</strong> - When door/window sensors close.<br>
+            <br>
+            
+        </p>
+        <p>Take a look at an example snippet of how a room action automation may look:</p>
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View `config.house.zigbee.automations.room_actions` code example</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{ # 🦆 duck say ⮞ my house - qwack 
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in { # 🦆 duck say ⮞ autoqwack
+  house = {
+    zigbee = {
+      automations = {
+        room_actions = {
+          hallway = { # 🦆 duck say ⮞ room
+            # 🦆 says ⮞ zigbee device must be configured as type 'sensor'
+            door_opened = [];
+            door_closed = [];
+          };  
+          bedroom = { 
+            # 🦆 says ⮞ default actions already configured - room lights will turn on upon motion (if darkTime)
+            motion_detected = [
+              {
+                type = "scene";
+                scene = "Chill Scene";
+              }           
+            ];
+            motion_not_detected = [
+              {
+                type = "mqtt"; # 🦆 duck say ⮞ or "shell" or "scene"
+                topic = "zigbee2mqtt/Sänggavel/set";
+                message = ''{"state":"OFF", "brightness": 80}'';
+              }              
+            ];
+          };
+        };
+      };
+    };
+  
+  };}
+</span><span class="clean-version hidden">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in {
+  house = {
+    zigbee = {
+      automations = {
+        room_actions = {
+          hallway = {
+            door_opened = [];
+            door_closed = [];
+          };  
+          bedroom = {
+            motion_detected = [
+              {
+                type = "scene";
+                scene = "Chill Scene";
+              }           
+            ];
+            motion_not_detected = [
+              {
+                type = "mqtt";
+                topic = "zigbee2mqtt/Sänggavel/set";
+                message = ''{"state":"OFF", "brightness": 80}'';
+              }              
+            ];
+          };
+        };
+      };
+    };
+  
+  };}
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+
+
+        <h2 class="section-title">Time Based Action Automations</h2>
+        
+        <p>
+            Triggers the automation on a specified time and days.<br>
+            <strong><u>Supported Time Based Conditions:</u></strong><br>
+            <strong>"dark_time"</strong> - Checks: If current time is within configured dark time range.<br>
+            <details class="code-block-container" style="margin-bottom: 1em;" open>
+              <summary class="code-header">
+                <div class="code-lang">⮞ View usage</div>
+              </summary>
+                <div class="code-block">
+                  <pre><span class="duck-version">
+{ type = "dark_time"; }
+</span><span class="clean-version hidden">
+{ type = "dark_time"; }
+</span></pre>
+               </div>
+          </div>
+      </details>        
+
+           Here is an example snippet of how the time based automation may look:  
+        </p>
+        
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View `config.house.zigbee.automations.time_based` code example</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{ # 🦆 duck say ⮞ my house - qwack 
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in { # 🦆 duck say ⮞ autoqwack
+  house = {
+    zigbee = {
+      automations = {
+        time_based = {
+          smart_wakeup = { # 🦆 duck say ⮞ pick a name
+            enable = true;
+            description = "Gradual wake-up with news and coffee";
+            schedule = { # 🦆 duck say ⮞ when to run
+              start = "06:30";
+              end = "07:00";
+              days = ["mon" "tue" "wed" "thu" "fri"]; # 🦆 duck say ⮞ and what days
+            };
+            conditions = [ # 🦆 duck say ⮞ only run when someone is home qwack
+              { type = "someone_home"; value = true; }
+            ]; 
+            actions = [
+              {
+                type = "scene";
+                scene = "sunrise_simulation";
+              }
+              {
+                type = "shell";
+                command = "${pkgs.mpg123}/bin/mpg123 ${config.this.user.me.dotfilesDir}/modules/themes/sounds/alarm.mp3";
+              }
+              {
+                type = "mqtt";
+                topic = "zigbee2mqtt/CoffeeMaker/set";
+                message = ''{"state":"ON", "time": 300}'';
+              }
+              {
+                type = "shell";
+                command = "${config.pkgs.yo}/bin/yo-say 'Good morning! Time to wake up.'";
+              }
+            ];
+          };
+        };
+      };
+    };  
+      
+  };}
+</span><span class="clean-version hidden">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in {
+  house = {
+    zigbee = {
+      automations = {
+        time_based = {
+          smart_wakeup = {
+            enable = true;
+            description = "Gradual wake-up with news and coffee";
+            schedule = {
+              start = "06:30";
+              end = "07:00";
+              days = ["mon" "tue" "wed" "thu" "fri"];
+            };
+            conditions = [
+              { type = "someone_home"; value = true; }
+            ];
+            actions = [
+              {
+                type = "scene";
+                scene = "sunrise_simulation";
+              }
+              {
+                type = "shell";
+                command = "${pkgs.mpg123}/bin/mpg123 ${config.this.user.me.dotfilesDIr}/modules/themes/sounds/alarm.mp3";
+              }
+              {
+                type = "mqtt";
+                topic = "zigbee2mqtt/CoffeeMaker/set";
+                message = ''{"state":"ON", "time": 300}'';
+              }
+              {
+                type = "shell";
+                command = "${config.pkgs.yo}/bin/yo-say 'Good morning! Time to wake up.'";
+              }
+            ];
+          };
+        };
+      };
+    };  
+      
+  };}
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+
+
+
+
+        <h2 class="section-title">Presence Based Action Automations</h2>
+        
+        <p>
+            <br>
+            <strong>Supported Presence Based Conditions:</strong><br>
+            <strong>"someone_home"</strong> - Checks: If someone is home.<br>
+            <details class="code-block-container" style="margin-bottom: 1em;" open>
+              <summary class="code-header">
+                <div class="code-lang">⮞ View usage</div>
+              </summary>
+                <div class="code-block">
+                  <pre><span class="duck-version">
+{ 
+  type = "someone_home"; 
+  value = true;
+}
+</span><span class="clean-version hidden">
+{ 
+  type = "someone_home"; 
+  value = true;
+}
+</span></pre>
+               </div>
+          </div>
+      </details>        
+
+            <br>
+            <strong>"room_occupied"</strong> - Checks: If a specific room is occupied.<br>
+            <details class="code-block-container" style="margin-bottom: 1em;" open>
+              <summary class="code-header">
+                <div class="code-lang">⮞ View usage</div>
+              </summary>
+                <div class="code-block">
+                  <pre><span class="duck-version">
+{
+  type = "room_occupied";
+  room = "livingroom";
+  value = true;
+}
+</span><span class="clean-version hidden">
+{
+  type = "room_occupied";
+  room = "livingroom";
+  value = true;
+}
+</span></pre>
+               </div>
+          </div>
+      </details>        
+            <br>          
+        </p>
+        
+        <p>Here is an example snippet of how the presence based automations may look:</p>
+        
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View `config.house.zigbee.automations.presence_based` code example</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{ # 🦆 duck say ⮞ my house - qwack 
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in { # 🦆 duck say ⮞ autoqwack
+  house = {
+    zigbee = {
+      automations = {
+        presence_based = {
+          arrival_party = { # 🦆 duck say ⮞ automation name
+            enable = true;
+            description = "Fun lighting when arriving home";
+            motion_sensors = ["Front Door Motion"]; # 🦆 duck say ⮞ wat motion sensors 2 be affected
+            no_motion_duration = 30; # 🦆 duck say ⮞ seconds
+            conditions = [
+              { type = "dark_time"; }
+            ];
+            actions = [ # 🦆 duck say ⮞ u knowz dis by now
+              {
+                type = "scene"; 
+                scene = "welcome_home";
+              }
+              {
+                type = "mqtt";
+                topic = "zigbee2mqtt/DiscoBall/set";
+                message = ''{"state":"ON", "speed": 200}'';
+              }
+            ];
+          };
+        };
+      };  
+    };
+  
+  };}
+</span><span class="clean-version hidden">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in {
+  house = {
+    zigbee = {
+      automations = {
+        presence_based = {
+          arrival_party = {
+            enable = true;
+            description = "Fun lighting when arriving home";
+            motion_sensors = ["Front Door Motion"];
+            no_motion_duration = 30;
+            conditions = [
+              { type = "dark_time"; }
+            ];
+            actions = [
+              {
+                type = "scene"; 
+                scene = "welcome_home";
+              }
+              {
+                type = "mqtt";
+                topic = "zigbee2mqtt/DiscoBall/set";
+                message = ''{"state":"ON", "speed": 200}'';
+              }
+            ];
+          };
+        };
+      };  
+    };
+  
+  };}
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+
+
+        <div class="callout">
+            <p>
+                <strong>Important Notes:</strong><br>
+                Room names must match your house.rooms configuration.<br>
+                Device names must match exactly what's in house.zigbee.devices<br>
+                Global actions fire regardless of room context.<br>
+                Room actions only fire for devices in that specific room.<br>
+                All actions run sequentially when the trigger condition is met.
+            </p>
+        </div>    
+
+
+
+
+
+        <p>
+    
+            I hope you do see the full potential of this powerful automation system.<br>
+            I realize it's a lot to take in at once, but hopefully I made it pretty clear of how it all works.<br>
+            The examples are very basic, and that is how I recommend you start out if you are aiming to test this out.<br>
+            Extending the configurations into complex automations is so simple it needs no instructions.<br>
+            
+            <div class="duck-comment">
+                <p>
+                    says ⮞ hope u had fun fwend!! 
+                </p>
+            </div>
+
+            <h2 class="section-title">Keep Reading</h2>
+        
+            <a href ="part1.html">Part 1. The module, the options and defining devices</a><br>
+            <a href ="part2.html">Part 2. Configure your Mosquitto/Z2MQTT</a><br>
+            <a href ="part3.html">Part 3. Nix Configured Automations</a> <span class="current-marker">⮜🦆here u are</span><br>           
+            <a href ="part4.html">Part 4. Writing a Server Service - in Rust</a><br>          
+            <a href ="part5.html">Part 5. Writing a Client - With Voice Commands</a> <br>   
+            <a href ="part6.html">Part 6. The Auto-Generated Dashboard</a><br>        
+
+            <br><br>
+    
+              
+            <section id="comments">
+              <h2>Comments on this blog post</h2>
+              <script 
+                src="https://utteranc.es/client.js"
+                repo="QuackHack-McBlindy/blog"
+                issue-term="pathname"
+                theme="github-light"
+                crossorigin="anonymous"
+                async>
+              </script>
+            </section>
+        </p>
+    </div>
+
+
+
+    </div>
+    
+    <footer>
+        <p>All thoughts are my own and should not be considered advice of any kind. More likely the opposite.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeBlocks = document.querySelectorAll('details.code-block-container');
+            
+            codeBlocks.forEach(block => {
+                const summary = block.querySelector('summary');
+                const codeLang = summary.querySelector('.code-lang');
+                const toggleIcon = summary.querySelector('.toggle-icon');
+                
+                const originalText = codeLang.innerHTML;
+                const viewText = originalText.replace('Hide', 'View').replace('⮞', '⮟');
+                const hideText = originalText.replace('View', 'Hide').replace('⮟', '⮞');
+                
+                if (block.open) {
+                    codeLang.innerHTML = hideText;
+                } else {
+                    codeLang.innerHTML = viewText;
+                }
+                
+                block.addEventListener('toggle', function() {
+                    if (this.open) {
+                        codeLang.innerHTML = hideText;
+                    } else {
+                        codeLang.innerHTML = viewText;
+                    }
+                });
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const duckToggle = document.getElementById('duckToggle');
+            let ducksHidden = false;
+            
+            function toggleCodeDucks() {
+                ducksHidden = !ducksHidden;
+                
+                const duckVersions = document.querySelectorAll('.duck-version');
+                const cleanVersions = document.querySelectorAll('.clean-version');
+                
+                duckVersions.forEach(version => {
+                    version.classList.toggle('hidden', ducksHidden);
+                });
+                
+                cleanVersions.forEach(version => {
+                    version.classList.toggle('hidden', !ducksHidden);
+                });
+                
+                duckToggle.innerHTML = ducksHidden ? 
+                    '<span class="duck-icon"></span> Show 🦆 commentary' : 
+                    '<span class="duck-icon"></span> Hide 🦆 commentary';
+                    
+                const duckIcon = duckToggle.querySelector('.duck-icon');
+                duckIcon.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    duckIcon.style.transform = 'scale(1)';
+                }, 300);
+            }
+            
+            duckToggle.addEventListener('click', toggleCodeDucks);
+            
+            document.querySelectorAll('.clean-version').forEach(version => {
+                version.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>

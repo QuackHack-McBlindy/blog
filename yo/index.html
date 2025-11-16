@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦆🧑‍🦯</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="navbar-content">
+            <a href="https://github.com/QuackHack-McBlindy" title="GitHub">
+                <img src="../img/github_teal.png" alt="GitHub" class="github-icon" style="height: 32px;" onmouseover="this.src='img/github_magenta.png';" onmouseout="this.src='../img/github_teal.png';"> </img>
+            </a>
+            <img src="../img/logo.png" height="48" width="48" >
+            <div class="navbar-title">
+                <span>🦆</span>🧑‍🦯 <a href="https://quackhack-mcblindy.github.io/blog/">QuackHack-McBlindy blog</a>
+            </div>
+            <button id="duckToggle" class="toggle-btn">
+                <span class="duck-icon">🦆</span>
+                Hide duck commentary
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="toc-container">
+        <details class="toc-details">
+            <summary class="toc-header">
+                <span class="toc-duck">🦆</span>
+                <h3>Navigation</h3>
+                <span class="toc-man">🧑‍🦯</span>
+                <span class="toc-toggle">⮟</span>
+            </summary>
+            <nav class="toc-nav">
+                <a href="index.html" class="toc-item current">
+                    <span class="toc-icon">🫀</span>
+                    Yo - Define & Unify
+                    <span class="current-marker">⮜🦆</span>                    
+                </a>
+                <a href="../do/index.html" class="toc-item">
+                    <span class="toc-icon">🧠</span>
+                    Do - Listen, Process, Act & Learn
+                </a>
+                <a href="../house/index.html" class="toc-item">
+                    <span class="toc-icon">🏠</span>
+                    House - Declarative Home Automation
+                </a>
+                <a href="../docs/index.html" class="toc-item">
+                    <span class="toc-icon">📚</span>
+                    Documentation - Automating the README
+                </a>
+                <a href="../misc/index.html" class="toc-item">
+                    <span class="toc-icon">🧩</span>
+                    Miscellaneous
+                </a>
+            </nav>
+            <div class="toc-footer">
+                <span class="toc-quack">🦆 says ⮞ qwack qwack, plx pick!</span>
+            </div>
+        </details>
+    </div>
+    
+    
+  
+    <div class="content">
+        <header class="category-title">
+            <h1>Yo - Define & Unify</h1>
+            <p class="subtitle">This section is about the Heart and Soul of this project.<br></p>
+        </header>
+
+        <h2 class="section-title">Why?!</h2>
+        
+
+        <p>
+            Yo is a Command-Line tool and scripting framework I wrote because of two main reasons:<br><br>
+            
+            <strong>1. Define</strong><br> I needed somewhere to define my sentences for the voice assistant, and a stable solution for defining the language processor's <i>'tools' (scripts)</i> for execution. <br><br>
+            
+            <strong>2. Unify</strong><br> Reduced scatter. Ever since I was a kid I have had a golden talent for scattering scripts around me, like a crazy mad man on speed, which sadly in the end of course lead to me loosing a lot of value. <br><br>            
+        </p>        
+
+        <h2 class="section-title">Key Features</h2>
+          
+        <div class="key-features">    
+        <div class="feature-card">
+            <h3>Centralized Script Management</h3>
+            <p>Define all your scripts in one place with consistent structure, eliminating scattered scripts across your system.</p>
+            <p>Built entirely in Nix for declarative, reproducible script management across your entire system.</p>
+            <p>Unified --help command, Markdown rendered beautifully in the terminal that have extensive parameter documentation.</p>
+        </div>
+    
+        <div class="feature-card">
+            <h3>Parameter System</h3>
+            <p>Type validation, optional parameters, default values, allowed values, and both positional & named parameter support.</p>
+        </div>
+ 
+    
+        <div class="feature-card">
+            <h3>Automated Execution</h3>
+            <p>Schedule scripts to run at boot, periodically, or specific times with systemd integration.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3>Smart Validation</h3>
+            <p>Comprehensive error checking with friendly duck error messages and parameter validation.</p>
+        </div>
+        
+    </div>
+
+
+        <h2 class="section-title">YO Script Structure<h2>        
+        I chose to define my scripts like this:<br>
+
+        <details class="code-block-container" style="margin-bottom: 1em;" open>
+          <summary class="code-header">
+              <div class="code-lang">⮞ Hide Scriot Structure</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{ # 🦆says⮞yo! letz do a script yo!
+  config,
+  lib,
+  pkgs,
+  cmdHelpers, # 🦆says⮞shared functionz (/bin/helpers.nix)
+  ...
+} : let
+in { # 🦆says⮞qwack
+  yo = {  
+    scripts = {
+      bed = { # 🦆says⮞plx pick da script name
+        description = "Bed controller";
+        # 🦆says⮞for da --help cmd in da terminal md table & README markdown table
+        category = "🛖 Home Automation";
+        autoStart = false; # 🦆says⮞run bed@boot?
+        runEvery = []; # 🦆says⮞periodic start (minutes)
+        runAt = []; # 🦆says⮞scheduled start (list of strings - "HH:MM" 24h format)
+        logLevel = "INFO"; # 🦆says⮞duckTrace loggin'
+        parameters = [    
+          { # 🦆says⮞paramz haz extensive validation
+            name = "part";
+            description = "Which part of the bed (head/feet)";
+            type = "string";
+            values = [ # 🦆says⮞doez not run if $part is something else than
+              "feet"
+              "head"
+            ];
+            default = "head"; # 🦆says⮞if --part iz omitted default value iz uzed for --part
+          }
+          { 
+            name = "state";
+            description = "Move up or down";
+            type = "string";
+            values = [ "down" "up" ];
+            default = "up";
+          }     
+        ];
+        helpFooter = ''
+          echo "🦆says⮞extra code to be ran and displayed in da scripts --help cmd"     
+        '';
+        code = ''
+          ${cmdHelpers} # 🦆says⮞load da shared functionz yo
+          dt_debug "Sending bed $part $down" # 🦆says⮞ duckTrace logging
+          # 🦆says⮞ rezt of da script code
+        '';   
+        voice = { # 🦆says⮞enabled by default if sentences are defined
+          priority = 2; # 🦆says⮞1-5 (5 lowest)
+          fuzzy = {
+            enable = true; # 🦆says⮞ enabled by default if sentences are defined
+            threashhold = 15; # 🦆says⮞set a script specific fuzzy threashhold
+          };  
+          sentences = [
+# 🦆says⮞ [these|words] are optiional & can be omitted
+# 🦆says⮞ (these|words) are alternatives - u have to say one of them
+# 🦆says⮞ {this} word is a parameter (must match BOTH scripts parameter AND entity list 
+            "[send|control] bed[s] {part} {state}"
+            "(take|send|control) {state] [the] bed[s] {part}"
+          ];
+          lists = { # 🦆says⮞ entity lists
+            part.wildcard = false; # 🦆says⮞ entities can be wildcards (anything)
+            part.values = [
+              { # 🦆says⮞ if u say one of these words
+                "in" = "[head|heads|bedhead|top]";
+                out = "head"; # 🦆says⮞ it becomes this word
+              }
+              { "in" = "[foot|foots|feet|feets]"; out = "feet"; }
+            ];
+            state.values = [
+              { "in" = "[up|upp]"; out = "up"; }             
+              { "in" = "[down|downs]"; out = "down"; } 
+            ];
+          };  
+        };
+      };
+    };  
+  
+  };}
+</span><span class="clean-version hidden">
+{
+  config,
+  lib,
+  pkgs,
+  cmdHelpers,
+  ...
+} : let
+in {
+  yo = {
+    scripts = {
+      bed = {
+        description = "Bed controller";
+        category = "🛖 Home Automation";
+        autoStart = false;
+        runEvery = [];
+        runAt = [];
+        logLevel = "INFO";
+        parameters = [    
+          {
+            name = "part";
+            description = "Which part of the bed (head/feet)";
+            type = "string";
+            values = [ "feet" "head" ];
+            default = "head";
+          }
+          { 
+            name = "state";
+            description = "Move up or down";
+            type = "string";
+            values = [ "down" "up" ];
+            default = "up";
+          }     
+        ];
+        helpFooter = ''
+          echo "🦆says⮞extra code to be ran and displayed in da scripts --help cmd"   
+        '';
+        code = ''
+          ${cmdHelpers}
+          dt_debug "Sending bed $part $down"
+          # Rest of the script code
+        '';   
+        voice = {
+          priority = 2;
+          fuzzy = {
+            enable = true;
+            threashhold = 15;
+          };  
+          sentences = [
+            "[send|control] bed[s] {part} {state}"
+            "(take|send|control) {state] [the] bed[s] {part}"
+          ];
+          lists = {
+            part.wildcard = false;
+            part.values = [
+              {
+                "in" = "[head|heads|bedhead|top]";
+                out = "head";
+              }
+              { "in" = "[foot|foots|feet|feets]"; out = "feet"; }
+            ];
+            state.values = [
+              { "in" = "[up|upp]"; out = "up"; }             
+              { "in" = "[down|downs]"; out = "down"; } 
+            ];
+          };  
+        };
+      };
+    };  
+  
+  };}
+</span></pre>
+            </div>
+        </div>
+    </details>
+
+    
+
+        <h2 class="section-title">yo --help</h2>
+
+        <p>
+            <img src="../img/yo-help.png" width="600"><br><br>
+        </p>                
+
+        <div class="duck-comment">
+            <p> ⮞ dis is rly helpful if you forget a scripts name or sumeting! quack quack</p>
+        </div><br><br>
+
+
+        <h2 class="section-title">yo <i>script</i> --help</h2>
+
+        <p>
+            <img src="../img/yo-script-help.png" width="600"><br><br>
+        </p>                
+
+        <div class="duck-comment">
+            <p> ⮞ dis is rly helpful if you forget a scripts parameter or sumeting! quack quack</p>
+        </div><br><br><br>
+
+
+
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View Complete yo Structure</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{ # 🦆 duck say ⮞ yo! letz do a script yo!
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in { # 🦆 duck say ⮞ qwack
+  yo = {
+    pkgs                # 🦆 duck say ⮞ read-only - final yo scripts package
+    sorryPhrases        # 🦆 duck say ⮞ TTS phrases when no voice match found
+    SplitWords          # 🦆 duck say ⮞ Words used for command chaining
+    wakeWord            # 🦆 duck say ⮞ path to .tflite wake word model
+    generatedPatterns   # 🦆 duck say ⮞ read-only - generated regex patterns count
+    understandsPhrases  # 🦆 duck say ⮞ read-only - understood phrases count
+    
+    scripts = {
+      example = {
+        description     # 🦆 duck say ⮞ script description
+        category        # 🦆 duck say ⮞ category for sorting/grouping
+        aliases         # 🦆 duck say ⮞ alternative command names
+        logLevel        # 🦆 duck say ⮞ duckTrace log level
+        helpFooter      # 🦆 duck say ⮞ extra code for --help output
+        autoStart       # 🦆 duck say ⮞ run at startup via systemd
+        runEvery        # 🦆 duck say ⮞ run periodically every X minutes
+        runAt           # 🦆 duck say ⮞ run at specific times daily
+        code            # 🦆 duck say ⮞ the actual script cod
+        
+        voicePatterns   # 🦆 duck say ⮞ read-only - generated regex patterns
+        voicePhrases    # 🦆 duck say ⮞ read-only - theoretical phrase coverage
+        voiceReady      # 🦆 duck say ⮞ read-only - has voice commands configured
+        voice = {
+          enabled       # 🦆 duck say ⮞ generate voice intents
+          priority      # 🦆 duck say ⮞ processing priority (1=highest)
+          fuzzy = {
+            enable      # 🦆 duck say ⮞ enable fuzzy voice matching
+            threshold   # 🦆 duck say ⮞ similarity threshold (0.0-1.0)
+          };
+          sentences     # 🦆 duck say ⮞ voice command patterns
+          lists         # 🦆 duck say ⮞ entity lists for parameters
+            wildcard    # 🦆 duck say ⮞ accept free-form text / wildcard parameter
+            values      # 🦆 duck say ⮞ value mappings
+              "in" =    # 🦆 duck say ⮞ input value
+              out =     # 🦆 duck say ⮞ output value  
+            };
+          };
+        };        
+      };
+    };  
+      
+  };}
+</span><span class="clean-version hidden">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in {
+  yo = {
+    pkgs                
+    sorryPhrases        
+    SplitWords          
+    wakeWord            
+    generatedPatterns   
+    understandsPhrases  
+    
+    scripts = {
+      example = {
+        description     
+        category        
+        aliases         
+        logLevel        
+        helpFooter      
+        autoStart       
+        runEvery        
+        runAt           
+        code            
+        
+        voicePatterns   
+        voicePhrases    
+        voiceReady      
+        voice = {
+          enabled       
+          priority      
+          fuzzy = {
+            enable      
+            threshold   
+          };
+          sentences     
+          lists         
+            wildcard   
+            values
+              "in" =
+              out = 
+            };
+          };
+        };        
+      };
+    };  
+      
+  };}
+</span></pre>
+            </div>
+        </div>
+    </details>
+
+        
+        <h2 class="section-title">Read More?</h2>
+        
+        <p>
+            On the next page, I will explain further and in greater detail what actually happends when you execute a yo script.<br>
+            I will also present the source code - so that if you want to - you could create your own.<br>
+            
+        </p>    
+
+
+        <div class="callout">
+            <p>
+                <b><u>Table of Content:</b></u> <br><br>
+                <a href="part1.html">Yo! - The Execution Workflow</a><br>                                
+            </p>
+        </div>
+
+    </div>
+    
+    <footer>
+        <p>All thoughts are my own and should not be considered advice of any kind. More likely the opposite.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeBlocks = document.querySelectorAll('details.code-block-container');
+            
+            codeBlocks.forEach(block => {
+                const summary = block.querySelector('summary');
+                const codeLang = summary.querySelector('.code-lang');
+                const toggleIcon = summary.querySelector('.toggle-icon');
+                
+                const originalText = codeLang.innerHTML;
+                const viewText = originalText.replace('Hide', 'View').replace('⮞', '⮟');
+                const hideText = originalText.replace('View', 'Hide').replace('⮟', '⮞');
+                
+                if (block.open) {
+                    codeLang.innerHTML = hideText;
+                } else {
+                    codeLang.innerHTML = viewText;
+                }
+                
+                block.addEventListener('toggle', function() {
+                    if (this.open) {
+                        codeLang.innerHTML = hideText;
+                    } else {
+                        codeLang.innerHTML = viewText;
+                    }
+                });
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const duckToggle = document.getElementById('duckToggle');
+            let ducksHidden = false;
+            
+            function toggleCodeDucks() {
+                ducksHidden = !ducksHidden;
+                
+                const duckVersions = document.querySelectorAll('.duck-version');
+                const cleanVersions = document.querySelectorAll('.clean-version');
+                
+                duckVersions.forEach(version => {
+                    version.classList.toggle('hidden', ducksHidden);
+                });
+                
+                cleanVersions.forEach(version => {
+                    version.classList.toggle('hidden', !ducksHidden);
+                });
+                
+                duckToggle.innerHTML = ducksHidden ? 
+                    '<span class="duck-icon"></span> Show 🦆 commentary' : 
+                    '<span class="duck-icon"></span> Hide 🦆 commentary';
+                    
+                const duckIcon = duckToggle.querySelector('.duck-icon');
+                duckIcon.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    duckIcon.style.transform = 'scale(1)';
+                }, 300);
+            }
+            
+            duckToggle.addEventListener('click', toggleCodeDucks);
+            
+            document.querySelectorAll('.clean-version').forEach(version => {
+                version.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>

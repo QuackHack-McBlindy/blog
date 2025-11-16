@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Deep dive into Yo 3-phase execution workflow: Special flag preprocessing, parameter parsing with validation, and bash script generation from Nix configurations.">
+    <title>🦆🧑‍🦯</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="navbar-content">
+            <a href="https://github.com/QuackHack-McBlindy" title="GitHub">
+                <img src="../img/github_teal.png" alt="GitHub" class="github-icon" style="height: 32px;" onmouseover="this.src='img/github_magenta.png';" onmouseout="this.src='../img/github_teal.png';"> </img>
+            </a>
+            <img src="../img/logo.png" height="48" width="48" >
+            <div class="navbar-title">
+                <span>🦆</span>🧑‍🦯 <a href="https://quackhack-mcblindy.github.io/blog/">QuackHack-McBlindy blog</a>
+            </div>
+            <button id="duckToggle" class="toggle-btn">
+                <span class="duck-icon">🦆</span>
+                Hide duck commentary
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="toc-container">
+        <details class="toc-details">
+            <summary class="toc-header">
+                <span class="toc-duck">🦆</span>
+                <h3>Navigation</h3>
+                <span class="toc-man">🧑‍🦯</span>
+                <span class="toc-toggle">⮟</span>
+            </summary>
+            <nav class="toc-nav">
+                <a href="index.html" class="toc-item current">
+                    <span class="toc-icon">🫀</span>
+                    Yo - Define & Unify
+                    <span class="current-marker">⮜🦆</span>                    
+                </a>
+                <a href="../do/index.html" class="toc-item">
+                    <span class="toc-icon">🧠</span>
+                    Do - Listen, Process, Act & Learn
+                </a>
+                <a href="../house/index.html" class="toc-item">
+                    <span class="toc-icon">🏠</span>
+                    House - Declarative Home Automation
+                </a>
+                <a href="../docs/index.html" class="toc-item">
+                    <span class="toc-icon">📚</span>
+                    Documentation - Automating the README
+                </a>
+                <a href="../misc/index.html" class="toc-item">
+                    <span class="toc-icon">🧩</span>
+                    Miscellaneous
+                </a>
+            </nav>
+            <div class="toc-footer">
+                <span class="toc-quack">🦆 says ⮞ qwack qwack, plx pick!</span>
+            </div>
+        </details>
+    </div>
+    
+    
+  
+    <div class="content">
+        <header class="category-title">
+            <h1>Yo - Define & Unify</h1>
+            <p class="subtitle">Yo! Execution Workflow.<br></p>
+        </header>
+
+        <h2 class="section-title">The Three Phase Execution Workflow</h2>
+        
+
+        <p>
+             <strong>Phase 1: Special Flag Preprocessing</strong><br>
+
+             There are two special flags. "?" and "!".<br>
+             These special flags control two enviorment variables: "$DRY_RUN" and "$VERBOSE".<br>
+             They work before regular parsing, so they don't interfere with your script's actual parameters. It's like having meta-commands.<br>
+
+        <details class="code-block-container" style="margin-bottom: 1em;" open>
+          <summary class="code-header">
+              <div class="code-lang">⮞ View Special Flags</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+? > VERBOSE++     # 🦆 says ⮞ increment $VERBOSE & set the scripts logLevel to "DEBUG" 
+! > DRY_RUN=true  # 🦆 says ⮞ sets $DRY_RUN to true
+</span><span class="clean-version hidden">
+? > VERBOSE++
+! > DRY_RUN=true
+</span></pre>
+            </div>
+        </div>
+    </details>
+
+                         
+             <strong>Phase 2: Parameter Parsing</strong><br>
+             Yo supports both named and positional parameters.<br>
+             
+             
+        <details class="code-block-container" style="margin-bottom: 1em;" open>
+          <summary class="code-header">
+              <div class="code-lang">⮞ View Example Parameter Usage</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+--help or -h   # 🦆 says ⮞ beautiful Glow rendered Markdown help
+--param value  # 🦆 says ⮞ named parameters with type detection  
+value          # 🦆 says ⮞ positional parameters
+</span><span class="clean-version hidden">
+--help|-h      > Beautiful Glow rendered Markdown help
+--param value  > Named parameters with type detection  
+value          > Positional parameters
+</span></pre>
+            </div>
+        </div>
+    </details>
+
+             <strong>Boolean detection:</strong> --flag vs --flag true both work.<br>
+             <strong>Unknown params:</strong> Instant "🦆 say ⮞ fuck ❌ Unknown parameter: .."<br>
+             <strong>Help system:</strong> Generates documentation in markdown on-the-fly.<br><br>
+             <br>
+  
+             <strong>Phase 3: Validation & Execution</strong><br>
+             Yo has a strong validation system, ensuring your script's do not run with invalid parameters.<br>
+             Which of course is a requirement, since we are going to execute them with our voice later on.<br>
+                          
+        <details class="code-block-container" style="margin-bottom: 1em;" open>
+          <summary class="code-header">
+              <div class="code-lang">⮞ View Parameter Type Explaination</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+# 🦆 says ⮞ parameter type validation
+int?      # 🦆 says ⮞ only numbers
+path?     # 🦆 says ⮞ file exists
+bool?     # 🦆 says ⮞ true/false
+values?   # 🦆 says ⮞ allowed list check
+
+optional? # 🦆 says ⮞ check if required parameters are supplied
+# ELSE ⮞ if param has a default value configured - use that
+# ELSE ⮞ "🦆 say ⮞ fuck ❌ Missing required parameter: ${param.name}"
+</span><span class="clean-version hidden">
+# Type validation
+int? → ^[0-9]+$
+path? → file exists
+bool? → true/false
+values? → allowed list check
+
+# Required parameters
+missing required? → "🦆 say ⮞ fuck ❌ Missing required parameter: ${param.name}"
+</span></pre>
+            </div>
+        </div>
+    </details>
+             
+             
+             
+        <h2 class="section-title">The Full Execution Workflow</h2>             
+
+        <p>
+            Here I will show the full workflow, please note that this is not the full module. <br> 
+            If you want it explained make sure you did not turn off the duck commentary.<br>
+            It's a long code block, and I believe the duck handles the commentary for this block just fine.<br>
+        </p>     
+             
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View yo Execution Workflow</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+  # 🦆 duck say ⮞ letz create da yo scripts pkgs - we symlinkz all yo scripts togetha .. quack quack 
+  yoScriptsPackage = pkgs.symlinkJoin {
+    name = "yo-scripts"; # 🦆 duck say ⮞ map over yo scripts and gen dem shell scriptz wrapperz!!
+    paths = mapAttrsToList (name: script:
+      let # 🦆 duck say ⮞ compile help sentences at build time      
+        # 🦆 duck say ⮞ compile help sentences at build time
+        voiceSentencesHelp = if script.voice != null && script.voice.sentences != [] then
+          let
+            patterns = countGeneratedPatterns script;
+            phrases = countUnderstoodPhrases script;
+            # 🦆 duck say ⮞ copy the parameter replacement logic from voiceSentencesHelpFile
+            replaceParamsWithValues = sentence: voiceData:
+              let
+                processToken = token:
+                  if lib.hasPrefix "{" token && lib.hasSuffix "}" token then
+                    let
+                      paramName = lib.removePrefix "{" (lib.removeSuffix "}" token);
+                      listData = voiceData.lists.${paramName} or null;
+                    in
+                      if listData != null then
+                        if listData.wildcard or false then
+                          "ANYTHING"
+                        else
+                          let
+                            # 🦆 duck say ⮞ get all possible input values
+                            values = map (v: v."in") listData.values;
+                            # 🦆 duck say ⮞ expand any optional patterns like [foo|bar]
+                            expandedValues = lib.concatMap expandListInputVariants values;
+                            # 🦆 duck say ⮞ take first few examples for display
+                            examples = lib.take 3 (lib.unique expandedValues);
+                          in
+                            if examples == [] then "ANYTHING"
+                            else "(" + lib.concatStringsSep "|" examples + 
+                                 (if lib.length examples < lib.length expandedValues then "|...)" else ")")
+                      else
+                        "ANYTHING" # 🦆 duck say ⮞ fallback if param not found
+                  else
+                    token;
+                
+                # 🦆 duck say ⮞ split sentence and process each token
+                tokens = lib.splitString " " sentence;
+                processedTokens = map processToken tokens;
+              in
+                lib.concatStringsSep " " processedTokens;
+            
+            # 🦆 duck say ⮞ replace params in each sentence for the help display
+            processedSentences = map (sentence: 
+              replaceParamsWithValues sentence script.voice
+            ) script.voice.sentences;
+            
+            sentencesMarkdown = lib.concatMapStrings (sentence: 
+              "- \"${escapeMD sentence}\"\n"
+            ) processedSentences;
+          in
+            "## Voice Commands\n\nPatterns: ${toString patterns}  \nPhrases: ${toString phrases}  \n\n${sentencesMarkdown}"
+        else "";
+       
+      
+        # 🦆 duck say ⮞ generate a string for da CLI usage optional parameters [--like] diz yo
+        param_usage = lib.concatMapStringsSep " " (param:
+          if param.optional
+          then "[--${param.name}]" # 🦆 duck say ⮞ iptional params baked inoto brackets
+          else "--${param.name}" # 🦆 duck say ⮞ otherz paramz shown az iz yo
+        # 🦆 duck say ⮞ filter out da special flagz from standard usage 
+        ) (lib.filter (p: !builtins.elem p.name ["!" "?"]) script.parameters);
+        
+        # 🦆 duck say ⮞ diz iz where da magic'z at yo! trust da duck yo 
+        scriptContent = ''
+          #!${pkgs.runtimeShell}
+          set -euo pipefail # 🦆 duck say ⮞ strict error handlin' yo - will exit on errorz
+          set -o noglob  # 🦆 duck say ⮞ disable wildcard expansion for ? and ! flags
+          ${yoEnvGenVar script} # 🦆 duck say ⮞ inject da env quack quack.... quack
+          export LC_NUMERIC=C
+          start=$(date +%s.%N)
+          
+          # 🦆 duck say ⮞ duckTrace log setup
+          export DT_LOG_PATH="$HOME/.config/duckTrace/"
+          mkdir -p "$DT_LOG_PATH"   
+          export DT_LOG_FILE="${name}.log" # 🦆 duck say ⮞ duck tracin' be namin' da log file for da ran script
+          touch "$DT_LOG_PATH/$DT_LOG_FILE"
+          export DT_LOG_LEVEL="${script.logLevel}" # 🦆 duck say ⮞ da tracin' duck back to fetch da log level yo
+          DT_MONITOR_HOSTS="${sysHostsComma}";
+          DT_MONITOR_PORT="9999";
+      
+          # 🦆 duck say ⮞ PHASE 1: preprocess special flagz woop woop
+          VERBOSE=0
+          DRY_RUN=false
+          FILTERED_ARGS=()
+          # 🦆 duck say ⮞ LOOP through da ARGz til' duckie duck all  dizzy duck
+          while [[ $# -gt 0 ]]; do
+            case "$1" in
+              \?) ((VERBOSE++)); shift ;;        # 🦆 duck say ⮞ if da arg iz '?' == increment verbose counter
+              '!') DRY_RUN=true; shift ;;        # 🦆 duck say ⮞ if da arg iz '!' == enablez da dry run mode yo
+              *) FILTERED_ARGS+=("$1"); shift ;; # 🦆 duck say ⮞ else we collect dem arguments for script processin'
+            esac
+          done  
+          VERBOSE=$VERBOSE
+          export VERBOSE DRY_RUN
+          
+          # 🦆 duck say ⮞ reset arguments without special flags
+          set -- "''${FILTERED_ARGS[@]}"
+
+          # 🦆 duck say ⮞ PHASE 2: regular parameter parsin' flappin' flappin' quack quack yo
+          declare -A PARAMS=()
+          POSITIONAL=()
+          VERBOSE=$VERBOSE
+          DRY_RUN=$DRY_RUN
+          # 🦆 duck say ⮞ if ? flag used - sets scripts logLevel to DEBUG
+          if [ "$VERBOSE" -ge 1 ]; then
+            DT_LOG_LEVEL="DEBUG"
+          fi
+          
+          # 🦆 duck say ⮞ parse all parameters
+          while [[ $# -gt 0 ]]; do
+            case "$1" in
+              --help|-h) # 🦆 duck say ⮞ if  u needz help call `--help` or `-h`
+                width=$(tput cols 2>/dev/null || echo 100) # 🦆 duck say ⮞ get terminal width for formatin' - fallin' back to 100
+                help_footer=$(${script.helpFooter}) # 🦆 duck say ⮞ dynamically generatez da helpFooter if ya defined it yo   
+                # 🦆 duck say ⮞ script haz paramz?
+                usage_suffix=""
+                if [[ -n "${toString (script.parameters != [])}" ]]; then
+                  usage_suffix=" [OPTIONS]"
+                fi
+                
+                cat <<EOF | ${pkgs.glow}/bin/glow --width "$width" - # 🦆 duck say ⮞ renderin' da cool & duckified CLI docz usin' Markdown & Glow yo 
+# 🚀🦆 yo ${escapeMD script.name}
+${script.description}
+**Usage:** \`yo ${escapeMD script.name}''${usage_suffix}\`
+${lib.optionalString (script.parameters != []) ''
+## Parameters
+${lib.concatStringsSep "\n\n" (map (param: ''
+**\`--${param.name}\`**  
+${param.description}  
+${lib.optionalString param.optional "*(optional)*"} ${lib.optionalString (param.default != null) (let
+  defaultText = 
+    if param.type == "bool" then 
+      (if param.default then "true" else "false")
+    else 
+      (toString param.default);
+in "*(default: ${defaultText})*")}
+${lib.optionalString (param.values != null && param.type == "string") 
+  "*(allowed: ${lib.concatStringsSep ", " param.values})*"}
+'') script.parameters)}
+''}
+${voiceSentencesHelp}
+
+$help_footer
+EOF
+                exit 0
+                ;;
+              --*) # 🦆 duck say ⮞ parse named paramz like: "--duck"
+                param_name=''${1##--}
+                # 🦆 duck say ⮞ let'z check if diz param existz in da scriptz defined parameterz
+                if [[ " ${concatMapStringsSep " " (p: 
+                      if p.type == "bool" then p.name else ""
+                    ) script.parameters} " =~ " $param_name " ]]; then
+                  # 🦆 duck say ⮞ boolean flag - presence means true, but also allow explicit true/false
+                  if [[ $# -gt 1 && ( "$2" == "true" || "$2" == "false" ) ]]; then
+                    PARAMS["$param_name"]="$2"
+                    shift 2
+                  else
+                    PARAMS["$param_name"]="true"
+                    shift 1
+                  fi
+                else
+                  # 🦆 duck say ⮞ regular param expects value
+                  if [[ " ${concatMapStringsSep " " (p: p.name) script.parameters} " =~ " $param_name " ]]; then
+                    PARAMS["$param_name"]="$2" # 🦆 duck say ⮞ assignz da value
+                    shift 2
+                  else # 🦆 duck say ⮞ unknown param? duck say fuck
+                    echo -e "\033[1;31m 🦆 duck say ⮞ fuck ❌ $1\033[0m Unknown parameter: $1"
+                    exit 1
+                  fi
+                fi
+                ;;
+              *) # 🦆 duck say ⮞ none of the above matchez? i guezz itz a positional param yo
+                POSITIONAL+=("$1")
+                shift
+                ;;
+            esac
+          done
+
+            # 🦆 duck say ⮞ PHASE 3: assign dem' parameterz!
+            ${concatStringsSep "\n" (lib.imap0 (idx: param: '' # 🦆 duck say ⮞ match positional paramz to script paramz by index
+              if (( ${toString idx} < ''${#POSITIONAL[@]} )); then
+                ${param.name}="''${POSITIONAL[${toString idx}]}" # 🦆 duck say ⮞ assign positional paramz to variable
+              fi
+            '') script.parameters)}
+          # 🦆 duck say ⮞ assign named paramz! PARAMS ⮞ their variable
+          ${concatStringsSep "\n" (map (param: ''
+            if [[ -n "''${PARAMS[${param.name}]:-}" ]]; then
+              ${param.name}="''${PARAMS[${param.name}]}"
+            fi
+          '') script.parameters)}
+
+          # 🦆 duck say ⮞ count da paramz you cant bring too many to da party yo
+          ${optionalString (script.parameters != []) ''
+            if [ ''${#POSITIONAL[@]} -gt ${toString (length script.parameters)} ]; then
+              echo -e "\033[1;31m 🦆 duck say ⮞ fuck ❌ Too many arguments (max ${toString (length script.parameters)})\033[0m" >&2
+              exit 1
+            fi
+          ''}
+
+          # 🦆 duck say ⮞ param type validation quuackidly quack yo
+          ${concatStringsSep "\n" (map (param: 
+            optionalString (param.type != "string") ''
+              if [ -n "''${${param.name}:-}" ]; then
+                case "${param.type}" in
+                  int)
+                    if ! [[ "''${${param.name}}" =~ ^[0-9]+$ ]]; then
+                      echo -e "\033[1;31m 🦆 duck say ⮞ fuck ❌ ${name} --${param.name} must be integer\033[0m" >&2
+                      exit 1
+                    fi
+                    ;;
+                  path)
+                    if ! [ -e "''${${param.name}}" ]; then
+                      echo -e "\033[1;31m 🦆 duck say ⮞ fuck ❌ ${name} Path not found: ''${${param.name}}\033[0m" >&2
+                      exit 1
+                    fi
+                    ;;
+                  bool)
+                    if ! [[ "''${${param.name}}" =~ ^(true|false)$ ]]; then
+                      echo -e "\033[1;31m 🦆 duck say ⮞ fuck ❌ ${name} Parameter ${param.name} must be true or false\033[0m" >&2
+                      exit 1
+                    fi
+                    ;;
+                esac
+              fi
+            ''
+          ) script.parameters)}
+
+
+          # 🦆 duck say ⮞ values validation - explicit allowed list yo
+          ${concatStringsSep "\n" (map (param: 
+            optionalString (param.values != null && param.type == "string") ''
+              if [ -n "''${${param.name}:-}" ]; then
+                # 🦆 duck say ⮞ check if value is in allowed list
+                allowed_values=(${lib.concatMapStringsSep " " (v: "'${lib.escapeShellArg v}'") param.values})
+                value_found=false
+                for allowed in "''${allowed_values[@]}"; do
+                  if [[ "''${${param.name}}" == "$allowed" ]]; then
+                    value_found=true
+                    break
+                  fi
+                done
+                if [[ "$value_found" == "false" ]]; then
+                  echo -e "\033[1;31m 🦆 duck say ⮞ fuck ❌ ${name} --${param.name} must be one of: ${lib.concatStringsSep ", " param.values}\033[0m" >&2
+                  exit 1
+                fi
+              fi
+            ''
+          ) script.parameters)}
+
+
+          # 🦆 duck say ⮞ boolean defaults - false if not provided
+          ${concatStringsSep "\n" (map (param: 
+            optionalString (param.type == "bool" && param.default != null) ''
+              if [[ -z "''${${param.name}:-}" ]]; then
+                ${param.name}=${if param.default then "true" else "false"}
+              fi
+            '') script.parameters)}
+
+
+          ${concatStringsSep "\n" (map (param: 
+            optionalString (param.default != null) ''
+              if [[ -z "''${${param.name}:-}" ]]; then
+                ${param.name}=${
+                  if param.type == "string" then 
+                    "'${lib.escapeShellArg (toString param.default)}'" 
+                  else if param.type == "int" then
+                    "${toString param.default}"
+                  else if param.type == "bool" then
+                    (if param.default then "true" else "false")
+                  else if param.type == "path" then
+                    "'${lib.escapeShellArg (toString param.default)}'"
+                  else
+                    "'${lib.escapeShellArg (toString param.default)}'"
+                }
+              fi
+            '') script.parameters)}
+            
+          # 🦆 duck say ⮞ checkz required param yo - missing? errorz out 
+          ${concatStringsSep "\n" (map (param: ''
+            ${optionalString (!param.optional && param.default == null) ''
+              if [[ -z "''${${param.name}:-}" ]]; then
+                echo -e "\033[1;31m 🦆 duck say ⮞ fuck ❌ ${name} Missing required parameter: ${param.name}\033[0m" >&2
+                exit 1
+              fi
+            ''}
+          '') script.parameters)}
+
+          # 🦆 duck say ⮞ EXECUTEEEEEAAAOO 🦆quack🦆quack🦆quack🦆quack🦆quack🦆quack🦆quack🦆quack🦆quack🦆quack🦆quack🦆yo
+          ${script.code}
+        '';
+        # 🦆 duck say ⮞ generate da entrypoint
+        mainScript = pkgs.writeShellScriptBin "yo-${script.name}" scriptContent;
+      in # 🦆 duck say ⮞ letz wrap diz up already  
+        pkgs.runCommand "yo-script-${script.name}" {} ''
+          mkdir -p $out/bin  # 🦆 duck say ⮞ symlinkz da main script
+          ln -s ${mainScript}/bin/yo-${script.name} $out/bin/yo-${script.name} 
+          ${concatMapStrings (alias: '' # 🦆 duck say ⮞ dont forget to symlinkz da aliases too yo!
+            ln -s ${mainScript}/bin/yo-${script.name} $out/bin/yo-${alias}
+          '') script.aliases}
+        ''
+    ) cfg.scripts; # 🦆 duck say ⮞ apply da logic to da yo scriptz
+  };
+</span><span class="clean-version hidden">
+  yoScriptsPackage = pkgs.symlinkJoin {
+    name = "yo-scripts";
+    paths = mapAttrsToList (name: script:
+      let
+        voiceSentencesHelp = if script.voice != null && script.voice.sentences != [] then
+          let
+            patterns = countGeneratedPatterns script;
+            phrases = countUnderstoodPhrases script;
+
+            replaceParamsWithValues = sentence: voiceData:
+              let
+                processToken = token:
+                  if lib.hasPrefix "{" token && lib.hasSuffix "}" token then
+                    let
+                      paramName = lib.removePrefix "{" (lib.removeSuffix "}" token);
+                      listData = voiceData.lists.${paramName} or null;
+                    in
+                      if listData != null then
+                        if listData.wildcard or false then
+                          "ANYTHING"
+                        else
+                          let
+                            values = map (v: v."in") listData.values;
+                            expandedValues = lib.concatMap expandListInputVariants values;
+                            examples = lib.take 3 (lib.unique expandedValues);
+                          in
+                            if examples == [] then "ANYTHING"
+                            else "(" + lib.concatStringsSep "|" examples + 
+                                 (if lib.length examples < lib.length expandedValues then "|...)" else ")")
+                      else
+                        "ANYTHING"
+                  else
+                    token;
+                
+                tokens = lib.splitString " " sentence;
+                processedTokens = map processToken tokens;
+              in
+                lib.concatStringsSep " " processedTokens;
+            
+            processedSentences = map (sentence: 
+              replaceParamsWithValues sentence script.voice
+            ) script.voice.sentences;
+            
+            sentencesMarkdown = lib.concatMapStrings (sentence: 
+              "- \"${escapeMD sentence}\"\n"
+            ) processedSentences;
+          in
+            "## Voice Commands\n\nPatterns: ${toString patterns}  \nPhrases: ${toString phrases}  \n\n${sentencesMarkdown}"
+        else "";
+       
+      
+        param_usage = lib.concatMapStringsSep " " (param:
+          if param.optional
+          then "[--${param.name}]"
+          else "--${param.name}"
+        ) (lib.filter (p: !builtins.elem p.name ["!" "?"]) script.parameters);
+        
+
+        scriptContent = ''
+          #!${pkgs.runtimeShell}
+          set -euo pipefail
+          set -o noglob
+          ${yoEnvGenVar script}
+          export LC_NUMERIC=C
+          start=$(date +%s.%N)
+          
+          export DT_LOG_PATH="$HOME/.config/duckTrace/"
+          mkdir -p "$DT_LOG_PATH"   
+          export DT_LOG_FILE="${name}.log"
+          touch "$DT_LOG_PATH/$DT_LOG_FILE"
+          export DT_LOG_LEVEL="${script.logLevel}"
+          DT_MONITOR_HOSTS="${sysHostsComma}";
+          DT_MONITOR_PORT="9999";
+      
+          VERBOSE=0
+          DRY_RUN=false
+          FILTERED_ARGS=()
+
+          while [[ $# -gt 0 ]]; do
+            case "$1" in
+              \?) ((VERBOSE++)); shift ;;
+              '!') DRY_RUN=true; shift ;;
+              *) FILTERED_ARGS+=("$1"); shift ;;
+            esac
+          done  
+          VERBOSE=$VERBOSE
+          export VERBOSE DRY_RUN
+          
+          set -- "''${FILTERED_ARGS[@]}"
+
+          declare -A PARAMS=()
+          POSITIONAL=()
+          VERBOSE=$VERBOSE
+          DRY_RUN=$DRY_RUN
+
+          if [ "$VERBOSE" -ge 1 ]; then
+            DT_LOG_LEVEL="DEBUG"
+          fi
+          
+          
+          while [[ $# -gt 0 ]]; do
+            case "$1" in
+              --help|-h)
+                width=$(tput cols 2>/dev/null || echo 100)
+                help_footer=$(${script.helpFooter})
+
+                usage_suffix=""
+                if [[ -n "${toString (script.parameters != [])}" ]]; then
+                  usage_suffix=" [OPTIONS]"
+                fi
+                
+                cat <<EOF | ${pkgs.glow}/bin/glow --width "$width" - 
+# 🚀🦆 yo ${escapeMD script.name}
+${script.description}
+**Usage:** \`yo ${escapeMD script.name}''${usage_suffix}\`
+${lib.optionalString (script.parameters != []) ''
+## Parameters
+${lib.concatStringsSep "\n\n" (map (param: ''
+**\`--${param.name}\`**  
+${param.description}  
+${lib.optionalString param.optional "*(optional)*"} ${lib.optionalString (param.default != null) (let
+  defaultText = 
+    if param.type == "bool" then 
+      (if param.default then "true" else "false")
+    else 
+      (toString param.default);
+in "*(default: ${defaultText})*")}
+${lib.optionalString (param.values != null && param.type == "string") 
+  "*(allowed: ${lib.concatStringsSep ", " param.values})*"}
+'') script.parameters)}
+''}
+${voiceSentencesHelp}
+
+$help_footer
+EOF
+                exit 0
+                ;;
+              --*)
+                param_name=''${1##--}
+
+                if [[ " ${concatMapStringsSep " " (p: 
+                      if p.type == "bool" then p.name else ""
+                    ) script.parameters} " =~ " $param_name " ]]; then
+
+                  if [[ $# -gt 1 && ( "$2" == "true" || "$2" == "false" ) ]]; then
+                    PARAMS["$param_name"]="$2"
+                    shift 2
+                  else
+                    PARAMS["$param_name"]="true"
+                    shift 1
+                  fi
+                else
+
+                  if [[ " ${concatMapStringsSep " " (p: p.name) script.parameters} " =~ " $param_name " ]]; then
+                    PARAMS["$param_name"]="$2"
+                    shift 2
+                  else
+                    echo -e "\033[1;31m 🦆 duck say ⮞ fuck ❌ $1\033[0m Unknown parameter: $1"
+                    exit 1
+                  fi
+                fi
+                ;;
+              *)
+                POSITIONAL+=("$1")
+                shift
+                ;;
+            esac
+          done
+
+            ${concatStringsSep "\n" (lib.imap0 (idx: param: ''
+              if (( ${toString idx} < ''${#POSITIONAL[@]} )); then
+                ${param.name}="''${POSITIONAL[${toString idx}]}"
+              fi
+            '') script.parameters)}
+
+          ${concatStringsSep "\n" (map (param: ''
+            if [[ -n "''${PARAMS[${param.name}]:-}" ]]; then
+              ${param.name}="''${PARAMS[${param.name}]}"
+            fi
+          '') script.parameters)}
+
+
+          ${optionalString (script.parameters != []) ''
+            if [ ''${#POSITIONAL[@]} -gt ${toString (length script.parameters)} ]; then
+              echo -e "\033[1;31m 🦆 duck say ⮞ fuck ❌ Too many arguments (max ${toString (length script.parameters)})\033[0m" >&2
+              exit 1
+            fi
+          ''}
+
+
+          ${concatStringsSep "\n" (map (param: 
+            optionalString (param.type != "string") ''
+              if [ -n "''${${param.name}:-}" ]; then
+                case "${param.type}" in
+                  int)
+                    if ! [[ "''${${param.name}}" =~ ^[0-9]+$ ]]; then
+                      echo -e "\033[1;31m 🦆 duck say ⮞ fuck ❌ ${name} --${param.name} must be integer\033[0m" >&2
+                      exit 1
+                    fi
+                    ;;
+                  path)
+                    if ! [ -e "''${${param.name}}" ]; then
+                      echo -e "\033[1;31m 🦆 duck say ⮞ fuck ❌ ${name} Path not found: ''${${param.name}}\033[0m" >&2
+                      exit 1
+                    fi
+                    ;;
+                  bool)
+                    if ! [[ "''${${param.name}}" =~ ^(true|false)$ ]]; then
+                      echo -e "\033[1;31m 🦆 duck say ⮞ fuck ❌ ${name} Parameter ${param.name} must be true or false\033[0m" >&2
+                      exit 1
+                    fi
+                    ;;
+                esac
+              fi
+            ''
+          ) script.parameters)}
+
+
+          ${concatStringsSep "\n" (map (param: 
+            optionalString (param.values != null && param.type == "string") ''
+              if [ -n "''${${param.name}:-}" ]; then
+                allowed_values=(${lib.concatMapStringsSep " " (v: "'${lib.escapeShellArg v}'") param.values})
+                value_found=false
+                for allowed in "''${allowed_values[@]}"; do
+                  if [[ "''${${param.name}}" == "$allowed" ]]; then
+                    value_found=true
+                    break
+                  fi
+                done
+                if [[ "$value_found" == "false" ]]; then
+                  echo -e "\033[1;31m 🦆 duck say ⮞ fuck ❌ ${name} --${param.name} must be one of: ${lib.concatStringsSep ", " param.values}\033[0m" >&2
+                  exit 1
+                fi
+              fi
+            ''
+          ) script.parameters)}
+
+
+          ${concatStringsSep "\n" (map (param: 
+            optionalString (param.type == "bool" && param.default != null) ''
+              if [[ -z "''${${param.name}:-}" ]]; then
+                ${param.name}=${if param.default then "true" else "false"}
+              fi
+            '') script.parameters)}
+
+
+          ${concatStringsSep "\n" (map (param: 
+            optionalString (param.default != null) ''
+              if [[ -z "''${${param.name}:-}" ]]; then
+                ${param.name}=${
+                  if param.type == "string" then 
+                    "'${lib.escapeShellArg (toString param.default)}'" 
+                  else if param.type == "int" then
+                    "${toString param.default}"
+                  else if param.type == "bool" then
+                    (if param.default then "true" else "false")
+                  else if param.type == "path" then
+                    "'${lib.escapeShellArg (toString param.default)}'"
+                  else
+                    "'${lib.escapeShellArg (toString param.default)}'"
+                }
+              fi
+            '') script.parameters)}
+            
+
+          ${concatStringsSep "\n" (map (param: ''
+            ${optionalString (!param.optional && param.default == null) ''
+              if [[ -z "''${${param.name}:-}" ]]; then
+                echo -e "\033[1;31m 🦆 duck say ⮞ fuck ❌ ${name} Missing required parameter: ${param.name}\033[0m" >&2
+                exit 1
+              fi
+            ''}
+          '') script.parameters)}
+
+          
+          ${script.code}
+        '';
+        
+        mainScript = pkgs.writeShellScriptBin "yo-${script.name}" scriptContent;
+      in
+        pkgs.runCommand "yo-script-${script.name}" {} ''
+          mkdir -p $out/bin
+          ln -s ${mainScript}/bin/yo-${script.name} $out/bin/yo-${script.name} 
+          ${concatMapStrings (alias: ''
+            ln -s ${mainScript}/bin/yo-${script.name} $out/bin/yo-${alias}
+          '') script.aliases}
+        ''
+    ) cfg.scripts;
+  };
+</span></pre>
+            </div>
+        </div>
+    </details>
+             
+             
+        <strong>SUMMARY:</strong><br>
+        <details class="code-block-container" style="margin-bottom: 1em;" open>
+          <summary class="code-header">
+              <div class="code-lang">⮞ View Worlflow Summary</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">             
+scriptContent = ''
+  #!${pkgs.runtimeShell}
+  ${yoEnvGenVar script}  # 🦆 says ⮞ inject environment
+  ${parameter_parsing}   # 🦆 says ⮞ generated parsing logic
+  ${validation}          # 🦆 says ⮞ generated validation
+  ${script.code}         # 🦆 says ⮞ user's actual script code
+'';
+</span><span class="clean-version hidden">
+scriptContent = ''
+  #!${pkgs.runtimeShell}
+  ${yoEnvGenVar script}  # Inject environment
+  ${parameter_parsing}   # Generated parsing logic
+  ${validation}          # Generated validation
+  ${script.code}         # User's actual script code
+'';
+</span></pre>
+            </div>
+        </div>
+    </details>
+
+
+        <h2 class="section-title">The symlinkJoin Architecture</h2>
+        Every script becomes a separate binary in your PATH: yo-scriptname, yo-alias1, yo-alias2. <br>
+        In my opinion this is much cleaner than a single monolithic binary with subcommands.<br>
+        
+        <details class="code-block-container" style="margin-bottom: 1em;" open>
+          <summary class="code-header">
+              <div class="code-lang">⮞ View symlinkJoinsymlinkJoin Example</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">             
+yoScriptsPackage = pkgs.symlinkJoin {
+  name = "yo-scripts";
+  paths = mapAttrsToList (name: script: ...) cfg.scripts;
+};   
+</span><span class="clean-version hidden">
+yoScriptsPackage = pkgs.symlinkJoin {
+  name = "yo-scripts";
+  paths = mapAttrsToList (name: script: ...) cfg.scripts;
+};   
+</span></pre>
+            </div>
+        </div>
+    </details>
+
+     
+             Think of yo as a Bash compiler - it takes declarative Nix configurations and generates optimized, type-safe shell scripts with beautiful documentation.
+             <br><br>
+
+             
+        <h2 class="section-title">That's It For Now!</h2> <br>       
+             <a href="https://github.com/QuackHack-McBlindy/dotfiles/blob/main/modules/yo.nix" class="source-link">
+              View the entire source code on GitHub
+            </a><br>    
+            
+            <div class="duck-comment">
+                <p> ⮞ hope dis was a enjoyable read and dat u learned sumthing</p>
+            </div><br><br><br> 
+             
+    </div>
+    
+    <footer>
+        <p>All thoughts are my own and should not be considered advice of any kind. More likely the opposite.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeBlocks = document.querySelectorAll('details.code-block-container');
+            
+            codeBlocks.forEach(block => {
+                const summary = block.querySelector('summary');
+                const codeLang = summary.querySelector('.code-lang');
+                const toggleIcon = summary.querySelector('.toggle-icon');
+                
+                const originalText = codeLang.innerHTML;
+                const viewText = originalText.replace('Hide', 'View').replace('⮞', '⮟');
+                const hideText = originalText.replace('View', 'Hide').replace('⮟', '⮞');
+                
+                if (block.open) {
+                    codeLang.innerHTML = hideText;
+                } else {
+                    codeLang.innerHTML = viewText;
+                }
+                
+                block.addEventListener('toggle', function() {
+                    if (this.open) {
+                        codeLang.innerHTML = hideText;
+                    } else {
+                        codeLang.innerHTML = viewText;
+                    }
+                });
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const duckToggle = document.getElementById('duckToggle');
+            let ducksHidden = false;
+            
+            function toggleCodeDucks() {
+                ducksHidden = !ducksHidden;
+                
+                const duckVersions = document.querySelectorAll('.duck-version');
+                const cleanVersions = document.querySelectorAll('.clean-version');
+                
+                duckVersions.forEach(version => {
+                    version.classList.toggle('hidden', ducksHidden);
+                });
+                
+                cleanVersions.forEach(version => {
+                    version.classList.toggle('hidden', !ducksHidden);
+                });
+                
+                duckToggle.innerHTML = ducksHidden ? 
+                    '<span class="duck-icon"></span> Show 🦆 commentary' : 
+                    '<span class="duck-icon"></span> Hide 🦆 commentary';
+                    
+                const duckIcon = duckToggle.querySelector('.duck-icon');
+                duckIcon.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    duckIcon.style.transform = 'scale(1)';
+                }, 300);
+            }
+            
+            duckToggle.addEventListener('click', toggleCodeDucks);
+            
+            document.querySelectorAll('.clean-version').forEach(version => {
+                version.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>

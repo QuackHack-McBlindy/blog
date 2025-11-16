@@ -1,0 +1,2374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦆🧑‍🦯blog</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ffffff;
+            --dark: #1a252f;
+            --code-bg: #f8f9fa;
+            --duck-yellow: #ffd700;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        #comments {
+          margin-top: 3rem;
+          padding-top: 2rem;
+          border-top: 1px solid #eee;
+        }        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: var(--light);
+            padding: 20px;
+            padding-top: 80px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 20px;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .navbar-content {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .navbar-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .navbar-title span {
+            animation: duckFloat 3s infinite ease-in-out;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            border-bottom: 3px solid var(--secondary);
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #3498db, #e74c3c, #2ecc71, #f39c12);
+        }
+        
+        h1 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 2.8rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .source-link {
+            font-weight: 500;
+            color: #0366d6;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: color 0.2s ease, border-bottom 0.2s ease;
+        }
+        .source-link:hover {
+            color: #023e8a;
+            border-bottom: 1px solid #023e8a;
+        }
+        .toggle-btn {
+            background: linear-gradient(to bottom, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            font-size: 1.1rem;
+        }
+        
+        .toggle-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+            background: linear-gradient(to bottom, #3da5e0, #2c8fc8);
+        }
+        
+        .toggle-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .duck-icon {
+            font-size: 1.4rem;
+            transition: transform 0.3s;
+        }
+        
+        .content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+        
+        p {
+            margin: 25px 0;
+            font-size: 1.15rem;
+            line-height: 1.7;
+        }
+        
+        .section-title {
+            color: var(--primary);
+            margin: 45px 0 25px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--secondary);
+            font-size: 1.8rem;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: var(--accent);
+        }
+        details.code-block-container {
+            margin-bottom: 30px;
+        }        
+        .code-block-container {
+            position: relative;
+            margin: 30px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .code-block {
+            background-color: #1e1e1e;
+            padding: 25px;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #d4d4d4;
+            border-left: 4px solid var(--secondary);
+            position: relative;
+        }
+        
+        .code-header {
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
+            background: #252526;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #3c3c3c;
+        }
+        .code-header:hover {
+            box-shadow: 0 0 5px rgba(0, 255, 170, 0.8);
+        }
+        
+        .code-lang {
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
+            color: #9cdcfe;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .code-lang:hover {
+            box-shadow: 0 0 10px rgba(0, 255, 170, 0.8);
+        }        
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+            tab-size: 4;
+        }
+        
+        .comment {
+            color: #6a9955;
+        }
+        
+        .keyword {
+            color: #c586c0;
+        }
+        
+        .string {
+            color: #ce9178;
+        }
+        .tags {
+        display: flex;
+         flex-wrap: wrap;
+          gap: 0.5em;
+              margin-top: 1em;
+         }
+         .tag {
+            display: inline-block;
+            padding: 0.3em 0.7em;
+            background-color: #eef;
+            color: #225;
+            border-radius: 12px;
+            font-size: 0.9em;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        .tag:hover {
+            background-color: #cdd;
+        }        
+        .function {
+            color: #dcdcaa;
+        }
+        
+        .duck-comment {
+            background-color: rgba(255, 215, 0, 0.15);
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+            position: relative;
+            border-left: 4px solid var(--duck-yellow);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .duck-comment::before {
+            content: "🦆";
+            position: absolute;
+            left: -25px;
+            top: 15px;
+            font-size: 1.8rem;
+            background: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            border: 2px solid var(--duck-yellow);
+        }
+        
+        .duck-comment p {
+            margin: 10px 0;
+            font-style: italic;
+            color: #5c4a00;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .callout {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-left: 5px solid var(--secondary);
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 12px 12px 0;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        
+        .callout::before {
+            content: "💡";
+            position: absolute;
+            left: -50px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            background: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+        
+        .key-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 35px 0;
+        }
+        
+        .feature-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--secondary);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .feature-card h3 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.4rem;
+        }
+        
+        .feature-icon {
+            font-size: 1.8rem;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 25px;
+            color: #7f8c8d;
+            font-size: 1rem;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .duck-animation {
+            display: inline-block;
+            animation: duckFloat 4s infinite ease-in-out;
+        }
+        
+        @keyframes duckFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                padding-top: 70px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .duck-comment::before {
+                left: -15px;
+                width: 30px;
+                height: 30px;
+                font-size: 1.2rem;
+            }
+            
+            .callout::before {
+                left: -35px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+            }
+            
+            .navbar {
+                padding: 10px 15px;
+                height: 60px;
+            }
+            
+            .navbar-title {
+                font-size: 1.2rem;
+            }
+
+            .github-icon {
+                content: url("img/github_teal.png");
+                transition: opacity 0.3s ease;
+            }
+            .github-icon:hover {
+                content: url("img/github_magenta.png");
+            }
+            .walker {
+                display: inline-block;
+                transition: transform 0.3s ease;
+            }
+            .flipped {
+                transform: scaleX(-1);
+            }            
+            .toggle-btn {
+                padding: 10px 15px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="navbar-content">
+            <a href="https://github.com/QuackHack-McBlindy" title="GitHub">
+                <img src="img/github_teal.png" alt="GitHub" class="github-icon" style="height: 32px;" onmouseover="this.src='img/github_magenta.png';" onmouseout="this.src='img/github_teal.png';"> </img>
+            </a>
+            <div class="navbar-title">
+                <span>🦆</span>🧑‍🦯 QuackHack-McBlindy blog
+            </div>
+            <button id="duckToggle" class="toggle-btn">
+                <span class="duck-icon">🦆</span>
+                Hide duck commentary
+            </button>
+        </div>
+    </div>
+    
+    
+    <div class="content">
+        <h2 class="title">Developing a feature rich Natural Language Processor<br> - Using just jq, Nix & Bash</h2>
+        <p>
+            I've always been drawn to voice commands. Maybe it's because of the extended use cases that come with being blind - you can imagine fumbling around for the TV remote when not being able to see? That sucks! Now I can simply tell the TV to start. Or if I prefer, simply ask where the remote is and the Nvidia Shield Remote plays a sound. Maybe it's just the appeal of being able to multitask with a third hand that doesn't exist. Either way, the idea of speaking to my computer and having it do things has always fascinated me. Voice as an interface feels natural, powerful... and deeply underutilized.
+        </p>
+        
+        
+
+        <div class="duck-comment">
+            <p># 🦆 says ⮞ I use 20x magnification when I code and debug. I use emoji to simplify logs for myself. If you can't handle my code style you can disable most of it on this website by toggling the button in the navbar. Shall duck continue? </p>
+        </div>
+        <p>
+            Let's rewind a bit. I've always had a soft spot for doing things the stupid way. Not "stupid" as in broken, but "stupid" as in... unorthodox, unnecessary, and definitely not optimized for scale. The kind of stupid that makes you ask: "Wait, you did what in Bash?!"<br><br>
+            
+        </p>
+        
+        <h2 class="section-title">The Genesis: Bash Meets Nix</h2>
+        
+        <p>
+            Early in this project, no one - not even I - could give a good reason for doing it in Bash. There were no benchmarks to beat, no ecosystem gaps to fill, and definitely no best practices to follow. Maybe it's still a stupid idea. But I kept coming back to one thing: Bash has flexibility. <br>
+            You can bend it in ways most people can't imagine.
+        </p>
+        
+        <div class="duck-comment">
+            <p># 🦆 says ⮞ There is no spoon...</p>
+        </div>
+        
+        <p>
+            Meanwhile, tools like Home Assistant's Assist were starting to bore me. They worked, sure - but I constantly felt locked in, boxed by high-level abstractions and limited customization. I didn't want a voice assistant that just reacts - I wanted one that obeys. <br> 
+            While being an active contributor within the community, I multiple times got or noticed people getting responses from the dev's "That's not possible." and "No, you can't do that". Which was my breaking point to leave and go my own way. 
+        </p>
+        
+        <div class="callout">
+            <p>
+                That's where Nix came in. Going the Nix way - what could be more fun? <br>  Using Nix's declarative configuration model, I realized I could define a CLI interface that held all my custom scripts and logic - the glue that tied intent to action. I could describe sentences declaratively and map them directly to Bash scripts.
+            </p>
+            <p>
+                No overhead. No dependencies. No noise. Just me, a microphone, and a shell.
+            </p>
+        </div>
+        
+        
+        <h2 class="section-title">I Did Not Mean for It to Get This Complex</h2>
+        
+        <p>
+            What started as a small utility to let me run shell commands by typing natural language sentences quickly spiraled into a full-blown NLP system. With Bash. And Nix. And thousands of dynamically generated regular expressions.
+        </p>
+        
+        
+        <p>
+            This blog post walks you through the actual code behind a voice-command-esque CLI script framework I built using Nix to organize, parse, cache, and test structured sentence intents to build and execute Shell commands.<br>
+        </p>
+        
+        <div class="duck-comment">
+            <p>
+              🦆🏠  HOME via 🐍 v3.12.10 <br>
+              01:41:26 ❯ yo do "please stop test auto 5 yes wild card testing here" <br>     
+              ┌─(yo-demo) <br>
+              │🦆 <br>
+              └─⮞ --action stop <br>
+              └─⮞ --target test <br>
+              └─⮞ --mode auto <br>
+              └─⮞ --duration 5 <br> 
+              └─⮞ --confirm yes <br>
+              └─⮞ --wild wild card testing here <br>
+              [🦆📜] [01:41:31] ⁉️DEBUG⁉️ ⮞ +0.007 s Script Started! <br>
+              [🦆📜] [01:41:31] ⁉️DEBUG⁉️ ⮞ +0.013 s SCript Executed! <br>
+              [🦆📜] [01:41:31] ⁉️DEBUG⁉️ ⮞ +0.020 s Script finished!  <br>                        
+            </p>
+        </div>        
+            
+        <h2 class="section-title">Nix Configuration: Declaring Intents</h2>
+        
+        <div class="code-block-container">
+            <div class="code-header">
+                <div class="code-lang">Nix Configuration</div>
+            </div>
+            <div class="code-block">
+                <pre>
+  yo = {
+    scripts = {
+      demo = {
+        parameters = [
+          { name = "action"; description = "Action to perform"; default = "run"; }
+          { name = "target"; description = "Target of the action"; }
+          { name = "intensity"; description = "Level of intensity"; type = "int"; optional = true; }
+          { name = "duration"; description = "Duration in seconds"; type = "int"; optional = true; }
+          { name = "mode"; description = "Mode of operation"; optional = true; }
+          { name = "confirm"; description = "Whether to confirm the action"; optional = true; }
+          { name = "wild"; description = "Wildcard testing"; optional = true; }     
+        ];
+        code = ''
+          echo "Script executed!"
+        '';
+      };
+    };
+    do = {
+      intents = {
+        demo = {
+          data = [{
+            sentences = [
+              "please {action} {target} {mode} {duration} {confirm} {wild}"
+            ];
+            lists = {
+              action.values = [
+                { "in" = "[run|execute|start]"; out = "RUN"; }
+                { "in" = "[stop|terminate|halt]"; out = "STOP"; }
+              ];
+              target.values = [
+                { "in" = "[process|program|sequence]"; out = "PROCESS"; }
+                { "in" = "[test|check|validation]"; out = "TEST"; }
+              ];
+              mode.values = [
+                { "in" = "[auto|automatic]"; out = "AUTO"; }
+                { "in" = "[manual|manually]"; out = "MANUAL"; }
+              ];
+              confirm.values = [
+                { "in" = "[yes|confirm|sure]"; out = "YES"; }
+                { "in" = "[no|cancel|decline]"; out = "NO"; }
+              ];
+              intensity.values = builtins.genList (i: {
+                "in" = toString (i + 1);
+                out = toString (i + 1);
+                }) 10;
+              duration.values = builtins.genList (i: {
+                "in" = toString ((i + 1) * 10);
+                out = toString ((i + 1) * 10);
+              }) 6;
+              wild.wildcard = true;
+            };
+          }];
+        };  
+      };
+    };      
+  };
+  
+};</pre>
+            </div>
+        </div>
+        
+        
+        <p>
+            Early on, I realized Nix could give me a ton of structure and organization. Since I have been running NixOS system wide for some years now, I have grown comfortable writing Nix expressions. Nix will let user define software configurations declaratively. I'm abusing it for voice logic. I wanted to declaratively define scripts and bind natural language intents to each of them - and Nix is great at producing structured derivations.
+        </p>
+        
+        <p>
+            Each script gets a name, description, category, and as many parameter options as prefered., Add a set of intent sentences to that. <br> These are eventually transformed into regular expressions, cached, and tested. Lists can optionally be defined mapping in words to out words. Or set the list value as a wildcard if input for the parameter should be a wildcard and accept any input.
+        </p>
+        
+        <h2 class="section-title">From Sentences to Shell Scripts</h2>
+        
+        <p>
+            The core idea was: take a sentence from the user, figure out what script it maps to, and run it with the correct arguments. Sounds simple? I wouldn't really call it easy, but okay.
+        </p>
+        
+        
+        <div class="duck-comment">
+            <p># 🦆 says ⮞ Logical first steps</p>
+        </div>
+        
+
+        <div class="code-block-container">
+            <div class="code-header">
+                <div class="code-lang">Integrating defined intents (Nix)</div>
+            </div>
+            <div class="code-block">
+                <pre><span class="duck-version">
+let
+  scripts = config.yo.scripts; # 🦆 says ⮞ import all dem scripts
+  scriptNames = builtins.attrNames scripts; # 🦆 says ⮞ names can be useful too
+  scriptNamesWithIntents = builtins.filter (scriptName:
+    builtins.hasAttr scriptName config.yo.do.intents
+  ) scriptNames; # 🦆 says ⮞ scripts with no sentences - skippin' dem yo
+  
+</span><span class="clean-version hidden">
+let
+  scripts = config.yo.scripts;
+  scriptNames = builtins.attrNames scripts;
+  scriptNamesWithIntents = builtins.filter (scriptName:
+    builtins.hasAttr scriptName config.yo.do.intents
+  ) scriptNames;
+  
+</span></pre>
+            </div>
+        </div>
+        
+        
+        <h3 class="section-title">Intent Parsing + Entity Resolution</h3>
+        
+        <p>
+            To match user input, I needed to preprocess the input sentence, resolve any custom entities, and match it against a giant list of potential phrases. Oh yeah, and some of the words in those phrases were dynamic parameters.
+        </p>
+        
+        <div class="code-block-container">
+            <div class="code-header">
+                <div class="code-lang">Bash + Nix (Pattern Matching)</div>
+            </div>
+            <div class="code-block">
+                <pre><span class="duck-version">
+  <span class="comment"># 🦆 says ⮞ where da magic dynamic regex iz at </span>
+  makePatternMatcher = scriptName: let
+    dataList = config.yo.do.intents.${scriptName}.data;    
+  in '' <span class="comment"># 🦆 says ⮞ diz iz how i pick da script u want </span>
+    match_${scriptName}() { <span class="comment"># 🦆 says ⮞ shushin' da caps – lowercase life 4 cleaner dyn regex zen ✨</span>
+      local input="$(echo "$1" | tr '[:upper:]' '[:lower:]')" 
+      <span class="comment"># 🦆 says ⮞ always show input in debug mode</span>
+      <span class="comment"># 🦆 says ⮞ watch the fancy stuff live in action  </span>
+      dt_debug "Trying to match for script: ${scriptName}" >&2
+      dt_debug "Input: $input" >&2
+      <span class="comment"># 🦆 says ⮞ duck presentin' - da madnezz </span>
+      ${lib.concatMapStrings (data:
+        lib.concatMapStrings (sentence:
+          lib.concatMapStrings (sentenceText: let
+            <span class="comment"># 🦆 says ⮞ now sentenceText is one of the expanded variants!</span>
+            parts = lib.splitString "{" sentenceText; <span class="comment"># 🦆 says ⮞ diggin' out da goodies from curly nests! Gimme dem {param} nuggets! </span>
+            firstPart = lib.escapeRegex (lib.elemAt parts 0); <span class="comment"># 🦆 says ⮞ gotta escape them weird chars </span>
+            restParts = lib.drop 1 parts;  <span class="comment"># 🦆 says ⮞ now we in the variable zone quack?  </span>
+            <span class="comment"># 🦆 says ⮞ process each part to build regex and params</span>
+            regexParts = lib.imap (i: part:
+              let
+                split = lib.splitString "}" part; <span class="comment"># 🦆 says ⮞ yeah yeah curly close that syntax shell</span>
+                param = lib.elemAt split 0; <span class="comment"># 🦆 says ⮞ name of the param in da curly – ex: {user}</span>
+                after = lib.concatStrings (lib.tail split); <span class="comment"># 🦆 says ⮞ anything after the param in this chunk</span>
+                <span class="comment"># 🦆 says ⮞ Wildcard mode! anything goes - duck catches ALL the worms! (.*)</span>
+                isWildcard = data.lists.${param}.wildcard or false;
+                regexGroup = if isWildcard then "(.*)" else "\\b([^ ]+)\\b";       
+                <span class="comment"># 🦆 says ⮞ ^ da regex that gon match actual input text</span>
+              in {
+                regex = regexGroup + lib.escapeRegex after;
+                param = param;
+              }
+            ) restParts;
+
+            fullRegex = let
+              clean = lib.strings.trim (firstPart + lib.concatStrings (map (v: v.regex) regexParts));
+            in "^${clean}$"; <span class="comment"># 🦆 says ⮞ mash all regex bits 2gether</span>
+            paramList = map (v: v.param) regexParts; <span class="comment"># 🦆 says ⮞ the squad of parameters </span>
+          in ''
+            local regex='^${fullRegex}$'
+            dt_debug "REGEX: $regex"
+            if [[ "$input" =~ $regex ]]; then  <span class="comment"># 🦆 says ⮞ DANG DANG – regex match engaged </span>
+              ${lib.concatImapStrings (i: paramName: ''
+                <span class="comment"># 🦆 says ⮞ extract match group #i+1 – param value, come here plz </span>
+                param_value="''${BASH_REMATCH[${toString (i+1)}]}"
+                <span class="comment"># 🦆 says ⮞ if param got synonym, apply the duckfilter </span>
+                if [[ -n "''${param_value:-}" && -v substitutions["$param_value"] ]]; then
+                  subbed="''${substitutions["$param_value"]}"
+                  if [[ -n "$subbed" ]]; then
+                    param_value="$subbed"
+                  fi
+                fi           
+                ${lib.optionalString (
+                  data.lists ? ${paramName} && !(data.lists.${paramName}.wildcard or false)
+                ) ''
+                  <span class="comment"># 🦆 says ⮞ apply substitutions before case matchin'</span>
+                  if [[ -v substitutions["$param_value"] ]]; then
+                    param_value="''${substitutions["$param_value"]}"
+                  fi
+                  case "$param_value" in
+                    ${makeEntityResolver data paramName}
+                    *) ;;
+                  esac
+                ''} <span class="comment"># 🦆 says ⮞ declare global param – duck want it everywhere! (for bash access)</span>
+                declare -g "_param_${paramName}"="$param_value"            
+                declare -A params=()
+                params["${paramName}"]="$param_value"
+                matched_params+=("$paramName")
+              '') paramList} <span class="comment"># 🦆 says ⮞ set dat param as a GLOBAL VAR yo! every duck gotta know </span>
+              <span class="comment"># 🦆 says ⮞ build cmd args: --param valu</span>
+              cmd_args=()
+              ${lib.concatImapStrings (i: paramName: ''
+                value="''${BASH_REMATCH[${toString i}]}"
+                cmd_args+=(--${paramName} "$value")
+              '') paramList}
+              dt_debug "REMATCH 1: ''${BASH_REMATCH[1]}"
+              dt_debug "REMATCH 2: ''${BASH_REMATCH[2]}"
+              dt_debug "MATCHED SCRIPT: ${scriptName}"
+              dt_debug "ARGS: ''${cmd_args[@]}"
+              return 0
+            fi
+          '') (expandOptionalWords sentence)
+        ) data.sentences
+      ) dataList}
+      return 1
+    }
+  ''; <span class="comment"># 🦆 says ⮞ dat was fun! let'z do it again some time</span>
+</span><span class="clean-version hidden">
+  makePatternMatcher = scriptName: let
+    dataList = config.yo.do.intents.${scriptName}.data;    
+  in '' 
+    match_${scriptName}() { 
+      local input="$(echo "$1" | tr '[:upper:]' '[:lower:]')" 
+      dt_debug "Trying to match for script: ${scriptName}" >&2
+      dt_debug "Input: $input" >&2
+      ${lib.concatMapStrings (data:
+        lib.concatMapStrings (sentence:
+          lib.concatMapStrings (sentenceText: let
+            parts = lib.splitString "{" sentenceText; 
+            firstPart = lib.escapeRegex (lib.elemAt parts 0); 
+            restParts = lib.drop 1 parts;  
+            regexParts = lib.imap (i: part:
+              let
+                split = lib.splitString "}" part; 
+                param = lib.elemAt split 0; 
+                after = lib.concatStrings (lib.tail split); 
+                isWildcard = data.lists.${param}.wildcard or false;
+                regexGroup = if isWildcard then "(.*)" else "\\b([^ ]+)\\b";       
+              in {
+                regex = regexGroup + lib.escapeRegex after;
+                param = param;
+              }
+            ) restParts;
+
+            fullRegex = let
+              clean = lib.strings.trim (firstPart + lib.concatStrings (map (v: v.regex) regexParts));
+            in "^${clean}$"; 
+            paramList = map (v: v.param) regexParts; 
+          in ''
+            local regex='^${fullRegex}$'
+            dt_debug "REGEX: $regex"
+            if [[ "$input" =~ $regex ]]; then  
+              ${lib.concatImapStrings (i: paramName: ''
+                param_value="''${BASH_REMATCH[${toString (i+1)}]}"
+                if [[ -n "''${param_value:-}" && -v substitutions["$param_value"] ]]; then
+                  subbed="''${substitutions["$param_value"]}"
+                  if [[ -n "$subbed" ]]; then
+                    param_value="$subbed"
+                  fi
+                fi           
+                ${lib.optionalString (
+                  data.lists ? ${paramName} && !(data.lists.${paramName}.wildcard or false)
+                ) ''
+                  if [[ -v substitutions["$param_value"] ]]; then
+                    param_value="''${substitutions["$param_value"]}"
+                  fi
+                  case "$param_value" in
+                    ${makeEntityResolver data paramName}
+                    *) ;;
+                  esac
+                ''} 
+                declare -g "_param_${paramName}"="$param_value"            
+                declare -A params=()
+                params["${paramName}"]="$param_value"
+                matched_params+=("$paramName")
+              '') paramList} 
+              cmd_args=()
+              ${lib.concatImapStrings (i: paramName: ''
+                value="''${BASH_REMATCH[${toString i}]}"
+                cmd_args+=(--${paramName} "$value")
+              '') paramList}
+              dt_debug "REMATCH 1: ''${BASH_REMATCH[1]}"
+              dt_debug "REMATCH 2: ''${BASH_REMATCH[2]}"
+              dt_debug "MATCHED SCRIPT: ${scriptName}"
+              dt_debug "ARGS: ''${cmd_args[@]}"
+              return 0
+            fi
+          '') (expandOptionalWords sentence)
+        ) data.sentences
+      ) dataList}
+      return 1
+    }
+  '';
+</span></pre>
+            </div>
+        </div>
+        
+        <div class="duck-comment">
+            <p># 🦆 says ⮞ Funny side note, before this project, regular expressions was diz duck's absolute worst nightmare. These days diz duck quacktually don't mind it dat much.</p>
+        </div>
+        
+        <h2 class="section-title">The Performance Bomb</h2>
+        
+        <p>
+            As I implemented more features, performance became explosive. I wanted my sentence definitions to have [optional|words] and (required|one|of|these|words) patterns. This led to combinatorial explosion.
+        </p>
+        
+        
+        <div class="code-block-container">
+            <div class="code-header">
+                <div class="code-lang">Nix (Cartesian Product)</div>
+            </div>
+            <div class="code-block">
+                <pre><span class="duck-version">
+  cartesianProductOfLists = lists:
+    <span class="comment"># 🦆 says ⮞ if da listz iz empty .. </span>
+    if lists == [] then
+      [ [] ] <span class="comment"># 🦆 says ⮞ .. i gib u empty listz of listz yo got it?</span>
+    else <span class="comment"># 🦆 says ⮞ ELSE WAT?!</span>
+      let <span class="comment"># 🦆 says ⮞ sorry.. i gib u first list here u go yo</span>
+        head = builtins.head lists;
+        <span class="comment"># 🦆 says ⮞ remaining listz for u here u go bro!</span>
+        tail = builtins.tail lists;
+        <span class="comment"># 🦆 says ⮞ calculate combinations for my tail - yo calc wher u at?!</span>
+        tailProduct = cartesianProductOfLists tail;
+      in <span class="comment"># 🦆 says ⮞ for everyy x in da listz ..</span>
+        lib.concatMap (x:
+          <span class="comment"># 🦆 says ⮞ .. letz combinez wit every tail combinationz ..  </span>
+          map (y: [x] ++ y) tailProduct
+        ) head; <span class="comment"># 🦆 says ⮞ dang! datz a DUCK COMBO alright!  </span>
+         
+  <span class="comment"># 🦆 says ⮞ here i duckie help yo out! makin' yo life eazy sleazy' wen declarative sentence yo typin'    </span>
+  expandOptionalWords = sentence: <span class="comment"># 🦆 says ⮞ qucik & simple sentences we quacky & hacky expandin'</span>
+    let <span class="comment"># 🦆 says ⮞ CHOP CHOP! Rest in lil' Pieceez bigg sentence!!1     </span>
+      tokens = lib.splitString " " sentence;      
+      <span class="comment"># 🦆 says ⮞ definin' dem wordz in da (braces) taggin' dem' wordz az (ALTERNATIVES) lettin' u choose one of dem wen triggerin' </span>
+      isRequiredGroup = t: lib.hasPrefix "(" t && lib.hasSuffix ")" t;
+      <span class="comment"># 🦆 says ⮞ puttin' sentence wordz in da [bracket] makin' em' [OPTIONAL] when doin' u don't have to be pickin' woooho </span>
+      isOptionalGroup = t: lib.hasPrefix "[" t && lib.hasSuffix "]" t;   
+      expandToken = token: <span class="comment"># 🦆 says ⮞ dis gets all da real wordz out of one token (yo!)</span>
+        if isRequiredGroup token then
+          let <span class="comment"># 🦆 says ⮞ thnx 4 lettin' ducklin' be cleanin' - i'll be removin' dem "()" </span>
+            clean = lib.removePrefix "(" (lib.removeSuffix ")" token);
+            alternatives = lib.splitString "|" clean; <span class="comment"># 🦆 says ⮞ use "|" to split (alternative|wordz) yo </span>
+          in  <span class="comment"># 🦆 says ⮞ dat's dat 4 dem alternativez</span>
+            alternatives
+        else if isOptionalGroup token then
+          let <span class="comment"># 🦆 says ⮞ here we be goin' again - u dirty and i'll be cleanin' dem "[]"</span>
+            clean = lib.removePrefix "[" (lib.removeSuffix "]" token);
+            alternatives = lib.splitString "|" clean; <span class="comment"># 🦆 says ⮞ i'll be stealin' dat "|" from u </span>
+          in <span class="comment"># 🦆 says ⮞ u know wat? optional means we include blank too!</span>
+            alternatives ++ [ "" ]
+        else <span class="comment"># 🦆 says ⮞ else i be returnin' raw token for yo</span>
+          [ token ];      
+      <span class="comment"># 🦆 says ⮞ now i gib u generatin' all dem combinationz yo</span>
+      expanded = cartesianProductOfLists (map expandToken tokens);      
+      <span class="comment"># 🦆 says ⮞ clean up if too much space, smush back into stringz for ya</span>
+      trimmedVariants = map (tokenList:
+        let <span class="comment"># 🦆 says ⮞ join with spaces then trim them suckers</span>
+          raw = lib.concatStringsSep " " tokenList;
+          <span class="comment"># 🦆 says ⮞ remove ALL extra spaces</span>
+          cleaned = lib.replaceStrings ["  "] [" "] (lib.strings.trim raw);
+        in <span class="comment"># 🦆 says ⮞ wow now they be shinin'</span>
+          cleaned 
+      ) expanded; <span class="comment"># 🦆 says ⮞ and they be multiplyyin'!      </span>
+      <span class="comment"># 🦆 says ⮞ throwin' out da empty and cursed ones yo</span>
+      nonEmpty = lib.filter (s: s != "") trimmedVariants;
+      hasFixedText = v: builtins.match ".*[^\\{].*" v != null; <span class="comment"># 🦆 says ⮞ no no no, no nullin'</span>
+      validVariants = lib.filter hasFixedText nonEmpty;
+    in <span class="comment"># 🦆 says ⮞ returnin' all unique variantz of da sentences – holy duck dat'z fresh </span>
+      lib.unique validVariants;
+</span><span class="clean-version hidden">
+  cartesianProductOfLists = lists:
+    if lists == [] then
+      [ [] ]
+    else
+      let
+        head = builtins.head lists;
+        tail = builtins.tail lists;
+        tailProduct = cartesianProductOfLists tail;
+      in
+        lib.concatMap (x:
+          map (y: [x] ++ y) tailProduct
+        ) head;
+         
+  expandOptionalWords = sentence: 
+    let
+      tokens = lib.splitString " " sentence;      
+      isRequiredGroup = t: lib.hasPrefix "(" t && lib.hasSuffix ")" t;
+      isOptionalGroup = t: lib.hasPrefix "[" t && lib.hasSuffix "]" t;   
+      expandToken = token:
+        if isRequiredGroup token then
+          let
+            clean = lib.removePrefix "(" (lib.removeSuffix ")" token);
+            alternatives = lib.splitString "|" clean;
+          in
+            alternatives
+        else if isOptionalGroup token then
+          let
+            clean = lib.removePrefix "[" (lib.removeSuffix "]" token);
+            alternatives = lib.splitString "|" clean;
+          in
+            alternatives ++ [ "" ]
+        else
+          [ token ];      
+      expanded = cartesianProductOfLists (map expandToken tokens);      
+      trimmedVariants = map (tokenList:
+        let
+          raw = lib.concatStringsSep " " tokenList;
+          cleaned = lib.replaceStrings ["  "] [" "] (lib.strings.trim raw);
+        in
+          cleaned 
+      ) expanded;      
+      nonEmpty = lib.filter (s: s != "") trimmedVariants;
+      hasFixedText = v: builtins.match ".*[^\\{].*" v != null;
+      validVariants = lib.filter hasFixedText nonEmpty;
+    in
+      lib.unique validVariants;
+</span></pre>
+            </div>
+        </div>
+        
+        
+        <p>
+            This is where the bomb went off. The module went from being instant to extremely slow. <br>
+            Even with a very detailed debugging system in place, when you are generating code with this extensiveness, finding the problematic line can take time, later i found that it was caused by a single intent definition, my timer intent.... <br><br>
+            I was defining this intent in the most genius way, something similar to:        
+        </p>
+
+        <div class="code-block-container">
+            <div class="code-header">
+                <div class="code-lang">Timer intent definition gone wrong</div>
+            </div>
+            <div class="code-block">
+                <pre><span class="duck-version">
+sentences = [
+  "(create|set|start|launch) [a] timer [for] {hours} (hour|hours) {minutes} (minute|minutes) {seconds} (second|seconds)"
+  "(create|set|start|launch) [a] timer [for] {minutes} (minute|minutes) [and] {seconds} (second|seconds)"
+  "(create|set|start|launch) [a] timer [for] {minutes} (minute|minutes)"
+  "(create|set|start|launch) [a] timer [for] {seconds} seconds"
+];
+lists = {
+  hours.values = lib.genList (n: {
+    "in" = lib.concatStringsSep "|" [
+      (toString n)
+      ("kl " + toString n)
+      (toString n + "h")
+      (builtins.elemAt numberWords n)
+    ];
+    out = toString n;
+  }) 24;
+  
+  minutes.values = lib.genList (n: {
+    "in" = lib.concatStringsSep "|" [
+      (toString n)
+      (toString n + "m")
+      ("minut " + toString n)
+      (builtins.elemAt numberWords n)
+    ];
+    out = toString n;
+  }) 60;
+
+  seconds.values = lib.genList (n: {
+    "in" = lib.concatStringsSep "|" [
+      (toString n)
+      (toString n + "s")
+      ("sekund " + toString n)
+      (builtins.elemAt numberWords n)
+    ];
+    out = toString n;
+  }) 60;
+</span><span class="clean-version hidden">
+sentences = [
+  "(create|set|start|launch) [a] timer [for] {hours} (hour|hours) {minutes} (minute|minutes) {seconds} (second|seconds)"
+  "(create|set|start|launch) [a] timer [for] {minutes} (minute|minutes) [and] {seconds} (second|seconds)"
+  "(create|set|start|launch) [a] timer [for] {minutes} (minute|minutes)"
+  "(create|set|start|launch) [a] timer [for] {seconds} seconds"
+];
+lists = {
+  hours.values = lib.genList (n: {
+    "in" = lib.concatStringsSep "|" [
+      (toString n)
+      ("kl " + toString n)
+      (toString n + "h")
+      (builtins.elemAt numberWords n)
+    ];
+    out = toString n;
+  }) 24;
+  
+  minutes.values = lib.genList (n: {
+    "in" = lib.concatStringsSep "|" [
+      (toString n)
+      (toString n + "m")
+      ("minut " + toString n)
+      (builtins.elemAt numberWords n)
+    ];
+    out = toString n;
+  }) 60;
+
+  seconds.values = lib.genList (n: {
+    "in" = lib.concatStringsSep "|" [
+      (toString n)
+      (toString n + "s")
+      ("sekund " + toString n)
+      (builtins.elemAt numberWords n)
+    ];
+    out = toString n;
+  }) 60;
+</span></pre>
+            </div>
+        </div>        
+        
+        <p>
+            To better paint the picture of why this was a bad idea, I'll do the math<br>        
+        </p>        
+
+        <div class="callout">
+            <h3>Combinational explosion:</h3>
+            <ul>
+                <li><strong>Sentence 4:</strong><br>Fixed Variants: 16. Param combos: 240. Total variants: 16 × 240 = 3,840  </li>
+                <li><strong>Sentence 3:</strong><br>Fixed variants: 32. Param combos:	240. Total variants:	32 × 240 = 7,680</li>
+                <li><strong>Sentence 2:</strong><br>Fixed variants: 128. Param combos: 240 × 240 = 57,600. Total variants: 128 × 57,600 = 7,372,800 </li>
+                <li><strong>Sentence 1:</strong><br>Fixed variants: 128. Param combos: 96 × 240 × 240 = 5,529,600. Total variants: 128 × 5,529,600 = 707,788,800 (!)</li>
+                <li><strong>Total number of unique sentence variations:</strong><br>715,173,120</li>   
+            </ul>
+        </div>        
+
+        <p>
+            Yes — over 715 million possible combinations.<br>
+            Insane? Definitely.<br>
+            Useful? Ehh.. I don't think so?<br><br>
+            But I still think this example shows how powerful this can be if you'd decide to go that crazy route.<br>
+            This is where I decided to define with caution, and also where I implemented the next performance feature, the priority system. <br>
+            Basic functionallity that let user define order of which the intents are processed for the regex patterns. <br>
+        </p>           
+
+
+        <div class="code-block-container">
+            <div class="code-header">
+                <div class="code-lang">Priority System for pattern matching</div>
+            </div>
+            <div class="code-block">
+                <pre><span class="duck-version">
+  # 🦆 says ⮞ priority system 4 runtime optimization
+  scriptRecordsWithIntents = 
+    let # 🦆 says ⮞ calculate priority
+      calculatePriority = scriptName:
+        config.yo.do.intents.${scriptName}.priority or 3; # 🦆 says ⮞ default medium
+      # 🦆 says ⮞ create script records metadata
+      makeRecord = scriptName: rec {
+        name = scriptName;
+        priority = calculatePriority scriptName;
+        hasComplexPatterns = 
+          let 
+            intent = config.yo.do.intents.${scriptName};
+            patterns = lib.concatMap (d: d.sentences) intent.data;
+          in builtins.any (p: lib.hasInfix "{" p || lib.hasInfix "[" p) patterns;
+      };    
+    in lib.sort (a: b:
+        # 🦆 says ⮞ primary sort: lower number = higher priority
+        a.priority < b.priority 
+        # 🦆 says ⮞ secondary sort: simple patterns before complex ones
+        || (a.priority == b.priority && !a.hasComplexPatterns && b.hasComplexPatterns)
+        # 🦆 says ⮞ third sort: alphabetical for determinism
+        || (a.priority == b.priority && a.hasComplexPatterns == b.hasComplexPatterns && a.name < b.name)
+      ) (map makeRecord scriptNamesWithIntents);
+  # 🦆 says ⮞ generate optimized processing order
+  processingOrder = map (r: r.name) scriptRecordsWithIntents;
+</span><span class="clean-version hidden">
+  scriptRecordsWithIntents = 
+    let
+      calculatePriority = scriptName:
+        config.yo.do.intents.${scriptName}.priority or 3; 
+      makeRecord = scriptName: rec {
+        name = scriptName;
+        priority = calculatePriority scriptName;
+        hasComplexPatterns = 
+          let 
+            intent = config.yo.do.intents.${scriptName};
+            patterns = lib.concatMap (d: d.sentences) intent.data;
+          in builtins.any (p: lib.hasInfix "{" p || lib.hasInfix "[" p) patterns;
+      };    
+    in lib.sort (a: b:
+        a.priority < b.priority 
+        || (a.priority == b.priority && !a.hasComplexPatterns && b.hasComplexPatterns)
+        || (a.priority == b.priority && a.hasComplexPatterns == b.hasComplexPatterns && a.name < b.name)
+      ) (map makeRecord scriptNamesWithIntents);
+  processingOrder = map (r: r.name) scriptRecordsWithIntents; 
+</span></pre>
+            </div>
+        </div>        
+        
+      
+        <h2 class="section-title">Fuzzy Matching</h2>
+        
+        <p>
+            Exact regex matches were cool... until they weren't.<br>
+            Since I had been getting longer and longer runtime execution, I really wanted something more than just fuzz here.<br>
+            I decided to go with a trigrams cache solution, with a falling back to Levenshtein distance algoritm.<br>
+            I think this quickly turned out in my favor both performance and speed wise.<br>
+            To be honest, what was tricky about this part was, in what way I would use the functions.<br>
+            I started with the obvious exact matching falling back to fuzzy matching. Which doubled the runtime if a command had no exact match. (At this point about 50 seconds total), which is way to high for my use case.<br>
+            I wanted to run the fuzzy matching logic async with the exact matching, holding off with the execution of the potential command until exact matching had failed.<br>
+            Running multiple jobs in the background in Bash is fine, but it pretty much makes you lose control of the actual process and makes you wonder who is actually steering this boat?<br>   
+        </p>
+        
+  
+        <div class="code-block-container">
+            <div class="code-header">
+                <div class="code-lang">Bash (Fuzzy Matching)</div>
+            </div>
+            <div class="code-block">
+                <pre><span class="duck-version">
+
+trigram_similarity() {
+  local str1="$1"
+  local str2="$2"
+  declare -a tri1 tri2
+  # 🦆 says ⮞ creates 3 char substring from str1
+  for ((i=0; i<''${#str1}-2; i++)); do
+    tri1+=( "''${str1:i:3}" )
+  done
+  # 🦆 says ⮞ creates 3 char substring from str2 
+  for ((i=0; i<''${#str2}-2; i++)); do
+    tri2+=( "''${str2:i:3}" )
+  done
+  local matches=0  
+  # 🦆 says ⮞ count how many trigrams from str1 appear in str2
+  for t in "''${tri1[@]}"; do
+    [[ " ''${tri2[*]} " == *" $t "* ]] && ((matches++))
+  done
+  # 🦆 says ⮞ calculate total number of trigrams 
+  local total=$(( ''${#tri1[@]} + ''${#tri2[@]} ))
+  # 🦆 says ⮞ no trigrams?
+  (( total == 0 )) && echo 0 && return
+  # 🦆 says ⮞ return dice’s coefficient similarity × 100 
+  echo $(( 100 * 2 * matches / total ))  <span class="comment"># 🦆 says ⮞ 0-100 scale</span>
+}
+        
+levenshtein_similarity() {
+  local a="$1" b="$2"
+  local len_a=''${#a} len_b=''${#b}
+  local max_len=$(( len_a > len_b ? len_a : len_b ))   
+  (( max_len == 0 )) && echo 100 && return     
+  local dist=$(levenshtein "$a" "$b")
+  local score=$(( 100 - (dist * 100 / max_len) ))         
+  <span class="comment"># 🦆 says ⮞ boostz da score for same startin' charizard yo</span>
+  [[ "''${a:0:1}" == "''${b:0:1}" ]] && score=$(( score + 10 ))
+  echo $(( score > 100 ? 100 : score ))
+}
+</span><span class="clean-version hidden">
+trigram_similarity() {
+  local str1="$1"
+  local str2="$2"
+  declare -a tri1 tri2
+  for ((i=0; i<''${#str1}-2; i++)); do
+    tri1+=( "''${str1:i:3}" )
+  done
+  for ((i=0; i<''${#str2}-2; i++)); do
+    tri2+=( "''${str2:i:3}" )
+  done
+  local matches=0
+  for t in "''${tri1[@]}"; do
+    [[ " ''${tri2[*]} " == *" $t "* ]] && ((matches++))
+  done
+  local total=$(( ''${#tri1[@]} + ''${#tri2[@]} ))
+  (( total == 0 )) && echo 0 && return
+  echo $(( 100 * 2 * matches / total ))
+}     
+
+levenshtein_similarity() {
+  local a="$1" b="$2"
+  local len_a=''${#a} len_b=''${#b}
+  local max_len=$(( len_a > len_b ? len_a : len_b ))   
+  (( max_len == 0 )) && echo 100 && return     
+  local dist=$(levenshtein "$a" "$b")
+  local score=$(( 100 - (dist * 100 / max_len) ))         
+  [[ "''${a:0:1}" == "''${b:0:1}" ]] && score=$(( score + 10 ))
+  echo $(( score > 100 ? 100 : score ))
+}
+</span></pre>
+            </div>
+        </div>
+        
+        
+        <h2 class="section-title">Bash script workflow</h2>
+        
+        <p>
+           Takes --input "some natural language command" from the user.<br><br>
+
+           Load intent data from a JSON file (includes regex patterns, substitutions, etc.).<br>
+           Load fuzzy index for fallback fuzzy matching.<br>
+           For each defined script: Load regex substitutions (entities) and store them in an associative array.<br><br>
+
+           Exact Match Phase (Runs in Background): <br>
+           Iterate through all defined scripts (in order of priority).<br>
+           Apply regex substitutions to input text.<br>
+           Try to match input via corresponding match_script functions.<br>
+           If matched:<br>
+             Apply substitutions.<br>
+             Prepare arguments.<br>
+             Execute yo-script with those arguments.<br>
+             Signal fuzzy handler to stop<br><br>
+
+           Fuzzy Match Phase (Runs Concurrently):<br>
+           Normalize input text.<br>
+           Compute trigram + Levenshtein similarity scores against defined sentences.<br>
+           Select best match above the threshold.<br>
+           Apply the same substitution logic.<br>
+           Match using match_fuzzy_script function.<br>
+           If matched:<br>
+             Wait for exact matcher to finish.<br>
+             If exact didn’t match, execute yo-script with resolved args.<br>
+                      
+        </p>        
+        
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+            <div class="code-lang">▶ View the Bash script for the NLP module</div>
+          </summary>
+            <div class="code-block">
+              <pre><span class="duck-version">
+in { # 🦆 says ⮞ YOOOOOOOOOOOOOOOOOO    
+  yo.scripts = { # 🦆 says ⮞ quack quack quack quack quack.... qwack 
+    do = {
+      description = "Natural language to Shell script translator with dynamic regex matching and automatic parameter resolutiion";
+      aliases = ["b"];
+      category = "⚙️ Configuration"; # 🦆 says ⮞ duckgorize iz zmart wen u hab many scriptz i'd say!
+      logLevel = "WARNING";
+      autoStart = false;
+      parameters = [
+        { name = "input"; description = "Text to parse into a yo command"; optional = false; }
+        { name = "fuzzyThreshold"; description = "Minimum procentage for considering fuzzy matching sucessful. (1-100)"; default = "15"; }
+      ]; 
+      # 🦆 says ⮞ run yo do --help to display all defined voice commands
+      helpFooter = ''
+        WIDTH=$(tput cols) # 🦆 duck say ⮞ Auto detect width
+        cat <<EOF | ${pkgs.glow}/bin/glow --width $WIDTH -
+${helpFooterMd}
+EOF
+      ''; # 🦆 says ⮞ ... there's moar..? YES! ALWAYS MOAR!
+      code = ''
+        set +u  
+        ${cmdHelpers} # 🦆 says ⮞load required bash helper functions 
+        FUZZY_THRESHOLD="''${fuzzyThreshold:-15}"
+        intent_data_file="${intentDataFile}" # 🦆 says ⮞ cache dat JSON wisdom, duck hates slowridez
+        YO_FUZZY_INDEX="${fuzzyIndexFile}" # 🦆 says ⮞ for fuzzy nutty duckz
+        text="$input" # 🦆 says ⮞ for once - i'm lettin' u doin' da talkin'
+        match_result_flag=$(mktemp)
+        trap 'rm -f "$match_result_flag"' EXIT
+        debug_attempted_matches=()
+        substitution_applied=false   
+        declare -A script_substitutions_data
+        declare -A script_has_lists  
+        intent_data_json=$(<"$intent_data_file")
+        while IFS=$'\t' read -r script pattern value; do
+            if [[ -n "$script" ]]; then
+                script_has_lists["$script"]=1
+                key="''${script}:''${pattern}"
+                script_substitutions_data["$key"]="$value"
+            fi
+        done < <(
+            jq -r 'to_entries[] | .key as $script | .value.substitutions[]? | 
+                    [$script, .pattern, .value] | @tsv' \
+            <<<"$intent_data_json"
+        )
+        levenshtein() {
+          local a="$1" b="$1"
+          local -i len_a=''${#a} len_b=''${#b}
+          local -a d; local -i i j cost    
+          for ((i=0; i<=len_a; i++)); do d[i]=$i; done
+          for ((j=1; j<=len_b; j++)); do
+            prev=$j
+            for ((i=1; i<=len_a; i++)); do
+              [[ "''${a:i-1:1}" == "''${b:j-1:1}" ]] && cost=0 || cost=1
+              act=$(( d[i-1] + cost ))
+              d[i]=$(( (d[i]+1) < (prev+1) ? 
+                       ((d[i]+1) < act ? d[i]+1 : act) : 
+                       ((prev+1) < act ? prev+1 : act) ))
+              prev=$((d[i]))
+            done
+            d[0]=$j
+          done
+          echo ''${d[len_a]}
+        }       
+        # 🦆 says ⮞ subz and entities lists handler yo
+        resolve_entities() {
+          local script="$1"
+          local text="$2"
+          local replacements
+          local pattern out
+          declare -A substitutions
+          # 🦆 says ⮞ skip subs if script haz no listz
+          has_lists=$(jq -e '."'"$script"'"?.substitutions | length > 0' "$intent_data_file" 2>/dev/null || echo false)
+          if [[ "$has_lists" != "true" ]]; then
+            echo -n "$text"
+            echo "|declare -A substitutions=()"  # 🦆 says ⮞ empty substitutions
+            return
+          fi                    
+          # 🦆 says ⮞ dis is our quacktionary yo 
+          replacements=$(jq -r '.["'"$script"'"].substitutions[] | "\(.pattern)|\(.value)"' "$intent_data_file")
+          while IFS="|" read -r pattern out; do
+            if [[ -n "$pattern" && "$text" =~ $pattern ]]; then
+              original="''${BASH_REMATCH[0]}"
+              [[ -z "''$original" ]] && continue # 🦆 says ⮞ duck no like empty string
+              substitutions["''$original"]="$out"
+              substitution_applied=true # 🦆 says ⮞ rack if any substitution was applied
+              text=$(echo "$text" | sed -E "s/\\b$pattern\\b/$out/g") # 🦆 says ⮞ swap the word, flip the script 
+            fi
+          done <<< "$replacements"      
+          echo -n "$text"
+          echo "|$(declare -p substitutions)" # 🦆 says ⮞ returning da remixed sentence + da whole 
+        }        
+        for f in "$MATCHER_DIR"/*.sh; do [[ -f "$f" ]] && source "$f"; done
+        scripts_ordered_by_priority=( ${lib.concatMapStringsSep "\n" (name: "  \"${name}\"") processingOrder} )
+        dt_info "$scripts_ordered_by_priority"
+        find_best_fuzzy_match() {
+          local input="$1"
+          local best_score=0
+          local best_match=""
+          local normalized=$(echo "$input" | tr '[:upper:]' '[:lower:]' | tr -d '[:punct:]')
+          local candidates
+          mapfile -t candidates < <(jq -r '.[] | .[] | "\(.script):\(.sentence)"' "$YO_FUZZY_INDEX")
+          dt_debug "Found ''${#candidates[@]} candidates for fuzzy matching"
+          for candidate in "''${candidates[@]}"; do
+            IFS=':' read -r script sentence <<< "$candidate"
+            local norm_sentence=$(echo "$sentence" | tr '[:upper:]' '[:lower:]' | tr -d '[:punct:]')
+            local tri_score=$(trigram_similarity "$normalized" "$norm_sentence")
+            (( tri_score < 30 )) && continue
+            local score=$(levenshtein_similarity "$normalized" "$norm_sentence")  
+            if (( score > best_score )); then
+              best_score=$score
+              best_match="$script:$sentence"
+              dt_info "New best match: $best_match ($score%)"
+            fi
+          done
+          if [[ -n "$best_match" ]]; then
+            echo "$best_match|$best_score"
+          else
+            echo ""
+          fi
+        }
+           
+        # 🦆 says ⮞ insert matchers, build da regex empire. yo
+        ${lib.concatMapStrings (name: makePatternMatcher name) scriptNamesWithIntents}  
+        # 🦆 says ⮞ for dem scripts u defined intents for ..
+        exact_match_handler() {        
+          for script in "''${scripts_ordered_by_priority[@]}"; do
+            # 🦆 says ⮞ .. we insert wat YOU sayz & resolve entities wit dat yo
+            resolved_output=$(resolve_entities "$script" "$text")
+            resolved_text=$(echo "$resolved_output" | cut -d'|' -f1)
+            dt_debug "Tried: match_''${script} '$resolved_text'"
+            # 🦆 says ⮞ we declare som substitutionz from listz we have - duckz knowz why 
+            subs_decl=$(echo "$resolved_output" | cut -d'|' -f2-)
+            declare -gA substitutions || true
+            eval "$subs_decl" >/dev/null 2>&1 || true
+            # 🦆 says ⮞ we hab a match quacky quacky diz sure iz hacky!
+            if match_$script "$resolved_text"; then      
+              if [[ "$(declare -p substitutions 2>/dev/null)" =~ "declare -A" ]]; then
+                for original in "''${!substitutions[@]}"; do
+                  dt_debug "Substitution: $original >''${substitutions[$original]}";
+                  [[ -n "$original" ]] && dt_info "$original > ''${substitutions[$original]}" # 🦆 says ⮞ see wat duck did there?
+                done # 🦆 says ⮞ i hop duck pick dem right - right?
+              fi
+              args=() # 🦆 says ⮞ duck gettin' ready 2 build argumentz 4 u script 
+              for arg in "''${cmd_args[@]}"; do
+                dt_debug "ADDING PARAMETER: $arg"
+                args+=("$arg")  # 🦆 says ⮞ collecting them shell spell ingredients
+              done
+         
+              # 🦆 says ⮞ final product - hope u like say duck!
+              paramz="''${args[@]}" && echo
+              echo "exact" > "$match_result_flag" # 🦆 says ⮞ tellz fuzzy handler we done
+              dt_debug "Executing: yo $script $paramz" 
+              # 🦆 says ⮞ EXECUTEEEEEEEAAA  – HERE WE QUAAAAACKAAAOAA
+              exec "yo-$script" "''${args[@]}"   
+              return 0
+            fi         
+          done 
+        }        
+
+        ${lib.concatMapStrings (name: makeFuzzyPatternMatcher name) scriptNamesWithIntents}  
+        # 🦆 SCREAMS ⮞ FUZZY WOOOO TO THE MOON                
+        fuzzy_match_handler() {
+          resolved_output=$(resolve_entities "dummy" "$text") # We'll resolve properly after matching
+          resolved_text=$(echo "$resolved_output" | cut -d'|' -f1)
+          fuzzy_result=$(find_best_fuzzy_match "$resolved_text")
+          [[ -z "$fuzzy_result" ]] && return 1
+
+          IFS='|' read -r combined match_score <<< "$fuzzy_result"
+          IFS=':' read -r matched_script matched_sentence <<< "$combined"
+          dt_debug "Best fuzzy script: $matched_script" >&2
+
+          # 🦆 says ⮞ resolve entities agein, diz time for matched script yo
+          resolved_output=$(resolve_entities "$matched_script" "$text")
+          resolved_text=$(echo "$resolved_output" | cut -d'|' -f1)
+          subs_decl=$(echo "$resolved_output" | cut -d'|' -f2-)
+          declare -gA substitutions || true
+          eval "$subs_decl" >/dev/null 2>&1 || true
+
+          # if (( best_score >= $FUZZY_THHRESHOLD )); then
+          # 🦆 says ⮞ we hab a match quacky quacky diz sure iz hacky!
+          if match_fuzzy_$matched_script "$resolved_text" "$matched_sentence"; then
+            if [[ "$(declare -p substitutions 2>/dev/null)" =~ "declare -A" ]]; then
+              for original in "''${!substitutions[@]}"; do
+                dt_debug "Substitution: $original >''${substitutions[$original]}";
+                [[ -n "$original" ]] && dt_info "$original > ''${substitutions[$original]}" # 🦆 says ⮞ see wat duck did there?
+              done # 🦆 says ⮞ i hop duck pick dem right - right?
+            fi
+            args=() # 🦆 says ⮞ duck gettin' ready 2 build argumentz 4 u script 
+            for arg in "''${cmd_args[@]}"; do
+              dt_debug "ADDING PARAMETER: $arg"
+              args+=("$arg")  # 🦆 says ⮞ collecting them shell spell ingredients
+            done
+            # 🦆 says ⮞ wait for exact match to finish
+            # while kill -0 "$pid1" 2>/dev/null; do
+            while [[ ! -f "$match_result_flag" || $(cat "$match_result_flag") != "exact_finished" ]]; do
+              sleep 0.05
+            done
+            # 🦆 says ⮞ checkz if exact match succeeded yo  
+            if [[ $(cat "$match_result_flag") == "exact" ]]; then 
+              dt_debug "Exact match already handled execution. Fuzzy exiting."             
+              exit 0
+            fi
+                   
+            # 🦆 says ⮞ final product - hope u like say duck!
+            paramz="''${args[@]}" && echo
+            dt_info "Executing: yo $matched_script $paramz" 
+            # 🦆 says ⮞ EXECUTEEEEEEEAAA  – HERE WE QUAAAAACKAAAOAA
+            exec "yo-$matched_script" "''${args[@]}"
+            return 0
+          fi
+        }        
+
+        # 🦆 says ⮞ if exact match winz, no need for fuzz! but fuzz ready to quack when regex chokes
+        exact_match_handler &
+        pid1=$!
+        fuzzy_match_handler
+        exit
+      '';
+    };    
+   
+</span><span class="clean-version hidden">
+in {
+  yo.scripts = { 
+    do = { 
+      description = "Natural language to Shell script translator with dynamic regex matching and automatic parameter resolutiion";
+      aliases = ["b"];
+      category = "⚙️ Configuration";
+      logLevel = "WARNING";
+      autoStart = false;
+      parameters = [
+        { name = "input"; description = "Text to parse into a yo command"; optional = false; }
+        { name = "fuzzyThreshold"; description = "Minimum procentage for considering fuzzy matching sucessful. (1-100)"; default = "15"; }
+      ]; 
+      helpFooter = ''
+        WIDTH=$(tput cols)
+        cat <<EOF | ${pkgs.glow}/bin/glow --width $WIDTH -
+${helpFooterMd}
+EOF
+      '';
+      code = ''
+        set +u  
+        ${cmdHelpers} 
+        FUZZY_THRESHOLD="''${fuzzyThreshold:-15}"
+        intent_data_file="${intentDataFile}"
+        YO_FUZZY_INDEX="${fuzzyIndexFile}"
+        text="$input"
+        match_result_flag=$(mktemp)
+        trap 'rm -f "$match_result_flag"' EXIT
+        debug_attempted_matches=()
+        substitution_applied=false   
+        declare -A script_substitutions_data
+        declare -A script_has_lists  
+        intent_data_json=$(<"$intent_data_file")
+        while IFS=$'\t' read -r script pattern value; do
+            if [[ -n "$script" ]]; then
+                script_has_lists["$script"]=1
+                key="''${script}:''${pattern}"
+                script_substitutions_data["$key"]="$value"
+            fi
+        done < <(
+            jq -r 'to_entries[] | .key as $script | .value.substitutions[]? | 
+                    [$script, .pattern, .value] | @tsv' \
+            <<<"$intent_data_json"
+        )
+        levenshtein() {
+          local a="$1" b="$1"
+          local -i len_a=''${#a} len_b=''${#b}
+          local -a d; local -i i j cost    
+          for ((i=0; i<=len_a; i++)); do d[i]=$i; done
+          for ((j=1; j<=len_b; j++)); do
+            prev=$j
+            for ((i=1; i<=len_a; i++)); do
+              [[ "''${a:i-1:1}" == "''${b:j-1:1}" ]] && cost=0 || cost=1
+              act=$(( d[i-1] + cost ))
+              d[i]=$(( (d[i]+1) < (prev+1) ? 
+                       ((d[i]+1) < act ? d[i]+1 : act) : 
+                       ((prev+1) < act ? prev+1 : act) ))
+              prev=$((d[i]))
+            done
+            d[0]=$j
+          done
+          echo ''${d[len_a]}
+        }
+        resolve_entities() {
+          local script="$1"
+          local text="$2"
+          local replacements
+          local pattern out
+          declare -A substitutions
+          has_lists=$(jq -e '."'"$script"'"?.substitutions | length > 0' "$intent_data_file" 2>/dev/null || echo false)
+          if [[ "$has_lists" != "true" ]]; then
+            echo -n "$text"
+            echo "|declare -A substitutions=()"
+            return
+          fi                     
+          replacements=$(jq -r '.["'"$script"'"].substitutions[] | "\(.pattern)|\(.value)"' "$intent_data_file")
+          while IFS="|" read -r pattern out; do
+            if [[ -n "$pattern" && "$text" =~ $pattern ]]; then
+              original="''${BASH_REMATCH[0]}"
+              [[ -z "''$original" ]] && continue
+              substitutions["''$original"]="$out"
+              substitution_applied=true
+              text=$(echo "$text" | sed -E "s/\\b$pattern\\b/$out/g") 
+            fi
+          done <<< "$replacements"      
+          echo -n "$text"
+          echo "|$(declare -p substitutions)" 
+        }        
+        for f in "$MATCHER_DIR"/*.sh; do [[ -f "$f" ]] && source "$f"; done
+        scripts_ordered_by_priority=( ${lib.concatMapStringsSep "\n" (name: "  \"${name}\"") processingOrder} )
+        dt_info "$scripts_ordered_by_priority"
+        find_best_fuzzy_match() {
+          local input="$1"
+          local best_score=0
+          local best_match=""
+          local normalized=$(echo "$input" | tr '[:upper:]' '[:lower:]' | tr -d '[:punct:]')
+          local candidates
+          mapfile -t candidates < <(jq -r '.[] | .[] | "\(.script):\(.sentence)"' "$YO_FUZZY_INDEX")
+          dt_debug "Found ''${#candidates[@]} candidates for fuzzy matching"
+          for candidate in "''${candidates[@]}"; do
+            IFS=':' read -r script sentence <<< "$candidate"
+            local norm_sentence=$(echo "$sentence" | tr '[:upper:]' '[:lower:]' | tr -d '[:punct:]')
+            local tri_score=$(trigram_similarity "$normalized" "$norm_sentence")
+            (( tri_score < 30 )) && continue
+            local score=$(levenshtein_similarity "$normalized" "$norm_sentence")  
+            if (( score > best_score )); then
+              best_score=$score
+              best_match="$script:$sentence"
+              dt_info "New best match: $best_match ($score%)"
+            fi
+          done
+          if [[ -n "$best_match" ]]; then
+            echo "$best_match|$best_score"
+          else
+            echo ""
+          fi
+        }
+           
+        ${lib.concatMapStrings (name: makePatternMatcher name) scriptNamesWithIntents}  
+        exact_match_handler() {        
+          for script in "''${scripts_ordered_by_priority[@]}"; do
+            resolved_output=$(resolve_entities "$script" "$text")
+            resolved_text=$(echo "$resolved_output" | cut -d'|' -f1)
+            dt_debug "Tried: match_''${script} '$resolved_text'"
+            subs_decl=$(echo "$resolved_output" | cut -d'|' -f2-)
+            declare -gA substitutions || true
+            eval "$subs_decl" >/dev/null 2>&1 || true
+            if match_$script "$resolved_text"; then      
+              if [[ "$(declare -p substitutions 2>/dev/null)" =~ "declare -A" ]]; then
+                for original in "''${!substitutions[@]}"; do
+                  dt_debug "Substitution: $original >''${substitutions[$original]}";
+                  [[ -n "$original" ]] && dt_info "$original > ''${substitutions[$original]}"
+                done 
+              fi
+              args=() 
+              for arg in "''${cmd_args[@]}"; do
+                dt_debug "ADDING PARAMETER: $arg"
+                args+=("$arg")
+              done
+         
+              paramz="''${args[@]}" && echo
+              echo "exact" > "$match_result_flag"
+              dt_debug "Executing: yo $script $paramz" 
+              exec "yo-$script" "''${args[@]}"   
+              return 0
+            fi         
+          done 
+        }        
+
+        ${lib.concatMapStrings (name: makeFuzzyPatternMatcher name) scriptNamesWithIntents}          
+        fuzzy_match_handler() {
+          resolved_output=$(resolve_entities "dummy" "$text")
+          resolved_text=$(echo "$resolved_output" | cut -d'|' -f1)
+          fuzzy_result=$(find_best_fuzzy_match "$resolved_text")
+          [[ -z "$fuzzy_result" ]] && return 1
+
+          IFS='|' read -r combined match_score <<< "$fuzzy_result"
+          IFS=':' read -r matched_script matched_sentence <<< "$combined"
+          dt_debug "Best fuzzy script: $matched_script" >&2
+
+          resolved_output=$(resolve_entities "$matched_script" "$text")
+          resolved_text=$(echo "$resolved_output" | cut -d'|' -f1)
+          subs_decl=$(echo "$resolved_output" | cut -d'|' -f2-)
+          declare -gA substitutions || true
+          eval "$subs_decl" >/dev/null 2>&1 || true
+
+          if match_fuzzy_$matched_script "$resolved_text" "$matched_sentence"; then
+            if [[ "$(declare -p substitutions 2>/dev/null)" =~ "declare -A" ]]; then
+              for original in "''${!substitutions[@]}"; do
+                dt_debug "Substitution: $original >''${substitutions[$original]}";
+                [[ -n "$original" ]] && dt_info "$original > ''${substitutions[$original]}"
+              done
+            fi
+            args=()
+            for arg in "''${cmd_args[@]}"; do
+              dt_debug "ADDING PARAMETER: $arg"
+              args+=("$arg")
+            done
+            while [[ ! -f "$match_result_flag" || $(cat "$match_result_flag") != "exact_finished" ]]; do
+              sleep 0.05
+            done
+
+            if [[ $(cat "$match_result_flag") == "exact" ]]; then 
+              dt_debug "Exact match already handled execution. Fuzzy exiting."             
+              exit 0
+            fi
+            paramz="''${args[@]}" && echo
+            dt_info "Executing: yo $matched_script $paramz" 
+            exec "yo-$matched_script" "''${args[@]}"
+            return 0
+          fi
+        }        
+
+        exact_match_handler &
+        pid1=$!
+        fuzzy_match_handler
+        exit
+      '';
+    };
+</span></pre>
+            </div>
+        </div>
+    </details>
+
+
+
+        <h2 class="section-title">Automated Sentence Testing</h2>
+        
+        <p>
+            As things grew more and more, and my bin directory became thicker, the system became unmaintainable without proper testing, I for sure was not going to do this manually. (Remember the conditional explosion?)<br> So i decided to go with the automated sentence testing route. <br>I wrote a comprehensive automated test harness as one of the CLI commands itself.<br>
+            
+        </p>
+        
+        <div class="callout">
+            <h3>Testing Approach:</h3>
+            <ul>
+                <li><strong>Positive tests:</strong> Convert sentence templates to test cases</li>
+                <li><strong>Negative tests:</strong> Validate garbage input doesn't match</li>
+                <li><strong>Boundary tests:</strong> Empty strings, spaces, special characters</li>
+            </ul>
+        </div>
+        
+    
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">▶ View the Bash script for Automated Testing</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+    # 🦆 says ⮞ automatic doin' sentencin' testin'
+    tests = { # 🦆 says ⮞ just run yo tests to do an extensive automated test based on your defined sentence data 
+      description = "Extensive automated sentence testing for the NLP"; 
+      category = "⚙️ Configuration";
+      autoStart = false;
+      logLevel = "INFO";
+      parameters = [{ name = "input"; description = "Text to test as a single  sentence test"; optional = true; }];       
+      code = ''    
+        set +u  
+        ${cmdHelpers}
+        intent_data_file="${intentDataFile}" # 🦆 says ⮞ cache dat JSON wisdom, duck hates slowridez
+        intent_base_path="${intentBasePath}" # 🦆 says ⮞ use da prebuilt path yo
+        config_json=$(nix eval "$intent_base_path.$script" --json)
+        passed_positive=0
+        total_positive=0
+        passed_negative=0
+        total_negative=0
+        passed_boundary=0
+        failures=()     
+        resolve_sentence() {
+          local script="$1"
+          config_json=$(nix eval "$intent_base_path.$script" --json 2>/dev/null)
+          [ -z "$config_json" ] && config_json="{}"          
+          local sentence="$2"    
+          local parameters # 🦆 says ⮞ first replace parameters to avoid conflictz wit regex processin' yo
+          parameters=($(grep -oP '{\K[^}]+' <<< "$sentence"))          
+          for param in "''${parameters[@]}"; do
+            is_wildcard=$(jq -r --arg param "$param" '.data[0].lists[$param].wildcard // "false"' <<< "$config_json" 2>/dev/null)
+            local replacement=""
+            if [[ "$is_wildcard" == "true" ]]; then
+              # 🦆 says ⮞ use da context valuez
+              if [[ "$param" =~ hour|minute|second ]]; then
+                replacement="1"  # 🦆 says ⮞ use numbers for time parameters
+              elif [[ "$param" =~ room|device ]]; then
+                replacement="livingroom" # 🦆 says ⮞ use realistic room names
+              else
+                replacement="test" # 🦆 says ⮞ generic test value
+              fi
+            else
+              mapfile -t outs < <(jq -r --arg param "$param" '.data[0].lists[$param].values[].out' <<< "$config_json" 2>/dev/null)
+              if [[ ''${#outs[@]} -gt 0 ]]; then
+                replacement="''${outs[0]}"
+              else
+                replacement="unknown"
+              fi
+            fi
+            sentence="''${sentence//\{$param\}/$replacement}"
+          done # 🦆 says ⮞ process regex patterns after parameter replacement
+          # 🦆 says ⮞ handle alternatives - (word1|word2) == pick first alternative
+          sentence=$(echo "$sentence" | sed -E 's/\(([^|)]+)(\|[^)]+)?\)/\1/g')          
+          # 🦆 says ⮞ handle optional wordz - [word] == include da word
+          sentence=$(echo "$sentence" | sed -E 's/\[([^]]+)\]/ \1 /g')          
+          # 🦆 says ⮞ handle vertical bars in alternatives - word1|word2 == word1
+          sentence=$(echo "$sentence" | sed -E 's/(^|\s)\|(\s|$)/ /g')  # 🦆 says ⮞ remove standalone vertical bars
+          sentence=$(echo "$sentence" | sed -E 's/([^ ]+)\|([^ ]+)/\1/g')  # 🦆 says ⮞ pick first alternative in groups          
+          # 🦆 says ⮞ clean up spaces
+          sentence=$(echo "$sentence" | tr -s ' ' | sed -e 's/^ //' -e 's/ $//')
+          echo "$sentence"
+        }
+        if [[ -n "$input" ]]; then
+            echo "[🦆📜] Testing single input: '$input'"
+            FUZZY_THRESHOLD=15
+            YO_FUZZY_INDEX="${fuzzyIndexFile}"
+            priorityList="${toString (lib.concatStringsSep " " processingOrder)}"
+            scripts_ordered_by_priority=($priorityList)
+            ${lib.concatMapStrings (name: makePatternMatcher name) scriptNamesWithIntents}
+            ${lib.concatMapStrings (name: makeFuzzyPatternMatcher name) scriptNamesWithIntents}
+            for f in "$MATCHER_DIR"/*.sh; do [[ -f "$f" ]] && source "$f"; done
+            find_best_fuzzy_match() {
+              local input="$1"
+              local best_score=0
+              local best_match=""
+              local normalized=$(echo "$input" | tr '[:upper:]' '[:lower:]' | tr -d '[:punct:]')
+              local candidates
+              mapfile -t candidates < <(jq -r '.[] | .[] | "\(.script):\(.sentence)"' "$YO_FUZZY_INDEX")
+              dt_debug "Found ''${#candidates[@]} candidates for fuzzy matching"
+              for candidate in "''${candidates[@]}"; do
+                IFS=':' read -r script sentence <<< "$candidate"
+                local norm_sentence=$(echo "$sentence" | tr '[:upper:]' '[:lower:]' | tr -d '[:punct:]')
+                local tri_score=$(trigram_similarity "$normalized" "$norm_sentence")
+                (( tri_score < 30 )) && continue
+                local score=$(levenshtein_similarity "$normalized" "$norm_sentence")  
+                if (( score > best_score )); then
+                  best_score=$score
+                  best_match="$script:$sentence"
+                  dt_info "New best match: $best_match ($score%)"
+                fi
+              done
+              if [[ -n "$best_match" ]]; then
+                echo "$best_match|$best_score"
+              else
+                echo ""
+              fi
+            }
+            test_single_input() {
+                local input="$1"
+                dt_info "Testing input: '$input'"
+                for script in "''${scripts_ordered_by_priority[@]}"; do
+                    resolved_output=$(resolve_entities "$script" "$input")
+                    resolved_text=$(echo "$resolved_output" | cut -d'|' -f1)
+                    dt_debug "Trying exact match: $script '$resolved_text'" 
+                    if match_$script "$resolved_text"; then
+                        dt_info "✅ EXACT MATCH: $script"
+                        dt_info "Parameters:"
+                        for arg in "''${cmd_args[@]}"; do
+                            dt_info "  - $arg"
+                        done
+                        return 0
+                    fi
+                done
+                dt_info "No exact match found. Attempting fuzzy match..."
+                fuzzy_result=$(find_best_fuzzy_match "$input")
+                if [[ -z "$fuzzy_result" ]]; then
+                    dt_info "❌ No fuzzy candidates found"
+                    return 1
+                fi  
+                IFS='|' read -r combined match_score <<< "$fuzzy_result"
+                IFS=':' read -r matched_script matched_sentence <<< "$combined"
+                dt_info "Best fuzzy candidate: $matched_script (score: $match_score%)"
+                dt_info "Matched sentence: '$matched_sentence'"
+                resolved_output=$(resolve_entities "$matched_script" "$input")
+                resolved_text=$(echo "$resolved_output" | cut -d'|' -f1)
+                if match_fuzzy_$matched_script "$resolved_text" "$matched_sentence"; then
+                    dt_info "✅ FUZZY MATCH ACCEPTED: $matched_script"
+                    dt_info "Parameters:"
+                    for arg in "''${cmd_args[@]}"; do
+                        dt_info "  - $arg"
+                    done
+                    return 0
+                else
+                    dt_info "❌ Fuzzy match rejected (parameter resolution failed)"
+                    return 1
+                fi
+            }
+            test_single_input "$input"
+            exit $?
+        fi
+    
+        # 🦆 says ⮞ insert matchers
+        ${lib.concatMapStrings (name: makePatternMatcher name) scriptNamesWithIntents}  
+        test_positive_cases() {
+          for script in ${toString scriptNamesWithIntents}; do
+            echo "[🦆📜] Testing script: $script"    
+            config_json=$(nix eval "$intent_base_path.$script" --json 2>/dev/null || echo "{}")
+            mapfile -t raw_sentences < <(jq -r '.data[].sentences[]' <<< "$config_json" 2>/dev/null)    
+            for template in "''${raw_sentences[@]}"; do
+              test_sentence=$(resolve_sentence "$script" "$template")
+              echo " Testing: $test_sentence"
+              resolved_output=$(resolve_entities "$script" "$test_sentence")
+              resolved_text=$(echo "$resolved_output" | cut -d'|' -f1)
+              subs_decl=$(echo "$resolved_output" | cut -d'|' -f2-)
+              declare -gA substitutions || true
+              eval "$subs_decl" >/dev/null 2>&1 || true
+              if match_$script "$resolved_text"; then
+                say_duck "yay ✅ PASS: $resolved_text"
+                ((passed_positive++))
+              else
+                say_duck "fuck ❌ FAIL: $resolved_text"
+                failures+=("POSITIVE: $script | $resolved_text")
+              fi
+              ((total_positive++))
+            done
+          done
+        }
+        test_negative_cases() {
+          echo "[🦆🚫] Testing Negative Cases"
+          negative_cases=(
+            "make me a sandwich"
+            "launch the nuclear torpedos!"
+            "gör mig en macka"
+            "avfyra kärnvapnen!"
+            "ducks sure are the best dont you agree"
+          )        
+          for neg_case in "''${negative_cases[@]}"; do
+            echo " Testing: $neg_case"
+            matched=false
+            for script in ${toString scriptNamesWithIntents}; do
+              resolved_output=$(resolve_entities "$script" "$neg_case")
+              resolved_neg=$(echo "$resolved_output" | cut -d'|' -f1)     
+              if match_$script "$resolved_neg"; then
+                say_duck "fuck ❌ FALSE POSITIVE: $resolved_neg (matched by $script)"
+                failures+=("NEGATIVE: $script | $resolved_neg")
+                matched=true
+                break
+              fi
+            done       
+            if ! $matched; then
+              say_duck "yay ✅ [NEG] PASS: $resolved_neg"
+              ((passed_negative++))
+            fi
+            ((total_negative++))
+          done
+        }
+        test_boundary_cases() {
+          echo "[🦆🔲] Testing Boundary Cases"
+          boundary_cases=("" "   " "." "!@#$%^&*()")  
+          for bcase in "''${boundary_cases[@]}"; do
+            printf " Testing: '%s'\n" "$bcase"
+            matched=false   
+            for script in ${toString scriptNamesWithIntents}; do
+              if match_$script "$bcase"; then
+                say_duck "fuck ❌ BOUNDARY FAIL: '$bcase' (matched by $script)"
+                failures+=("BOUNDARY: $script | '$bcase'")
+                matched=true
+                break
+              fi
+            done       
+            if ! $matched; then
+              say_duck "yay ✅ [BND] PASS: '$bcase'"
+              ((passed_boundary++))
+            fi
+          done
+          total_boundary=''${#boundary_cases[@]}
+        }  
+        test_positive_cases
+        test_negative_cases
+        test_boundary_cases
+        
+        # 🦆 says ⮞ calculate
+        total_tests=$((total_positive + total_negative + total_boundary))
+        passed_tests=$((passed_positive + passed_negative + passed_boundary))
+        percent=$(( 100 * passed_tests / total_tests ))
+        
+        # 🦆 says ⮞ colorize based on percentage
+        if [ "$percent" -ge 80 ]; then 
+            color="$GREEN" && duck_report="⭐"
+        elif [ "$percent" -ge 60 ]; then 
+            color="$YELLOW" && duck_report="🟢"
+        else 
+            color="$RED" && duck_report="😭"
+        fi
+        
+        # 🦆 says ⮞ display failed tests report
+        if [ "$passed_tests" -ne "$total_tests" ]; then 
+            if [ ''${#failures[@]} -gt 0 ]; then
+                echo "" && echo -e "''${RED}## ────── FAILURES ──────##''${RESET}"
+                for failure in "''${failures[@]}"; do
+                    echo -e "''${RED}## ❌ $failure"
+                done
+                echo -e "''${RED}## ────── FAILURES ──────##''${RESET}"
+            fi
+        fi
+        
+        # 🦆 says ⮞ display final report
+        echo "" && echo -e "''${color}"## ──────⋆⋅☆⋅⋆────── ##''${RESET}"
+        bold "Testing completed!" 
+        say_duck "Positive: $passed_positive/$total_positive"
+        say_duck "Negative: $passed_negative/$total_negative"
+        say_duck "Boundary: $passed_boundary/$total_boundary"
+        say_duck "TOTAL: $passed_tests/$total_tests (''${color}''${percent}%''${GRAY})"
+        echo "''${RESET}" && echo -e "''${color}## ──────⋆⋅☆⋅⋆────── ##''${RESET}"
+        say_duck "$duck_report"
+        exit 1
+      ''; # 🦆 says ⮞ thnx for quackin' along til da end!
+    };# 🦆 says ⮞ the duck be stateless, the regex be law, and da shell... is my pond.    
+  };}# 🦆 say ⮞ nobody beat diz nlp nao says sir quack a lot NOBODY I SAY!
+# 🦆 says ⮞ QuackHack-McBLindy out!  
+</span><span class="clean-version hidden">
+    tests = {  
+      description = "Extensive automated sentence testing for the NLP"; 
+      category = "⚙️ Configuration";
+      autoStart = false;
+      logLevel = "INFO";
+      parameters = [{ name = "input"; description = "Text to test as a single  sentence test"; optional = true; }];       
+      code = ''    
+        set +u  
+        ${cmdHelpers}
+        intent_data_file="${intentDataFile}" 
+        intent_base_path="${intentBasePath}"
+        config_json=$(nix eval "$intent_base_path.$script" --json)
+        passed_positive=0
+        total_positive=0
+        passed_negative=0
+        total_negative=0
+        passed_boundary=0
+        failures=()     
+        resolve_sentence() {
+          local script="$1"
+          config_json=$(nix eval "$intent_base_path.$script" --json 2>/dev/null)
+          [ -z "$config_json" ] && config_json="{}"          
+          local sentence="$2"    
+          local parameters 
+          parameters=($(grep -oP '{\K[^}]+' <<< "$sentence"))          
+          for param in "''${parameters[@]}"; do
+            is_wildcard=$(jq -r --arg param "$param" '.data[0].lists[$param].wildcard // "false"' <<< "$config_json" 2>/dev/null)
+            local replacement=""
+            if [[ "$is_wildcard" == "true" ]]; then
+              if [[ "$param" =~ hour|minute|second ]]; then
+                replacement="1" 
+              elif [[ "$param" =~ room|device ]]; then
+                replacement="livingroom" 
+              else
+                replacement="test" 
+              fi
+            else
+              mapfile -t outs < <(jq -r --arg param "$param" '.data[0].lists[$param].values[].out' <<< "$config_json" 2>/dev/null)
+              if [[ ''${#outs[@]} -gt 0 ]]; then
+                replacement="''${outs[0]}"
+              else
+                replacement="unknown"
+              fi
+            fi
+            sentence="''${sentence//\{$param\}/$replacement}"
+          done 
+          sentence=$(echo "$sentence" | sed -E 's/\(([^|)]+)(\|[^)]+)?\)/\1/g')          
+          sentence=$(echo "$sentence" | sed -E 's/\[([^]]+)\]/ \1 /g')          
+          sentence=$(echo "$sentence" | sed -E 's/(^|\s)\|(\s|$)/ /g')  
+          sentence=$(echo "$sentence" | sed -E 's/([^ ]+)\|([^ ]+)/\1/g')           
+          sentence=$(echo "$sentence" | tr -s ' ' | sed -e 's/^ //' -e 's/ $//')
+          echo "$sentence"
+        }
+        if [[ -n "$input" ]]; then
+            echo "[🦆📜] Testing single input: '$input'"
+            FUZZY_THRESHOLD=15
+            YO_FUZZY_INDEX="${fuzzyIndexFile}"
+            priorityList="${toString (lib.concatStringsSep " " processingOrder)}"
+            scripts_ordered_by_priority=($priorityList)
+            ${lib.concatMapStrings (name: makePatternMatcher name) scriptNamesWithIntents}
+            ${lib.concatMapStrings (name: makeFuzzyPatternMatcher name) scriptNamesWithIntents}
+            for f in "$MATCHER_DIR"/*.sh; do [[ -f "$f" ]] && source "$f"; done
+            find_best_fuzzy_match() {
+              local input="$1"
+              local best_score=0
+              local best_match=""
+              local normalized=$(echo "$input" | tr '[:upper:]' '[:lower:]' | tr -d '[:punct:]')
+              local candidates
+              mapfile -t candidates < <(jq -r '.[] | .[] | "\(.script):\(.sentence)"' "$YO_FUZZY_INDEX")
+              dt_debug "Found ''${#candidates[@]} candidates for fuzzy matching"
+              for candidate in "''${candidates[@]}"; do
+                IFS=':' read -r script sentence <<< "$candidate"
+                local norm_sentence=$(echo "$sentence" | tr '[:upper:]' '[:lower:]' | tr -d '[:punct:]')
+                local tri_score=$(trigram_similarity "$normalized" "$norm_sentence")
+                (( tri_score < 30 )) && continue
+                local score=$(levenshtein_similarity "$normalized" "$norm_sentence")  
+                if (( score > best_score )); then
+                  best_score=$score
+                  best_match="$script:$sentence"
+                  dt_info "New best match: $best_match ($score%)"
+                fi
+              done
+              if [[ -n "$best_match" ]]; then
+                echo "$best_match|$best_score"
+              else
+                echo ""
+              fi
+            }
+            test_single_input() {
+                local input="$1"
+                dt_info "Testing input: '$input'"
+                for script in "''${scripts_ordered_by_priority[@]}"; do
+                    resolved_output=$(resolve_entities "$script" "$input")
+                    resolved_text=$(echo "$resolved_output" | cut -d'|' -f1)
+                    dt_debug "Trying exact match: $script '$resolved_text'" 
+                    if match_$script "$resolved_text"; then
+                        dt_info "✅ EXACT MATCH: $script"
+                        dt_info "Parameters:"
+                        for arg in "''${cmd_args[@]}"; do
+                            dt_info "  - $arg"
+                        done
+                        return 0
+                    fi
+                done
+                dt_info "No exact match found. Attempting fuzzy match..."
+                fuzzy_result=$(find_best_fuzzy_match "$input")
+                if [[ -z "$fuzzy_result" ]]; then
+                    dt_info "❌ No fuzzy candidates found"
+                    return 1
+                fi  
+                IFS='|' read -r combined match_score <<< "$fuzzy_result"
+                IFS=':' read -r matched_script matched_sentence <<< "$combined"
+                dt_info "Best fuzzy candidate: $matched_script (score: $match_score%)"
+                dt_info "Matched sentence: '$matched_sentence'"
+                resolved_output=$(resolve_entities "$matched_script" "$input")
+                resolved_text=$(echo "$resolved_output" | cut -d'|' -f1)
+                if match_fuzzy_$matched_script "$resolved_text" "$matched_sentence"; then
+                    dt_info "✅ FUZZY MATCH ACCEPTED: $matched_script"
+                    dt_info "Parameters:"
+                    for arg in "''${cmd_args[@]}"; do
+                        dt_info "  - $arg"
+                    done
+                    return 0
+                else
+                    dt_info "❌ Fuzzy match rejected (parameter resolution failed)"
+                    return 1
+                fi
+            }
+            test_single_input "$input"
+            exit $?
+        fi
+    
+        ${lib.concatMapStrings (name: makePatternMatcher name) scriptNamesWithIntents}  
+        test_positive_cases() {
+          for script in ${toString scriptNamesWithIntents}; do
+            echo "[🦆📜] Testing script: $script"    
+            config_json=$(nix eval "$intent_base_path.$script" --json 2>/dev/null || echo "{}")
+            mapfile -t raw_sentences < <(jq -r '.data[].sentences[]' <<< "$config_json" 2>/dev/null)    
+            for template in "''${raw_sentences[@]}"; do
+              test_sentence=$(resolve_sentence "$script" "$template")
+              echo " Testing: $test_sentence"
+              resolved_output=$(resolve_entities "$script" "$test_sentence")
+              resolved_text=$(echo "$resolved_output" | cut -d'|' -f1)
+              subs_decl=$(echo "$resolved_output" | cut -d'|' -f2-)
+              declare -gA substitutions || true
+              eval "$subs_decl" >/dev/null 2>&1 || true
+              if match_$script "$resolved_text"; then
+                say_duck "yay ✅ PASS: $resolved_text"
+                ((passed_positive++))
+              else
+                say_duck "fuck ❌ FAIL: $resolved_text"
+                failures+=("POSITIVE: $script | $resolved_text")
+              fi
+              ((total_positive++))
+            done
+          done
+        }
+        test_negative_cases() {
+          echo "[🦆🚫] Testing Negative Cases"
+          negative_cases=(
+            "make me a sandwich"
+            "launch the nuclear torpedos!"
+            "gör mig en macka"
+            "avfyra kärnvapnen!"
+            "ducks sure are the best dont you agree"
+          )        
+          for neg_case in "''${negative_cases[@]}"; do
+            echo " Testing: $neg_case"
+            matched=false
+            for script in ${toString scriptNamesWithIntents}; do
+              resolved_output=$(resolve_entities "$script" "$neg_case")
+              resolved_neg=$(echo "$resolved_output" | cut -d'|' -f1)     
+              if match_$script "$resolved_neg"; then
+                say_duck "fuck ❌ FALSE POSITIVE: $resolved_neg (matched by $script)"
+                failures+=("NEGATIVE: $script | $resolved_neg")
+                matched=true
+                break
+              fi
+            done       
+            if ! $matched; then
+              say_duck "yay ✅ [NEG] PASS: $resolved_neg"
+              ((passed_negative++))
+            fi
+            ((total_negative++))
+          done
+        }
+        test_boundary_cases() {
+          echo "[🦆🔲] Testing Boundary Cases"
+          boundary_cases=("" "   " "." "!@#$%^&*()")  
+          for bcase in "''${boundary_cases[@]}"; do
+            printf " Testing: '%s'\n" "$bcase"
+            matched=false   
+            for script in ${toString scriptNamesWithIntents}; do
+              if match_$script "$bcase"; then
+                say_duck "fuck ❌ BOUNDARY FAIL: '$bcase' (matched by $script)"
+                failures+=("BOUNDARY: $script | '$bcase'")
+                matched=true
+                break
+              fi
+            done       
+            if ! $matched; then
+              say_duck "yay ✅ [BND] PASS: '$bcase'"
+              ((passed_boundary++))
+            fi
+          done
+          total_boundary=''${#boundary_cases[@]}
+        }  
+        test_positive_cases
+        test_negative_cases
+        test_boundary_cases
+        
+        total_tests=$((total_positive + total_negative + total_boundary))
+        passed_tests=$((passed_positive + passed_negative + passed_boundary))
+        percent=$(( 100 * passed_tests / total_tests ))
+        
+        if [ "$percent" -ge 80 ]; then 
+            color="$GREEN" && duck_report="YO! ⭐ duck approoves! u reallzy knowz ur stuff! u makin' duckie happy"
+        elif [ "$percent" -ge 60 ]; then 
+            color="$YELLOW" && duck_report="not too bad! u ok buddy"
+        else 
+            color="$RED" && duck_report="sad duck.... 😭 u should reallzy look over yo sentences and mayb i can stop cry =("
+        fi
+        
+        if [ "$passed_tests" -ne "$total_tests" ]; then 
+            if [ ''${#failures[@]} -gt 0 ]; then
+                echo "" && echo -e "''${RED}## ────── FAILURES ──────##''${RESET}"
+                for failure in "''${failures[@]}"; do
+                    echo -e "''${RED}## ❌ $failure"
+                done
+                echo -e "''${RED}## ────── FAILURES ──────##''${RESET}"
+            fi
+        fi
+        
+        echo "" && echo -e "''${color}"## ──────⋆⋅☆⋅⋆────── ##''${RESET}"
+        bold "Testing completed!" 
+        say_duck "Positive: $passed_positive/$total_positive"
+        say_duck "Negative: $passed_negative/$total_negative"
+        say_duck "Boundary: $passed_boundary/$total_boundary"
+        say_duck "TOTAL: $passed_tests/$total_tests (''${color}''${percent}%''${GRAY})"
+        echo "''${RESET}" && echo -e "''${color}## ──────⋆⋅☆⋅⋆────── ##''${RESET}"
+        say_duck "$duck_report"
+        exit 1
+      ''; 
+    };    
+  };}  
+</span></pre>
+            </div>
+        </div>
+    </details>        
+    
+    
+    
+        <h2 class="section-title">Where I Landed</h2>
+        
+        <div class="key-features">
+            <div class="feature-card">
+                <h3>Dynamic Pattern Matching</h3>
+                <p>Unlimited automatic parameter resolution & entity substitutions through dynamically generated regex patterns matching against declarative sentence definition. </p>
+                <p>Shell command construction & dispatcher. </p>
+
+
+
+            </div>
+            
+            <div class="feature-card">
+                <h3>Hybrid Matching System</h3>
+                <p>Exact pattern matching with async fuzzy matching fallback</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>Comprehensive Testing</h3>
+                <p>Automated test harness covering all edge cases with detailed reporting for every defined sentences.</p>
+            </div>
+        </div>
+        
+        
+        <p>
+            The result is a voice-command ready system that feels like magic when it works and teaches you humility when it doesn't. It's unorthodox, occasionally infuriating, but ultimately empowering - letting me command my computer in a way that feels truly natural and powerful.<br>
+            Even with a lot of bad Whisper transcriptions we are looking at a low 2% failure rate for called intents.<br>
+            I can be really drunk and speak Japanese and it would still properly match and extract all parameters.<br> 
+            
+            <div class="duck-comment">
+                <p># 🦆 says ⮞ "What's the stupidest way YOU could solve your next problem?"</p>
+            </div>
+            
+            Please go stupid!<br>
+            Look how well this turned out. <br>
+            After over five years of exmperementing with building that voice command empire, <br>
+            I can safely say that this module is the by far most accurate intent handler I have tried so far. <br>
+            I wish it would handle speeds a little better when scaling, but that might be a project for another day.<br>
+            
+            Well, I hope you enjoyed the funky ride and hopefully learned something. <br>
+            Maybe I'll throw up some more texts if this was liked, because I do have a ton of strange modules like this laying around.<br>  <br>
+            Peace and code QuackHack-McBLindy out yo!<br><br>
+
+            
+            <a href="https://github.com/QuackHack-McBlindy/dotfiles/blob/main/bin/config/do.nix" class="source-link">
+              View NLP source code on GitHub
+            </a><br>
+
+            <a href="https://github.com/QuackHack-McBlindy/dotfiles/blob/main/bin/config/tests.nix" class="source-link">
+              View testing framework source code on GitHub
+            </a><br>
+
+            <section id="comments">
+              <h2>Comments on this blog post</h2>
+              <script 
+                src="https://utteranc.es/client.js"
+                repo="QuackHack-McBlindy/blog"
+                issue-term="pathname"
+                theme="github-light"
+                crossorigin="anonymous"
+                async>
+              </script>
+            </section>
+        </p>
+    </div>
+
+
+
+    
+    <footer>
+        <p>All thoughts are my own and should not be considered advice of any kind. More likely the opposite.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeBlocks = document.querySelectorAll('details.code-block-container');
+            
+            codeBlocks.forEach(block => {
+                const summary = block.querySelector('summary');
+                const codeLang = summary.querySelector('.code-lang');
+                const toggleIcon = summary.querySelector('.toggle-icon');
+                
+                const originalText = codeLang.innerHTML;
+                const viewText = originalText.replace('Hide', 'View').replace('▶', '▼');
+                const hideText = originalText.replace('View', 'Hide').replace('▼', '▶');
+                
+                if (block.open) {
+                    codeLang.innerHTML = hideText;
+                } else {
+                    codeLang.innerHTML = viewText;
+                }
+                
+                block.addEventListener('toggle', function() {
+                    if (this.open) {
+                        codeLang.innerHTML = hideText;
+                    } else {
+                        codeLang.innerHTML = viewText;
+                    }
+                });
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const duckToggle = document.getElementById('duckToggle');
+            let ducksHidden = false;
+            
+            function toggleCodeDucks() {
+                ducksHidden = !ducksHidden;
+                
+                const duckVersions = document.querySelectorAll('.duck-version');
+                const cleanVersions = document.querySelectorAll('.clean-version');
+                
+                duckVersions.forEach(version => {
+                    version.classList.toggle('hidden', ducksHidden);
+                });
+                
+                cleanVersions.forEach(version => {
+                    version.classList.toggle('hidden', !ducksHidden);
+                });
+                
+                duckToggle.innerHTML = ducksHidden ? 
+                    '<span class="duck-icon"></span> Show 🦆 commentary' : 
+                    '<span class="duck-icon"></span> Hide 🦆 commentary';
+                    
+                const duckIcon = duckToggle.querySelector('.duck-icon');
+                duckIcon.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    duckIcon.style.transform = 'scale(1)';
+                }, 300);
+            }
+            
+            duckToggle.addEventListener('click', toggleCodeDucks);
+            
+            document.querySelectorAll('.clean-version').forEach(version => {
+                version.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>

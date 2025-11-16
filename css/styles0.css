@@ -1,0 +1,795 @@
+/* --------------------------------------------------------------- */
+/* -- TITLES -- */
+/* --------------------------------------------------------------- */
+
+/* -- EXAMPLE USAGE -- */  
+/*  <h1 class="large-title">Large Title Example</h1>  */
+/*  <h2 class="medium-title">Medium Title Example</h2>  */
+/*  <h3 class="small-title">Small Title Example</h3>  */
+
+.large-title {
+    font-size: 42px; /* Adjust the font size as needed */
+    color: #333;     /* Adjust the color as needed, this is a dark grey */
+    font-weight: bold;
+    text-align: left;
+}
+.large-title-center {
+    font-size: 42px; /* Adjust the font size as needed */
+    color: #333;     /* Adjust the color as needed, this is a dark grey */
+    font-weight: bold;
+    text-align: center;
+}
+.medium-title {
+    font-size: 32px; /* Adjust the font size as needed */
+    color: #555;     /* Adjust the color as needed, this is a medium grey */
+    font-weight: bold;
+    text-align: left;
+}
+.medium-title-center {
+    font-size: 32px; /* Adjust the font size as needed */
+    color: #555;     /* Adjust the color as needed, this is a medium grey */
+    font-weight: bold;
+    text-align: center;
+}
+
+.small-title {
+    font-size: 22px; /* Adjust the font size as needed */
+    color: #777;     /* Adjust the color as needed, this is a lighter grey */
+    font-weight: bold;
+    text-align: left;
+}
+
+/* --------------------------------------------------------------- */
+/* -- ?? -- */
+/* --------------------------------------------------------------- */
+
+.hamburger-menu ul li {
+    margin: 0; /* Ensure no extra margin */
+    padding: 0; /* Ensure no extra padding */
+    text-align: center; /* Center text if necessary */
+}
+
+.hamburger-menu ul li:first-child {
+    /* Add specific styles for the first link if needed */
+    margin-top: 0; /* Example: Remove extra margin on top */
+}
+
+
+
+
+
+
+
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.pagination-button {
+    background-color: black; /* Black background */
+    color: red; /* Red text color */
+    border: none;
+ /*   padding: 0.5rem 1rem; */
+    border-radius: 0.375rem;
+    cursor: pointer;
+    font-size: 2rem;
+}
+
+.pagination-button:disabled {
+    background-color: black;
+    color: black;
+    cursor: not-allowed;
+}
+
+.footer-bar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    padding: 100px; /* Reduced height */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-bar audio {
+    margin-left: 20px;
+}
+
+
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    overflow-x: hidden;
+}
+
+header {
+    background: url('img/projects.png') no-repeat center center;
+    background-size: cover;
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+}
+
+header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    animation: spaceEffect 10s linear infinite;
+}
+
+
+
+@keyframes spaceEffect {
+    0% { background-position: 0 0; }
+    100% { background-position: 1000px 1000px; }
+}
+
+nav {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: space-between;
+}
+
+.container {
+    display: flex;
+    flex-direction: row-reverse; /* Change the order of flex items */
+    padding: 2rem;
+    gap: 1rem;
+}
+
+.main-content {
+    flex: 3;
+    padding: 1rem;
+    text-align: left;
+}
+
+.sidebar {
+    flex: 1;
+    padding: 1rem;
+    background-color: #111;
+    border-right: 1px solid #444; /* Keeping the right border from styles.css */
+    text-align: left;
+}
+
+.rss-feed {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+.rss-feed li {
+    margin-bottom: 1rem;
+}
+
+.rss-feed li a {
+    color: #1e90ff;
+    text-decoration: none;
+}
+
+.rss-feed li a:hover {
+    text-decoration: underline;
+}
+
+.rss-logo {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+
+.grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.grid img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    cursor: pointer;
+    transition: transform 0.8s ease;
+}
+
+.grid img:hover {
+    transform: scale(1.3);
+}
+
+/* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.modal-content {
+    margin: 5% auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+}
+
+.modal-content img {
+    width: 100%;
+}
+
+/* Close button styles */
+.close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+}
+
+footer {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 1rem;
+    text-align: center;
+    margin-top: 2rem;
+    border-top: 1px solid #444;
+}
+
+footer small a {
+    color: #1e90ff;
+    text-decoration: none;
+}
+
+footer small a:hover {
+    text-decoration: underline;
+}
+
+/* Animated Background */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('path/to/animated-background.gif') no-repeat center center;
+    background-size: cover;
+    z-index: -1;
+    opacity: 0.2;
+    animation: animateBackground 30s linear infinite;
+}
+
+@keyframes animateBackground {
+    0% { background-position: 0 0; }
+    100% { background-position: 100% 100%; }
+}
+
+/* Custom styles from HTML file */
+.fixed-size-section {
+    background-color: white; /* White background for sections */
+    padding: 2rem; /* Padding inside sections */
+    border-radius: 0.5rem; /* Rounded corners */
+    color: black; /* Black text color */
+    margin-bottom: 2rem; /* Space below sections */
+    height: 500px; /* Increased height for sections */
+    overflow: hidden; /* Hide overflow */
+    position: relative; /* Relative positioning for absolute children */
+}
+
+.section-title {
+    font-size: 2.5rem; /* Larger font size for section titles */
+    font-weight: 700; /* Bold font weight */
+    margin-bottom: 1rem; /* Space below titles */
+}
+
+/* Style for Latest Blog Post */
+#section1 {
+    padding: 1rem; /* Padding inside the section */
+}
+
+/* Style for Blog Post title */
+#latest-posts h4 {
+    font-size: 2rem; /* Larger font size for blog post title */
+    font-weight: bold; /* Bold title */
+    margin-bottom: 0.5rem; /* Space below title */
+}
+
+/* Style for italic date */
+#latest-posts small {
+    font-style: italic; /* Italic date */
+    display: block; /* Display date on a new line */
+    margin-bottom: 1rem; /* Space below date */
+}
+
+/* White media player */
+#latest-audio-player {
+    background-color: #ffffff; /* White background for media player */
+    border: 1px solid #ccc; /* Light border for media player */
+    border-radius: 0.25rem; /* Rounded corners */
+    width: auto; /* Auto width */
+    height: auto; /* Auto height */
+}
+
+/* Thinner Footer Bar */
+.footer-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0.1rem; /* Thinner padding */
+    border-top: 1px solid #333; /* Slightly darker border */
+    z-index: 100;
+}
+
+.footer-bar audio {
+    margin-left: 1rem; /* Margin from the left edge */
+}
+
+/* Navbar shadow */
+/* .navbar { */
+/*    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1); */ /* Subtle shadow */
+/* } /*
+
+/* Styles from styles0.css */
+.nav-link {
+    color: #333;
+    padding: 10px;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 0.5rem;
+    display: flex; /* Default to visible on desktop */
+    flex-direction: row; /* Typically horizontal layout on desktop */
+    space-x-6; /* Maintains spacing if using Tailwind */
+}
+
+.nav-link-active:hover {
+    background-color: #2a9d8f;
+    color: white;
+    filter: hue-rotate(180deg) saturate(150%);
+}    
+    
+    
+.nav-link-active {
+    background-color: #2a9d8f;
+    color: white;
+    padding: 10px;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 0.5rem;
+    display: flex; /* Default to visible on desktop */
+    flex-direction: row; /* Typically horizontal layout on desktop */
+    space-x-6; /* Maintains spacing if using Tailwind */      
+}
+
+.nav-link:hover {
+    background-color: #2a9d8f;
+    color: white;
+}
+
+
+.bottom-background {
+    position: absolute; /* Absolute positioning relative to the nearest positioned ancestor */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px; /* Adjust this height as needed */
+    background-image: url('img/background-section1.png'); /* Path to your local image */
+    background-size: cover; /* Ensure the image covers the area */
+    background-repeat: no-repeat; /* Prevent image from repeating */
+    background-position: center bottom; /* Align the image to the center bottom */
+    z-index: -1; /* Ensure it stays behind other content */
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 60px; /* Adjust this value as needed */
+        background-color: white;
+        left: 0;
+    }
+    .nav-links.active {
+        display: flex;
+    }
+}
+
+
+.teal-button {
+    background-color: teal; /* Teal background */
+    color: black;           /* Black text */
+    border: none;           /* No border */
+    padding: 10px 20px;     /* Padding around the text */
+    font-size: 16px;        /* Text size */
+    cursor: pointer;        /* Pointer cursor on hover */
+    border-radius: 8px;     /* Smooth, rounded corners */
+    transition: background-color 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s; /* Smooth transitions */
+}
+
+.teal-button:hover {
+    background-color: magenta; /* Black background on hover */
+    color: white;            /* White text on hover */
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+}
+
+.scroll-teal-button {
+    opacity: 0;
+    transform: translateY(150px);  /* This moves the button down initially. */
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;  /* Smooth transition for both properties. */
+}
+
+.scroll-teal-button.scrolled {
+    opacity: 1;
+    transform: translateY(0);  /* Moves the button back to its original position. */
+}
+
+.section {
+    opacity: 0;
+    transform: translateY(100px);
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+.section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.scroll-image {
+    opacity: 0;
+    transform: translateY(150px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out, box-shadow 0.5s ease;
+}
+
+.scroll-image.scrolled {
+    opacity: 1;
+    transform: translateY(0);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.scroll-image:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+}
+
+.service-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.typing::after {
+    content: '';
+    animation: blink 0.7s infinite;
+}
+
+.curly-braces {
+    color: teal;
+    font-size: 1.5em;
+}
+
+@media (min-width: 768px) {
+    #section1 {
+        background-image: url('img/background-section1.png'); 
+        background-size: 100% 100%;
+        background-position: left;
+        background-repeat: no-repeat;
+    }
+}
+
+@media (min-width: 768px) {
+    #section2 {   
+        background-image: url('background-section1.png'); 
+        background-size: 100% 100%;
+        background-position: left;
+        background-repeat: no-repeat;
+        filter: hue-rotate(180deg) saturate(150%);
+    }
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+.image-container2 {
+    display: flex;
+    justify-content: flex-end; /* Aligns children to the right */
+    width: 100%; /* Ensures the container takes full width */
+}
+
+.link-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Aligns content to the right */
+    gap: 15px; /* Spacing between elements */
+}
+
+
+
+/* Bounce Up Animation */
+@keyframes bounceUp {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0); }
+}
+
+/* Bounce Down Animation */
+@keyframes bounceDown {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(20px); }
+  100% { transform: translateY(0); }
+}
+
+/* Bounce Animation */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+/* Pop In Animation */
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Float Animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Fade Out Animation */
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Slide In Animation */
+@keyframes slideIn {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(0); }
+}
+
+/* Slide Out Animation */
+@keyframes slideOut {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(100%); }
+}
+
+/* Spin Animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Shake Animation */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  50% { transform: translateX(10px); }
+  75% { transform: translateX(-10px); }
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Zoom In Animation */
+@keyframes zoomIn {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+
+/* Zoom Out Animation */
+@keyframes zoomOut {
+  0% { transform: scale(1); }
+  100% { transform: scale(0); }
+}
+
+/* Rotate In Animation */
+@keyframes rotateIn {
+  0% { transform: rotate(-200deg); opacity: 0; }
+  100% { transform: rotate(0deg); opacity: 1; }
+}
+
+/* Rotate Out Animation */
+@keyframes rotateOut {
+  0% { transform: rotate(0deg); opacity: 1; }
+  100% { transform: rotate(200deg); opacity: 0; }
+}
+
+/* Flip Animation */
+@keyframes flip {
+  0% { transform: rotateY(0); }
+  50% { transform: rotateY(180deg); }
+  100% { transform: rotateY(360deg); }
+}
+
+/* Flash Animation */
+@keyframes flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Rubber Band Animation */
+@keyframes rubberBand {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.25, 0.75); }
+  40% { transform: scale(0.75, 1.25); }
+  50% { transform: scale(1.15, 0.85); }
+  65% { transform: scale(0.95, 1.05); }
+  75% { transform: scale(1.05, 0.95); }
+  100% { transform: scale(1); }
+}
+
+/* Swing Animation */
+@keyframes swing {
+  20% { transform: rotate(15deg); }
+  40% { transform: rotate(-10deg); }
+  60% { transform: rotate(5deg); }
+  80% { transform: rotate(-5deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* Tada Animation */
+@keyframes tada {
+  0% { transform: scale(1); }
+  10%, 20% { transform: scale(0.9) rotate(-3deg); }
+  30%, 50%, 70%, 90% { transform: scale(1.1) rotate(3deg); }
+  40%, 60%, 80% { transform: scale(1.1) rotate(-3deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+/* Wobble Animation */
+@keyframes wobble {
+  0% { transform: translateX(0%); }
+  15% { transform: translateX(-25%) rotate(-5deg); }
+  30% { transform: translateX(20%) rotate(3deg); }
+  45% { transform: translateX(-15%) rotate(-3deg); }
+  60% { transform: translateX(10%) rotate(2deg); }
+  75% { transform: translateX(-5%) rotate(-1deg); }
+  100% { transform: translateX(0%) rotate(0deg); }
+}
+
+/* Jello Animation */
+@keyframes jello {
+  0%, 100% { transform: translateX(0); }
+  11.1% { transform: translateX(-25%) rotate(-2.5deg); }
+  22.2% { transform: translateX(25%) rotate(2.5deg); }
+  33.3% { transform: translateX(-25%) rotate(-2.5deg); }
+  44.4% { transform: translateX(25%) rotate(2.5deg); }
+  55.5% { transform: translateX(-25%) rotate(-2.5deg); }
+  66.6% { transform: translateX(25%) rotate(2.5deg); }
+  77.7% { transform: translateX(-25%) rotate(-2.5deg); }
+  88.8% { transform: translateX(25%) rotate(2.5deg); }
+}
+
+/* Hinge Animation */
+@keyframes hinge {
+  0% { transform: rotate(0deg); transform-origin: top left; opacity: 1; }
+  20% { transform: rotate(80deg); transform-origin: top left; opacity: 1; }
+  40%, 60% { transform: rotate(60deg); transform-origin: top left; opacity: 1; }
+  80% { transform: rotate(80deg); transform-origin: top left; opacity: 0; }
+  100% { transform: translateY(700px); opacity: 0; }
+}
+
+/* Roll In Animation */
+@keyframes rollIn {
+  0% { transform: translateX(-100%) rotate(-120deg); opacity: 0; }
+  100% { transform: translateX(0) rotate(0deg); opacity: 1; }
+}
+
+/* Roll Out Animation */
+@keyframes rollOut {
+  0% { transform: translateX(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateX(100%) rotate(120deg); opacity: 0; }
+}
+
+/* Animation classes */
+.animate-bounceUp { animation: bounceUp 1s ease-in-out; }
+.animate-bounceDown { animation: bounceDown 1s ease-in-out; }
+.animate-bounce { animation: bounce 1s ease-in-out infinite; }
+.animate-popIn { animation: popIn 0.5s ease-out; }
+.animate-float { animation: float 2s ease-in-out infinite; }
+.animate-fadeIn { animation: fadeIn 1s ease-in-out; }
+.animate-fadeOut { animation: fadeOut 1s ease-in-out; }
+.animate-slideIn { animation: slideIn 1s ease-in-out; }
+.animate-slideOut { animation: slideOut 1s ease-in-out; }
+.animate-spin { animation: spin 1s linear infinite; }
+.animate-shake { animation: shake 0.5s ease-in-out; }
+.animate-pulse { animation: pulse 2s ease-in-out infinite; }
+.animate-zoomIn { animation: zoomIn 0.5s ease-in-out; }
+.animate-zoomOut { animation: zoomOut 0.5s ease-in-out; }
+.animate-rotateIn { animation: rotateIn 0.5s ease-in-out; }
+.animate-rotateOut { animation: rotateOut 0.5s ease-in-out; }
+.animate-flip { animation: flip 1s ease-in-out; }
+.animate-flash { animation: flash 1s ease-in-out infinite; }
+.animate-rubberBand { animation: rubberBand 1s ease-in-out; }
+.animate-swing { animation: swing 1s ease-in-out; }
+.animate-tada { animation: tada 1s ease-in-out; }
+.animate-wobble { animation: wobble 1s ease-in-out; }
+.animate-jello { animation: jello 1s ease-in-out; }
+.animate-hinge { animation: hinge 2s ease-in-out; }
+.animate-rollIn { animation: rollIn 1s ease-in-out; }
+.animate-rollOut { animation: rollOut 1s ease-in-out; }
+
+
+/* Bounce Up Animation */
+@keyframes bounceUp {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0); }
+}
+
+/* Bounce Down Animation */
+@keyframes bounceDown {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(20px); }
+  100% { transform: translateY(0); }
+}
+
+/* Bounce Animation */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+/* Pop In Animation */
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Animation classes */
+.animate-bounceUp { animation: bounceUp 1s ease-in-out; }
+.animate-bounceDown { animation: bounceDown 1s ease-in-out; }
+.animate-bounce { animation: bounce 1s ease-in-out infinite; }
+.animate-popIn { animation: popIn 0.5s ease-out; }
+
+@media (min-width: 768px) {
+    #section3 {
+     /*   background-image: url('background-section1.png'); */
+        background-size: 100% 100%;
+        background-position: left;
+        background-repeat: no-repeat;
+        filter: hue-rotate(180deg) saturate(150%);
+    }
+}
+

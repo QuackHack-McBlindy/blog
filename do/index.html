@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦆🧑‍🦯</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="navbar-content">
+            <a href="https://github.com/QuackHack-McBlindy" title="GitHub">
+                <img src="../img/github_teal.png" alt="GitHub" class="github-icon" style="height: 32px;" onmouseover="this.src='img/github_magenta.png';" onmouseout="this.src='../img/github_teal.png';"> </img>
+            </a>
+            <img src="../img/logo.png" height="48" width="48" >
+            <div class="navbar-title">
+                <span>🦆</span>🧑‍🦯 <a href="https://quackhack-mcblindy.github.io/blog/">QuackHack-McBlindy blog</a>
+            </div>
+            <button id="duckToggle" class="toggle-btn">
+                <span class="duck-icon">🦆</span>
+                Hide duck commentary
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="toc-container">
+        <details class="toc-details">
+            <summary class="toc-header">
+                <span class="toc-duck">🦆</span>
+                <h3>Navigation</h3>
+                <span class="toc-man">🧑‍🦯</span>
+                <span class="toc-toggle">⮟</span>
+            </summary>
+            <nav class="toc-nav">
+                <a href="../yo/index.html" class="toc-item">
+                    <span class="toc-icon">🫀</span>
+                    Yo - Define & Unify
+                </a>
+                <a href="index.html" class="toc-item current">
+                    <span class="toc-icon">🧠</span>
+                    Do - Listen, Process, Act & Learn
+                    <span class="current-marker">⮜🦆</span>
+                </a>
+                <a href="../house/index.html" class="toc-item">
+                    <span class="toc-icon">🏠</span>
+                    House - Declarative Home Automation
+                </a>
+                <a href="../docs/index.html" class="toc-item">
+                    <span class="toc-icon">📚</span>
+                    Documentation - Automating the README
+                </a>
+                <a href="../misc/index.html" class="toc-item">
+                    <span class="toc-icon">🧩</span>
+                    Miscellaneous
+                </a>
+            </nav>
+            <div class="toc-footer">
+                <span class="toc-quack">🦆 says ⮞ qwack qwack, plx pick!</span>
+            </div>
+        </details>
+    </div>
+    
+    
+  
+    <div class="content">
+        <header class="category-title">
+            <h1>Do - Listen, Process, Act & Learn</h1>
+            <p class="subtitle">This section is about the brain of the operation.<br>The Natural Language Processor</p>
+        </header>
+        
+        <h2 class="section-title">Key Features</h2>
+          
+        <div class="key-features">
+    
+        <div class="feature-card">
+            <h3>Pattern Matching Engine</h3>
+            <p>Dual-layer system with pre-compiled regex for exact matches and Levenshtein-based fuzzy matching as fallback.</p>
+            <p>Automatic parameter extraction and 15% tolerance threshold for natural input errors.</p>
+            <p>Supports command chaining by splitting patterns with pre-defined word in the module option.</p>
+        </div>
+    
+        <div class="feature-card">
+            <h3>Declarative Pattern Definition</h3>
+            <p>All command patterns and variants defined in Nix.</p>
+            <p>Build-time pattern expansion eliminates runtime regex compilation.</p>
+            <p>Prioritization by weight, complexity, and lexicographic order.</p>
+        </div>
+    
+        <div class="feature-card">
+            <h3>Signature-Based Fuzzy Index</h3>
+            <p>Pre-computed, word-order–independent signatures for accelerated fuzzy lookup.</p>
+            <p>Optimized for large-scale command sets and voice variations.</p>
+        </div>
+    
+        <div class="feature-card">
+            <h3>Parameter & Entity System</h3>
+            <p>Supports required, alternative, and optional parameters.</p>
+            <p>Entity resolution maps natural phrases to canonical flags or arguments.</p>
+            <p><strong>Three Parameter Types:</p></strong>
+            <p>{param} - Required parameters with entity resolution</p>
+            <p>(option1|option2) - Required alternative</p>
+            <p>[optional|words] - Optional components</p>
+        </div>
+    
+        <div class="feature-card">
+            <h3>Extensive Sentence Testing Framework</h3>
+            <p>Generates test cases by expanding sentence patterns with optional words and alternatives. </p>
+            <p>Validates both exact and fuzzy matching against defined voice commands.</p>
+            <p>Verifies command recognition accuracy, handles parameter extraction, and provides detailed statistics about voice command coverage and performance.</p>
+        </div>
+    
+        <div class="feature-card">
+            <h3>Conflict-Free Validation</h3>
+            <p>Build-time assertion checks prevent overlapping or ambiguous sentence definitions.</p>
+            <p>Detects prefix and duplicate conflicts before deployment.</p>
+        </div>
+    
+        <div class="feature-card">
+            <h3>Statistical Learning</h3>
+            <p>Tracks match success rates, fuzzy distance effectiveness, and failure patterns.</p>
+            <p>Feeds data back into model tuning and pattern optimization.</p>
+        </div>
+    
+        <div class="feature-card">
+            <h3>Real-Time Voice Mode</h3>
+            <p>Rust-based WebSocket client handles live transcription and NLP intent recognition.</p>
+            <p>Enables hands-free interaction and compound command handling.</p>
+        </div>
+    
+    
+    </div>
+    
+
+          
+        <h2 class="section-title">The Brain of the Voice Assistant</h2>
+        
+        <p>
+            The natural language processor is the brain of my dotfiles.<br>
+            It translates human text into Shell commands. <br>
+            It began in Bash as a world-class challenge, worked flawlessly - until my /bin grew.<br>
+            Now it's in Rust and faster than ever. <br>
+            User defines sentences in Nix, and at build time it dynamically generates regex patterns.<br>
+            At runtime it automatically resolves entities to properly generate the parameters before execution.<br>
+        </p>
+            
+
+        <h2 class="section-title">What Does All THis Mean?</h2>
+        
+        <p>
+          It means that I can say for example:<br><br>
+          <strong><i>"Update the flake and rebuild the system and deploy dad's media server and wait 5 minutes and check for errors at dad's media server"</i></strong>
+        </p>
+    
+        <div class="duck-comment">
+            <p> ⮞ but does it understand ducks??  quack quack quack quack quack quack quack</p>
+        </div>
+
+
+        <div class="callout">
+            <p>
+                <b><u>Table of Content:</b></u> <br><br>
+                <a href="part1.html">Developing a feature rich NLP with jq, Nix & Bash </a><br>
+                <a href="part2.html">Making Good Use of the Combinational Explosion Requires Top Tier Speed - Porting to Rust</a><br>
+                <a href="part3.html">Memory - Context-Aware & Self-Learning Voice Assistant</a><br>
+                <a href="part4.html">Sentence Validation - Rapid Fast Testing Framework</a><br>
+                                
+                                
+            </p>
+        </div>
+
+    </div>
+    
+    <footer>
+        <p>All thoughts are my own and should not be considered advice of any kind. More likely the opposite.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocDetails = document.querySelector('.toc-details');
+            const tocHeader = document.querySelector('.toc-header');
+            tocHeader.addEventListener('click', function() {
+                const isOpening = !tocDetails.open;
+        
+                if (isOpening) {
+                    tocDetails.style.maxHeight = tocDetails.scrollHeight + 'px';
+                } else {
+                    tocDetails.style.maxHeight = '60px'; // Approximate header height
+                }
+            });
+    
+            tocDetails.addEventListener('toggle', function() {
+                if (tocDetails.open) {
+                    tocDetails.style.maxHeight = tocDetails.scrollHeight + 'px';
+                } else {
+                    setTimeout(() => {
+                        tocDetails.style.maxHeight = null;
+                    }, 300);
+                }
+            });
+        });
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            const duckToggle = document.getElementById('duckToggle');
+            let ducksHidden = false;
+            
+            function toggleCodeDucks() {
+                ducksHidden = !ducksHidden;
+                
+                const duckComments = document.querySelectorAll('.duck-comment');
+                
+                duckComments.forEach(comment => {
+                    comment.style.display = ducksHidden ? 'none' : 'block';
+                });
+                
+                duckToggle.innerHTML = ducksHidden ? 
+                    '<span class="duck-icon">🦆</span> Show 🦆 commentary' : 
+                    '<span class="duck-icon">🦆</span> Hide 🦆 commentary';
+                    
+                const duckIcon = duckToggle.querySelector('.duck-icon');
+                duckIcon.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    duckIcon.style.transform = 'scale(1)';
+                }, 300);
+            }
+            
+            duckToggle.addEventListener('click', toggleCodeDucks);
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollImages = document.querySelectorAll('.scroll-image');
+    
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('scrolled');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+    
+            scrollImages.forEach(image => {
+                observer.observe(image);
+            });
+        });
+    </script>
+</body>
+</html>

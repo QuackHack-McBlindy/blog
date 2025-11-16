@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog about declarative home automation, smart home systems, and avoiding vendor lock-in with Nix-based solutions">
+    <meta property="og:title" content="Declarative Home Automation with Nix">
+    <meta property="og:description" content="Learn how to define your smart home devices and avoid vendor lock-in">
+    <meta property="og:type" content="article">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>🦆🧑‍🦯'blog</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="navbar-content">
+            <a href="https://github.com/QuackHack-McBlindy" title="GitHub">
+                <img src="../img/github_teal.png" alt="GitHub" class="github-icon" style="height: 32px;" onmouseover="this.src='../img/github_magenta.png';" onmouseout="this.src='../img/github_teal.png';"> </img>
+            </a>
+            
+            <div class="navbar-title">
+                <span>🦆</span>🧑‍🦯 <a href="https://quackhack-mcblindy.github.io/blog/">QuackHack-McBlindy blog</a>
+            </div>
+            <img src="../img/logo.png" height="48" width="48" >
+            <button id="duckToggle" class="toggle-btn" aria-label="Toggle duck commentary">
+
+                <span class="duck-icon">🦆</span>
+                Hide duck commentary
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="toc-container">
+        <details class="toc-details">
+            <summary class="toc-header">
+                <span class="toc-duck">🦆</span>
+                <h3>Navigation</h3>
+                <span class="toc-man">🧑‍🦯</span>
+                <span class="toc-toggle">⮟</span>
+            </summary>
+            <nav class="toc-nav">
+                <a href="../yo/index.html" class="toc-item">
+                    <span class="toc-icon">🫀</span>
+                    Yo - Define & Unify
+                </a>
+                <a href="../do/index.html" class="toc-item">
+                    <span class="toc-icon">🧠</span>
+                    Do - Listen, Process, Act & Learn
+                </a>
+                <a href="index.html" class="toc-item current">
+                    <span class="toc-icon">🏠</span>
+                    House - Declarative Home Automation
+                    <span class="current-marker">⮜🦆</span>
+                </a>
+               <a href="../docs/index.html" class="toc-item">
+                    <span class="toc-icon">📚</span>
+                    Documentation - Automating the README
+                </a>
+                <a href="../misc/index.html" class="toc-item">
+                    <span class="toc-icon">🧩</span>
+                    Miscellaneous 
+                </a>
+            </nav>
+            <div class="toc-footer">
+                <span class="toc-quack">🦆 says ⮞ qwack qwack, plx pick!</span>
+            </div>
+        </details>
+    </div>
+    
+  
+    <div class="content">
+        <header class="category-title">
+            <h1>Defining Your Home</h1>
+            <p class="subtitle">If you follow along these following pages - by the end of this crazy ride, you will be able to just push your devices pair button and say `yo bitch pair new devices` to connect a fresh device to your home automation system. Enough said? Let's kick it! (next page)</p>
+        </header>
+
+
+
+        <h2 class="section-title">Key Features</h2>
+        
+        <div class="key-features">
+            <div class="feature-card">
+                <h3>Validation System</h3>
+                <p>Strong validation - making invalid configuration give smart error message.</p>
+                <p>Room existence checks</p>
+                <p>Device friendly name validation</p>
+                <p>Scene validation</p>
+                <p>Duplicate detection</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>Fully Reproducable</h3>
+                <p>Declarative Zigbee configuration.</p>
+                <p>Everything is defined using Nix options.</p>
+                <p>Version Controlled</p>
+                
+            </div>
+            
+            <div class="feature-card">
+                <h3>Extensible & Protocol-Agnostic</h3>
+                <p>Built on Zigbee2MQTT & Rust for maximum flexibility.</p>    <br>
+                <p>Easy to add new device types and protocols</p><br>
+            </div>
+        </div>
+     
+
+
+        <div class="callout">
+            <p>
+                NOTE: This is <strong>NOT</strong> Home Assistant.<br>
+                This is for those that want to <strong>AVOID</strong> Home Assistant!<br>
+                Believe it or not - there are other <i>(read better)</i> ways to run your home than with a big locked pool of Python dependencies.<br>
+                I am <strong>NOT</strong> claiming that this is the "Ultimate Code" which your home should run on.<br>
+                However, with over a decade of experience - my opinion is that this atleast points in that <strong>declarative</strong> direction.<br>
+            </p>
+        </div><br><br> 
+       
+        <div class="duck-comment">
+            <p> ⮞ no offence 2 teh good folkz workin' at da HA HQ - duck sure some of the qwackz there work hard!</p>
+        </div><br><br>
+
+        
+        <h2 class="section-title">Continue Reading</h2>
+           
+        <p>
+            
+            
+            <a href ="part1.html">Part 1. The module, the options and defining devices</a> <span class="current-marker">⮜🦆start here!</span><br>
+            <a href ="part2.html">Part 2. Configure your Mosquitto/Z2MQTT</a><br>
+            <a href ="part3.html">Part 3. Nix Configured Automations</a>  <br>              
+            <a href ="part4.html">Part 4. Writing a Server Service - In Rust</a><br>          
+            <a href ="part5.html">Part 5. Writing a Client - With Voice Commands</a><br>   
+            <a href ="part6.html">Part 6. The Auto-Generated Dashboard</a><br>        
+
+            <br>
+
+            <section id="comments">
+              <h2>Comments on this blog post</h2>
+              <script 
+                src="https://utteranc.es/client.js"
+                repo="QuackHack-McBlindy/blog"
+                issue-term="pathname"
+                theme="github-light"
+                crossorigin="anonymous"
+                async>
+              </script>
+            </section>
+        </p>
+    </div>
+
+
+
+    </div>
+    
+    <footer>
+        <p>All thoughts are my own and should not be considered advice of any kind. More likely the opposite.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeBlocks = document.querySelectorAll('details.code-block-container');
+            
+            codeBlocks.forEach(block => {
+                const summary = block.querySelector('summary');
+                const codeLang = summary.querySelector('.code-lang');
+                const toggleIcon = summary.querySelector('.toggle-icon');
+                
+                const originalText = codeLang.innerHTML;
+                const viewText = originalText.replace('Hide', 'View').replace('⮞', '⮟');
+                const hideText = originalText.replace('View', 'Hide').replace('⮟', '⮞');
+                
+                if (block.open) {
+                    codeLang.innerHTML = hideText;
+                } else {
+                    codeLang.innerHTML = viewText;
+                }
+                
+                block.addEventListener('toggle', function() {
+                    if (this.open) {
+                        codeLang.innerHTML = hideText;
+                    } else {
+                        codeLang.innerHTML = viewText;
+                    }
+                });
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const duckToggle = document.getElementById('duckToggle');
+            let ducksHidden = false;
+            
+            function toggleCodeDucks() {
+                ducksHidden = !ducksHidden;
+                
+                const duckVersions = document.querySelectorAll('.duck-version');
+                const cleanVersions = document.querySelectorAll('.clean-version');
+                
+                duckVersions.forEach(version => {
+                    version.classList.toggle('hidden', ducksHidden);
+                });
+                
+                cleanVersions.forEach(version => {
+                    version.classList.toggle('hidden', !ducksHidden);
+                });
+                
+                duckToggle.innerHTML = ducksHidden ? 
+                    '<span class="duck-icon"></span> Show 🦆 commentary' : 
+                    '<span class="duck-icon"></span> Hide 🦆 commentary';
+                    
+                const duckIcon = duckToggle.querySelector('.duck-icon');
+                duckIcon.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    duckIcon.style.transform = 'scale(1)';
+                }, 300);
+            }
+            
+            duckToggle.addEventListener('click', toggleCodeDucks);
+            
+            document.querySelectorAll('.clean-version').forEach(version => {
+                version.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
