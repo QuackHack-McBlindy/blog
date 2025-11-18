@@ -84,23 +84,432 @@
 
   
         <p>
-            For now, this part will be just a source code link.<br>
-            There's nothing in the code that needs to be changed if you would like to try it.<br>
-            However you should never run code that you have not read completely through, and fully understand.<br>
+            Originally written in Bash, but sadly once again I overestimated what heavylifting Bash could handle.<br>
+            It's now in RUst and I am very happy with the performance.<br>
+            I will very briefly explain how it works and show some example code. <i>(Please note that the code blocks on this page are just example snippets)</i>
+            <br><br>
+            
+            The Rust code is written in a Nix string and is generated upom build time.<br>
+            Defined devices, automations and other configurations are inserted into variables as json files and loaded into the runtime.
+            
+            <br><br>
+            
+            You will have the link to the source code on GitHub at the bottom of this page.<br>
+            There's basically nothing in the code that needs to be changed if you would like to try it.<br>            
             <br>
-            If you want to run the service without the yo framework you would simply build it in the zigduck-rs systemd service's preStart definition.<br>
+            If you want to run the service without 'yo' you would simply build it in the zigduck-rs systemd service's preStart definition.<br>
             
         </p>
 
-        <h2 class="section-title">No Text Yet</h2>
+
+        <h2 class="section-title">File Structure</h2>
+        <p>Pretty straightforward structure, that's easy to follow.<br>
+        </p>
+
+
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View Nix File Structure</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+  # 🦆 says ⮞ Generate automations configuration
+  automationsJSON = builtins.toJSON config.house.zigbee.automations;
+  automationsFile = pkgs.writeText "automations.json" automationsJSON;
+
+  # 🦆 says ⮞ Dark time enabled flag
+  darkTimeEnabled = if config.house.zigbee.darkTime.enable then "1" else "0";
+
+  # 🦆 needz 4 rust  
+  devices-json = pkgs.writeText "devices.json" deviceMeta;
+  # 🦆 says ⮞ RUSTY SMART HOME qwack qwack     
+  zigduck-rs = pkgs.writeText "zigduck-rs" ''        
+    use rumqttc::{MqttOptions, Client, QoS, Event, Incoming};
+    #🦆...
+  '';
+
+  # 🦆 says ⮞ Cargo.toml
+  zigduck-toml = pkgs.writeText "zigduck.toml" ''    
+    [package]
+    name = "zigduck-rs"
+    #🦆...
+  '';
+  environment.variables."ZIGBEE_DEVICES" = deviceMeta;
+  environment.variables."ZIGBEE_DEVICES_FILE" = devices-json;
+  environment.variables."AUTOMATIONS_FILE" = automationsFile;
+
+in {
+  systemd.services.zigduck-rs = {
+    serviceConfig = {
+      User = "zigduck";
+      Group = "zigduck";
+      Exec = "./target/release/zigduck-rs";
+      StateDirectory = "zigduck";
+      StateDirectoryMode = "0755";
+    };
+    preStart = ''
+      if [ ! -f "${zigduckDir}/state.json" ]; then
+        echo "{}" > "${zigduckDir}/state.json"
+      fi   
+      
+      mkdir -p "${zigduckDir}/timers"
+      mkdir -p src
+      # 🦆 says ⮞ create the source filez yo 
+      cat ${zigduck-rs} > src/main.rs
+      cat ${zigduck-toml} > Cargo.toml
+      
+      # 🦆 says ⮞ build
+      ${pkgs.cargo}/bin/cargo generate-lockfile      
+      ${pkgs.cargo}/bin/cargo build --release   
+    '';
+  };
+
+  systemd.tmpfiles.rules = [
+    "d /var/lib/zigduck 0755 ${config.this.user.me.name} ${config.this.user.me.name} - -"
+    "d /var/lib/zigduck/timers 0755 ${config.this.user.me.name} ${config.this.user.me.name} - -"
+    "f /var/lib/zigduck/state.json 0644 ${config.this.user.me.name} ${config.this.user.me.name} - -"
+  ];
+</span><span class="clean-version hidden">
+  automationsJSON = builtins.toJSON config.house.zigbee.automations;
+  automationsFile = pkgs.writeText "automations.json" automationsJSON;
+
+  darkTimeEnabled = if config.house.zigbee.darkTime.enable then "1" else "0";
+
+  devices-json = pkgs.writeText "devices.json" deviceMeta;
+
+  zigduck-rs = pkgs.writeText "zigduck-rs" ''        
+    use rumqttc::{MqttOptions, Client, QoS, Event, Incoming};
+    # ...
+  '';
+
+  zigduck-toml = pkgs.writeText "zigduck.toml" ''    
+    [package]
+    name = "zigduck-rs"
+    # ...
+  '';
+  environment.variables."ZIGBEE_DEVICES" = deviceMeta;
+  environment.variables."ZIGBEE_DEVICES_FILE" = devices-json;
+  environment.variables."AUTOMATIONS_FILE" = automationsFile;
+
+in {
+  systemd.services.zigduck-rs = {
+    serviceConfig = {
+      User = "zigduck";
+      Group = "zigduck";
+      Exec = "./target/release/zigduck-rs";
+      StateDirectory = "zigduck";
+      StateDirectoryMode = "0755";
+    };
+    preStart = ''
+      if [ ! -f "${zigduckDir}/state.json" ]; then
+        echo "{}" > "${zigduckDir}/state.json"
+      fi   
+      
+      mkdir -p "${zigduckDir}/timers"
+      mkdir -p src
+
+      cat ${zigduck-rs} > src/main.rs
+      cat ${zigduck-toml} > Cargo.toml
+      
+      ${pkgs.cargo}/bin/cargo generate-lockfile      
+      ${pkgs.cargo}/bin/cargo build --release   
+    '';
+  };
+
+  systemd.tmpfiles.rules = [
+    "d /var/lib/zigduck 0755 ${config.this.user.me.name} ${config.this.user.me.name} - -"
+    "d /var/lib/zigduck/timers 0755 ${config.this.user.me.name} ${config.this.user.me.name} - -"
+    "f /var/lib/zigduck/state.json 0644 ${config.this.user.me.name} ${config.this.user.me.name} - -"
+  ];
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+
+
+
+
+        <h2 class="section-title">Main Event Loop</h2>
+
+        <p>
+           The main loop that maintains persistent Mosquitto connection, listens for all Zigbee device messages, and automatically recovers from connection failures.
+        </p><br>
+
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View Main Event Loop Summary</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+// 🦆 says ⮞ i dont alwayz qwack i can listenz
+async fn start_listening(&mut self) -> Result<(), Box<dyn std::error::Error>> {
+    let (mut client, mut connection) = Client::new(mqttoptions, 10);
+    client.subscribe("zigbee2mqtt/#", QoS::AtMostOnce)?;
+    
+    loop {
+        match connection.eventloop.poll().await {
+            Ok(event) => {
+                if let Event::Incoming(Incoming::Publish(publish)) = event {
+                    let topic = publish.topic;
+                    let payload = String::from_utf8_lossy(&publish.payload);
+                    self.process_message(&topic, &payload).await?;
+                }
+            }
+            Err(e) => {
+                // 🦆 says ⮞ auto reconnect ..
+                tokio::time::sleep(Duration::from_secs(5)).await;
+                // 🦆 says ⮞ recreate connection & resubscribe
+            }
+        }
+    }
+}
+</span><span class="clean-version hidden">
+async fn start_listening(&mut self) -> Result<(), Box<dyn std::error::Error>> {
+    let (mut client, mut connection) = Client::new(mqttoptions, 10);
+    client.subscribe("zigbee2mqtt/#", QoS::AtMostOnce)?;
+    
+    loop {
+        match connection.eventloop.poll().await {
+            Ok(event) => {
+                if let Event::Incoming(Incoming::Publish(publish)) = event {
+                    let topic = publish.topic;
+                    let payload = String::from_utf8_lossy(&publish.payload);
+                    self.process_message(&topic, &payload).await?;
+                }
+            }
+            Err(e) => {
+                // Auto reconnect ...
+                tokio::time::sleep(Duration::from_secs(5)).await;
+                // Recreate connection & resubscribe
+            }
+        }
+    }
+}
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
 
             <div class="duck-comment">
                 <p>
-                    says ⮞ Until I get my thumb out of my well-feathered ass you can check out the module itself. 
+                    says ⮞ datz good if ur zigstick is bad qwack!1 
                 </p>
             </div>            
 
 
+
+            <h2 class="section-title">Message Processing & Device State Management</h2>
+            <p>Parsing incoming Mosquitto messages and extracts device data.<br>
+            Maintains it's own state file of all devices, and routes messages to correct handlers based on device type.<br>
+            <br>
+
+            </p>
+
+
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View Message Processing Handler</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+// 🦆 says ⮞ letzz do diz! 
+async fn process_message(&mut self, topic: &str, payload: &str) -> Result<(), Box<dyn std::error::Error>> {
+    let data: Value = serde_json::from_str(payload)?;
+    let device_name = topic.strip_prefix("zigbee2mqtt/").unwrap_or(topic);
+    
+    // 🦆 says ⮞ update device statez from all dem fields
+    self.update_device_state_from_data(device_name, &data)?;
+    
+    if let Some(device) = self.devices.get(device_name) {
+        let room = &device.room;
+        // 🦆 says ⮞ handle all dem sensor typez triggerz!
+        match device.device_type.as_str() {
+            "motion" => {     //🦆says⮞MOTION SENSORS }
+            "contact" => {    //🦆says⮞DOOR/WINDOW SENSORS }
+            "water_leak" => { //🦆says⮞WATER LEAK SENSORS }
+            // 🦆says⮞ MORE? qwack qwack
+        }
+    }
+}
+</span><span class="clean-version hidden">
+async fn process_message(&mut self, topic: &str, payload: &str) -> Result<(), Box<dyn std::error::Error>> {
+    let data: Value = serde_json::from_str(payload)?;
+    let device_name = topic.strip_prefix("zigbee2mqtt/").unwrap_or(topic);
+    
+    self.update_device_state_from_data(device_name, &data)?;
+    
+    if let Some(device) = self.devices.get(device_name) {
+        let room = &device.room;
+        match device.device_type.as_str() {
+            "motion" => { ... }
+            "contact" => { ... }
+            "water_leak" => { ... }
+            // ...
+        }
+    }
+}
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+
+
+            <h2 class="section-title">Smart Dimmer Handling</h2>
+            <p>Smart dimmer handling that supports configurable behaviors per room.<br>
+            Default actions already programmed in the Rust code.<br>
+            Which means it works as you would expect out of the box.<br>
+            <br><br>
+            As shown in part 3 - it is equipped to handle pretty complex automations.<br>
+            The way it works is that it loads room specific dimmer configurations,<br>
+            and executes defined override actions or default + defined extra actions.<br>
+            </p>
+
+
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View Dimmer Switch Action Handler</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+// 🦆 says ⮞ letz go yo!
+fn handle_room_dimmer_action<F>(
+    &self, 
+    action: &str, 
+    device_name: &str, 
+    room: &str,
+    default_action: F
+) -> Result<(), Box<dyn std::error::Error>> 
+{
+    // 🦆 says ⮞any room configurationz?
+    if let Some(room_actions) = self.automations.dimmer_actions.get(room) {
+        let dimmer_action = match action {
+            "on_press_release" => &room_actions.on_press_release,
+            "on_hold_release" => &room_actions.on_hold_release,
+            // ... 🦆 says ⮞ da rest actionz
+        };
+        
+        // 🦆 says ⮞execute override actionz or default + extra actionz
+        if !config.override_actions.is_empty() {
+            for override_action in &config.override_actions {
+                self.execute_automation_action(override_action, device_name, room)?;
+            }
+        } else {
+            default_action(room)?;  // 🦆says⮞run da defaultz
+            for extra_action in &config.extra_actions {
+                self.execute_automation_action(extra_action, device_name, room)?;
+            }
+        }
+    }
+}
+</span><span class="clean-version hidden">
+fn handle_room_dimmer_action<F>(
+    &self, 
+    action: &str, 
+    device_name: &str, 
+    room: &str,
+    default_action: F
+) -> Result<(), Box<dyn std::error::Error>> 
+{
+    if let Some(room_actions) = self.automations.dimmer_actions.get(room) {
+        let dimmer_action = match action {
+            "on_press_release" => &room_actions.on_press_release,
+            "on_hold_release" => &room_actions.on_hold_release,
+            // ...
+        };
+        
+        if !config.override_actions.is_empty() {
+            for override_action in &config.override_actions {
+                self.execute_automation_action(override_action, device_name, room)?;
+            }
+        } else {
+            default_action(room)?;
+            for extra_action in &config.extra_actions {
+                self.execute_automation_action(extra_action, device_name, room)?;
+            }
+        }
+    }
+}
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+
+
+
+
+
+            <h2 class="section-title">Automations & Conditions</h2>
+            <p>
+            </p>
+
+
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View COnditions Code Snippet</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+async fn check_conditions(&self, conditions: &[Condition]) -> bool {
+    for condition in conditions {
+        if !self.check_condition(condition).await {
+            return false;
+        }
+    }
+    true
+}
+
+async fn check_condition(&self, condition: &Condition) -> bool {
+    match condition.condition_type.as_str() {
+        "dark_time" => self.is_dark_time(),
+        "someone_home" => self.is_someone_home(),
+        "room_occupied" => {
+            if let Some(room) = &condition.room {
+                self.is_motion_triggered(room) || self.has_recent_motion_in_room(room)
+            } else { false }
+        }
+        _ => false,
+    }
+}
+</span><span class="clean-version hidden">
+async fn check_conditions(&self, conditions: &[Condition]) -> bool {
+    for condition in conditions {
+        if !self.check_condition(condition).await {
+            return false;
+        }
+    }
+    true
+}
+
+async fn check_condition(&self, condition: &Condition) -> bool {
+    match condition.condition_type.as_str() {
+        "dark_time" => self.is_dark_time(),
+        "someone_home" => self.is_someone_home(),
+        "room_occupied" => {
+            if let Some(room) = &condition.room {
+                self.is_motion_triggered(room) || self.has_recent_motion_in_room(room)
+            } else { false }
+        }
+        _ => false,
+    }
+}
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+
+
+
+
+
+
+
+            <h2 class="section-title">The Full Source</h2>
+    
             <a href="https://github.com/QuackHack-McBlindy/dotfiles/blob/main/bin/home/zigduck-rs.nix" class="source-link">
               View source code on GitHub
             </a><br>   

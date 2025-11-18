@@ -118,7 +118,7 @@ in { # 🦆 duck say ⮞ qwack
         acl = [ "pattern readwrite #" ];
         port = 1883;
         omitPasswordAuth = false; # 🦆 says ⮞ safety first!
-        users.mqtt.passwordFile = config.sops.secrets.mosquitto.path;
+        users.mqtt.passwordFile = config.house.zigbee.mosquitto.passwordFIle.path;
         settings.allow_anonymous = false; # 🦆 says ⮞ never forget, never forgive right?
 #        settings.require_certificate = true; # 🦆 says ⮞ T to the L to the S spells wat? DUCK! 
 #        settings.use_identity_as_username = true;
@@ -128,7 +128,7 @@ in { # 🦆 duck say ⮞ qwack
         port = 9001;
         settings.protocol = "websockets";
         omitPasswordAuth = false; # 🦆 says ⮞ safety first!
-        users.mqtt.passwordFile = config.sops.secrets.mosquitto.path;
+        users.mqtt.passwordFile = config.house.zigbee.mosquitto.passwordFIle.path;
         settings.allow_anonymous = false; # 🦆 says ⮞ never forget, never forgive right?
         #settings.require_certificate = false; # 🦆 says ⮞ T to the L to the S spells wat? DUCK! 
       } 
@@ -149,7 +149,7 @@ in {
         acl = [ "pattern readwrite #" ];
         port = 1883;
         omitPasswordAuth = false;
-        users.mqtt.passwordFile = config.sops.secrets.mosquitto.path;
+        users.mqtt.passwordFile = config.house.zigbee.mosquitto.passwordFIle.path;
         settings.allow_anonymous = false;
 #        settings.require_certificate = true;
 #        settings.use_identity_as_username = true;
@@ -159,7 +159,7 @@ in {
         port = 9001;
         settings.protocol = "websockets";
         omitPasswordAuth = false;
-        users.mqtt.passwordFile = config.sops.secrets.mosquitto.path;
+        users.mqtt.passwordFile = config.house.zigbee.mosquitto.passwordFIle.path;
         settings.allow_anonymous = false;
         #settings.require_certificate = false; 
       } 
@@ -235,12 +235,12 @@ in { # 🦆 says ⮞ Z2MQTT configurations
         mqtt = {
           server = "mqtt://localhost:1883";
           user = "mqtt";
-          password =  config.sops.secrets.mosquitto.path; # 🦆 says ⮞ no support for passwordFile?! sneaky duckiie use dis as placeholder lol
+          password =  config.house.zigbee.mosquitto.passwordFIle.path; # 🦆 says ⮞ no support for passwordFile?! sneaky duckiie use dis as placeholder lol
           base_topic = "zigbee2mqtt";
         };
         # 🦆 says ⮞ physical port mapping
         serial = { # 🦆 says ⮞ either USB port (/dev/ttyUSB0), network Zigbee adapters (tcp://192.168.1.1:6638) or mDNS adapter (mdns://my-adapter).       
-         port = "/dev/${config.house.zigbee.coordinator.symlink}"; # 🦆 says ⮞ use symlinked serial port!!!1 
+         port = "/dev/" + config.house.zigbee.coordinator.symlink; # 🦆 says ⮞ use symlinked serial port!!!1 
          disable_led = true; # 🦆 says ⮞ save quack on electricity bill yo  
         };
         frontend = { # 🦆 says ⮞ u don't needz diz
@@ -296,14 +296,14 @@ in { # 🦆 says ⮞ Z2MQTT configurations
     preStart = '' 
       mkdir -p ${config.services.zigbee2mqtt.dataDir}    
       # 🦆 says ⮞ our real mosquitto password quack quack
-      mosquitto_password=$(cat ${config.sops.secrets.z2m_mosquitto.path}) 
+      mosquitto_password=$(cat ${config.house.zigbee.mosquitto.passwordFile}) 
       # 🦆 says ⮞ Injecting password into config...
       sed -i "s|/run/secrets/mosquitto|$mosquitto_password|" ${config.services.zigbee2mqtt.dataDir}/configuration.yaml  
       # 🦆 says ⮞ da real zigbee network key boom boom quack quack yo yo
       TMPFILE="${config.services.zigbee2mqtt.dataDir}/tmp.yaml"
       CFGFILE="${config.services.zigbee2mqtt.dataDir}/configuration.yaml"
       # 🦆 says ⮞ starting awk decryption magic..."
-      ${pkgs.gawk}/bin/awk -v keyfile="${config.sops.secrets.z2m_network_key.path}" '
+      ${pkgs.gawk}/bin/awk -v keyfile="${config.house.zigbee.networkKeyFile}" '
         /(^|[[:space:]])network_key:/ { found = 1 }
 
         { lines[NR] = $0 }
@@ -364,12 +364,12 @@ in {
         homeassistant = false;
         mqtt = {
           server = "mqtt://localhost:1883";
-          user = "mqtt";
-          password =  config.sops.secrets.mosquitto.path;
+          user = config.house.zigbee.mosquitto.username;
+          password =  config.house.zigbee.mosquitto.passwordFile; # Intentional. See below.
           base_topic = "zigbee2mqtt";
         };
         serial = {       
-         port = "/dev/${config.house.zigbee.coordinator.symlink}";
+         port = "/dev/" + config.house.zigbee.coordinator.symlink;
          disable_led = true;  
         };
         frontend = {
@@ -422,12 +422,12 @@ in {
     environment.ZIGBEE2MQTT_DATA = config.services.zigbee2mqtt.dataDir;
     preStart = '' 
       mkdir -p ${config.services.zigbee2mqtt.dataDir}    
-      mosquitto_password=$(cat ${config.sops.secrets.z2m_mosquitto.path}) 
+      mosquitto_password=$(cat ${config.house.zigbee.mosquitto.passwordFile}) 
       sed -i "s|/run/secrets/mosquitto|$mosquitto_password|" ${config.services.zigbee2mqtt.dataDir}/configuration.yaml  
       TMPFILE="${config.services.zigbee2mqtt.dataDir}/tmp.yaml"
       CFGFILE="${config.services.zigbee2mqtt.dataDir}/configuration.yaml"
 
-      ${pkgs.gawk}/bin/awk -v keyfile="${config.sops.secrets.z2m_network_key.path}" '
+      ${pkgs.gawk}/bin/awk -v keyfile="${config.house.zigbee.networkKeyFile}" '
         /(^|[[:space:]])network_key:/ { found = 1 }
 
         { lines[NR] = $0 }

@@ -67,7 +67,7 @@
     <div class="content">
         <header class="category-title">
             <h1>Do - Listen, Process, Act & Learn</h1>
-            <p class="subtitle">This section is about the brain of the operation.<br>The Natural Language Processor</p>
+            <p class="subtitle">This section is about the brain of the operation.<br>The Natural Language Processor.</p>
         </header>
         
         <h2 class="section-title">Key Features</h2>
@@ -156,6 +156,116 @@
         <div class="duck-comment">
             <p> ⮞ but does it understand ducks??  quack quack quack quack quack quack quack</p>
         </div>
+        
+        
+        <p>
+          Another usage example:<br><br>
+          <strong><i>"play the movie the mighty ducks"</i></strong>
+        </p>       
+        
+        <details class="code-block-container" style="margin-bottom: 1em;" open>
+          <summary class="code-header">
+              <div class="code-lang">⮞ View 'play the movie the mighty ducks' Usage</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">        
+🦆🏠  HOME via  via 🐍 v3.12.10 via 🦀 v1.86.0
+:41:04 ❯ yo do "spela upp filmen the mighty ducks"
+[🦆📜] [19:41:11] ✅INFO✅ ⮞ [🦆🧠] 'spela upp filmen the mighty ducks"
+[🦆📜] ✅INFO✅ ⮞ MEMORY ADJUSTMENT: tv: base=3 → adjusted=0 (uses=5, confirms=1, context=YES)
+[🦆📜] ✅INFO✅ ⮞ MEMORY ADJUSTMENT: tv-guide: base=3 → adjusted=3 (uses=0, confirms=0, context=NO)
+[🦆📜] ✅INFO✅ ⮞ MEMORY ADJUSTMENT: call-remote: base=3 → adjusted=3 (uses=0, confirms=0, context=NO)
+🦆MEMORY:ARGS:--typ movie --search the mighty ducks
+🦆MEMORY:SENTENCE:spela upp {typ} {search}
+🦆MEMORY:TYPE:exact
+   ┌─(yo-tv)
+   │🦆 qwack!? spela upp {typ} {search}
+   └─⮞ --typ movie
+   └─⮞ --search the mighty ducks
+   └─⏰ do took 23.914604ms
+Playlist generated: /Pool/playlist.m3u (shuffle: true)
+🦆 Recorded: tv - spela upp {typ} {search}
+</span><span class="clean-version hidden">
+🦆🏠  HOME via  via 🐍 v3.12.10 via 🦀 v1.86.0
+:41:04 ❯ yo do "spela upp filmen the mighty ducks"
+[🦆📜] [19:41:11] ✅INFO✅ ⮞ [🦆🧠] 'spela upp filmen the mighty ducks"
+[🦆📜] ✅INFO✅ ⮞ MEMORY ADJUSTMENT: tv: base=3 → adjusted=0 (uses=5, confirms=1, context=YES)
+[🦆📜] ✅INFO✅ ⮞ MEMORY ADJUSTMENT: tv-guide: base=3 → adjusted=3 (uses=0, confirms=0, context=NO)
+[🦆📜] ✅INFO✅ ⮞ MEMORY ADJUSTMENT: call-remote: base=3 → adjusted=3 (uses=0, confirms=0, context=NO)
+🦆MEMORY:ARGS:--typ movie --search the mighty ducks
+🦆MEMORY:SENTENCE:spela upp {typ} {search}
+🦆MEMORY:TYPE:exact
+   ┌─(yo-tv)
+   │🦆 qwack!? spela upp {typ} {search}
+   └─⮞ --typ movie
+   └─⮞ --search the mighty ducks
+   └─⏰ do took 23.914604ms
+Playlist generated: /Pool/playlist.m3u (shuffle: true)
+🦆 Recorded: tv - spela upp {typ} {search}
+</span></pre>
+            </div>
+        </div>
+        </details>        
+
+        <p>
+          Adding an extra command after a sucessful match by saying:<br>
+          <strong>"Good job!"</strong> <br>
+          Would give an manual confirmation, boosting the match in the future.<br>
+        </p>
+
+        <div class="duck-comment">
+            <p> ⮞ qwaack?! datz qwacktastic!!1</p>
+        </div><br>
+
+        <h2 class="section-title">Configuring the NLP</h2>
+        
+        <p>
+          There is not much to configure really, but there are a couple of settings that enhance the user experience.<br> <br>
+        </p>
+
+        <details class="code-block-container" style="margin-bottom: 1em;" open>
+          <summary class="code-header">
+              <div class="code-lang">⮞ View Available NLP configuration</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{ # 🦆 duck say ⮞ yo! letz configure the natural language processor!
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in { # 🦆says⮞qwack
+  yo = {
+    # 🦆says⮞ when no match is found TTS will pick a random phrases from the list
+    sorryPhrases = [ 
+      "Sorry I couldn't understand that"
+      "Please repeat that"
+    ]; # 🦆says⮞ these wordz letz u chain commands
+    SplitWords = [ "also" ];
+
+  }:} 
+</span><span class="clean-version hidden">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in {
+  yo = {
+    sorryPhrases = [
+      "Sorry I couldn't understand that"
+      "Please repeat that"
+    ];
+    SplitWords = [ "also" ];      
+    
+  }:} 
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
 
 
         <div class="callout">
@@ -163,8 +273,9 @@
                 <b><u>Table of Content:</b></u> <br><br>
                 <a href="part1.html">Developing a feature rich NLP with jq, Nix & Bash </a><br>
                 <a href="part2.html">Making Good Use of the Combinational Explosion Requires Top Tier Speed - Porting to Rust</a><br>
-                <a href="part3.html">Memory - Context-Aware & Self-Learning Voice Assistant</a><br>
+                <a href="part3.html">(WIP)Memory - Context-Aware & Self-Learning Voice Assistant</a><br>
                 <a href="part4.html">Sentence Validation - Rapid Fast Testing Framework</a><br>
+                <a href="part5.html">🏆 How Does it Compare To Others?</a><br>
                                 
                                 
             </p>
@@ -178,29 +289,32 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const tocDetails = document.querySelector('.toc-details');
-            const tocHeader = document.querySelector('.toc-header');
-            tocHeader.addEventListener('click', function() {
-                const isOpening = !tocDetails.open;
-        
-                if (isOpening) {
-                    tocDetails.style.maxHeight = tocDetails.scrollHeight + 'px';
+            const codeBlocks = document.querySelectorAll('details.code-block-container');
+            
+            codeBlocks.forEach(block => {
+                const summary = block.querySelector('summary');
+                const codeLang = summary.querySelector('.code-lang');
+                const toggleIcon = summary.querySelector('.toggle-icon');
+                
+                const originalText = codeLang.innerHTML;
+                const viewText = originalText.replace('Hide', 'View').replace('⮞', '⮟');
+                const hideText = originalText.replace('View', 'Hide').replace('⮟', '⮞');
+                
+                if (block.open) {
+                    codeLang.innerHTML = hideText;
                 } else {
-                    tocDetails.style.maxHeight = '60px'; // Approximate header height
+                    codeLang.innerHTML = viewText;
                 }
-            });
-    
-            tocDetails.addEventListener('toggle', function() {
-                if (tocDetails.open) {
-                    tocDetails.style.maxHeight = tocDetails.scrollHeight + 'px';
-                } else {
-                    setTimeout(() => {
-                        tocDetails.style.maxHeight = null;
-                    }, 300);
-                }
+                
+                block.addEventListener('toggle', function() {
+                    if (this.open) {
+                        codeLang.innerHTML = hideText;
+                    } else {
+                        codeLang.innerHTML = viewText;
+                    }
+                });
             });
         });
-    
         document.addEventListener('DOMContentLoaded', function() {
             const duckToggle = document.getElementById('duckToggle');
             let ducksHidden = false;
@@ -208,15 +322,20 @@
             function toggleCodeDucks() {
                 ducksHidden = !ducksHidden;
                 
-                const duckComments = document.querySelectorAll('.duck-comment');
+                const duckVersions = document.querySelectorAll('.duck-version');
+                const cleanVersions = document.querySelectorAll('.clean-version');
                 
-                duckComments.forEach(comment => {
-                    comment.style.display = ducksHidden ? 'none' : 'block';
+                duckVersions.forEach(version => {
+                    version.classList.toggle('hidden', ducksHidden);
+                });
+                
+                cleanVersions.forEach(version => {
+                    version.classList.toggle('hidden', !ducksHidden);
                 });
                 
                 duckToggle.innerHTML = ducksHidden ? 
-                    '<span class="duck-icon">🦆</span> Show 🦆 commentary' : 
-                    '<span class="duck-icon">🦆</span> Hide 🦆 commentary';
+                    '<span class="duck-icon"></span> Show 🦆 commentary' : 
+                    '<span class="duck-icon"></span> Hide 🦆 commentary';
                     
                 const duckIcon = duckToggle.querySelector('.duck-icon');
                 duckIcon.style.transform = 'scale(1.2)';
@@ -226,23 +345,9 @@
             }
             
             duckToggle.addEventListener('click', toggleCodeDucks);
-        });
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            const scrollImages = document.querySelectorAll('.scroll-image');
-    
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('scrolled');
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
-    
-            scrollImages.forEach(image => {
-                observer.observe(image);
+            
+            document.querySelectorAll('.clean-version').forEach(version => {
+                version.classList.add('hidden');
             });
         });
     </script>
