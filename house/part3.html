@@ -334,7 +334,7 @@ in {
 
         <h1 class="section-title">Automation Types</h2>
         <p>
-            There are currently <strong>five</strong> different automation types:<br>
+            There are currently <strong>six</strong> different automation types:<br>
         </p>
         
         <h2 class="section-title">Dimmer Action Automations</h2>
@@ -638,6 +638,100 @@ in {
     };
   
   };}
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+
+
+        <h2 class="section-title">MQTT Triggered Automations</h2>
+        
+        <p>
+            Triggers the automation when a specified Mosquitto topic (and optionally message) is received and processed.<br>
+            This enables the user to automate, well - basically anything.<br>
+            <strong><u>Supported MQTT triggered Conditions:</u></strong><br>
+            <strong>"dark_time"</strong> - Checks: If current time is within configured dark time range.<br>
+            <details class="code-block-container" style="margin-bottom: 1em;" open>
+              <summary class="code-header">
+                <div class="code-lang">⮞ View usage</div>
+              </summary>
+                <div class="code-block">
+                  <pre><span class="duck-version">
+{ type = "dark_time"; }
+</span><span class="clean-version hidden">
+{ type = "dark_time"; }
+</span></pre>
+               </div>
+          </div>
+      </details>        
+
+           Here is an example snippet of how the mqtt triggered automation may look:  
+        </p>
+        
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View `config.house.zigbee.automations.mqtt_triggered` code example</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{ # 🦆 duck say ⮞ my house - qwack 
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in { # 🦆 duck say ⮞ autoqwack
+  house = {
+    zigbee = {
+      automations = {
+        mqtt_triggered = {
+          dashboard_command = {
+            enable = true;
+            description = "Handle custom commands from web dashboard";
+            topic = "house/command";
+            message = null; # 🦆 says ⮞ match any message on this topic
+            actions = [
+              {
+                type = "shell";
+                command = "echo 'Command received: $MQTT_MESSAGE'";
+              }
+            ];
+          };
+        };
+      };
+    };
+    
+  };}  
+</span><span class="clean-version hidden">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in {
+  house = {
+    zigbee = {
+      automations = {
+        mqtt_triggered = {
+          dashboard_command = {
+            enable = true;
+            description = "Handle custom commands from web dashboard";
+            topic = "house/command";
+            message = null;
+            actions = [
+              {
+                type = "shell";
+                command = "echo 'Command received: $MQTT_MESSAGE'";
+              }
+            ];
+          };
+        };
+      };
+    };
+    
+  };}  
 </span></pre>
             </div>
         </div>
