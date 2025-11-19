@@ -74,20 +74,365 @@
         <div class="duck-comment">
             <p>says ⮞ I use 20x magnification when I code and debug. I use emoji to simplify logs for myself. If you can't handle my code style you can disable most of it on this website by toggling the button in the navbar. Shall duck continue? </p>
         </div>
-        
 
-        <h2 class="section-title">No Text Yet</h2>
+
+  
+        <p>
+            Having already built a fully featured version in Bash, the hardest part, the architecture and logic was completely solved.<br>
+            The only thing left was to port it to a faster language.<br>
+            Surprisingly, even as a Rust noob, the migration was straightforward and painless.<br>
+            <br>
+            <strong>The result?</strong><br>
+            The same powerful tool, now with a <strong>massive</strong> performance boost.
+
+            This post won't rehash the features (covered in the Bash version's write-up). <br>
+            Instead we'll briefly go over the file structure and then jump straight at one thing: the breathtaking speed of the Rust rewrite.<br>
+            <br><br>
+
             
-            <p>Until I get my thumb out of my well-feathered ass you can check out the module itself.</p> 
+        </p>
 
+
+        <h2 class="section-title">File Structure</h2>
+        <p>
+            The Rust code is written in a Nix string and is generated upon build time.<br>
+            Pretty straightforward structure, that's easy to follow.<br>
+            You will have the link to the source code on GitHub at the bottom of this page.<br>
+        </p>
+
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View File Structure</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+  cfg = config.yo;
+  # 🦆 says ⮞ Statistical logging for failed commands
+  statsDir = "/home/${config.this.user.me.name}/.local/share/yo/stats";
+  failedCommandsLog = "${statsDir}/failed_commands.log";
+  commandStatsDB = "${statsDir}/command_stats.json";
+  
+  # 🦆 says ⮞ grabbin’ all da scripts for ez listin'  
+  scripts = config.yo.scripts; 
+  scriptNames = builtins.attrNames scripts; # 🦆 says ⮞ just names - we never name one
+  # 🦆 says ⮞ only scripts with known intentions
+  scriptNamesWithIntents = builtins.filter (scriptName:
+    let # 🦆 says ⮞ a intent iz kinda ..
+      intent = generatedIntents.${scriptName};
+      # 🦆 says ⮞ .. pointless if it haz no sentence data ..
+      hasSentences = builtins.any (data: data ? sentences && data.sentences != []) intent.data;
+    in # 🦆 says ⮞ .. so datz how we build da scriptz!
+      builtins.hasAttr scriptName generatedIntents && hasSentences
+  ) (builtins.attrNames scriptsWithVoice);
+
+
+  # 🦆 says ⮞ only scripts with voice enabled and non-null voice config
+  scriptsWithVoice = lib.filterAttrs (_: script: 
+    script.voice != null && (script.voice.enabled or true)
+  ) config.yo.scripts;
+ 
+  # 🦆 says ⮞ generate intents
+  generatedIntents = lib.mapAttrs (name: script: {
+    priority = script.voice.priority or 3;
+    data = [{
+      inherit (script.voice) sentences lists;
+    }];
+  }) scriptsWithVoice;
+
+  fuzzyFlatIndex = lib.flatten (lib.mapAttrsToList (scriptName: intent:
+    lib.concatMap (data:
+      lib.concatMap (sentence:
+        map (expanded: {
+          script = scriptName;
+          sentence = expanded;
+          signature = let
+            words = lib.splitString " " (lib.toLower expanded);
+            sorted = lib.sort (a: b: a < b) words;
+          in builtins.concatStringsSep "|" sorted;
+        }) (expandOptionalWords sentence)
+      ) data.sentences
+    ) intent.data
+  ) (lib.mapAttrs (name: script: {
+    priority = script.voice.priority or 3;
+    data = [{
+      inherit (script.voice) sentences lists;
+    }];
+  }) scriptsWithFuzzy));
+
+  # 🦆 duck say ⮞ u like speed too? Rusty Speed inc
+  do-rs = pkgs.writeText "do.rs" ''
+    // 🦆 SCREAMS ⮞ 500x++ FASTER!!🚀
+    // 🦆 ... 
+  '';  
+  cargoToml = pkgs.writeText "Cargo.toml" ''    
+    [package]
+    name = "yo_do"
+    version = "0.2.0"
+    edition = "2021"
+
+    [dependencies]
+    regex = "1.0"
+    serde = { version = "1.0", features = ["derive"] }
+    serde_json = "1.0"
+    chrono = { version = "0.4", features = ["serde", "clock"] }
+    rand = "0.8"
+    tokio = { version = "1.0", features = ["full"] }
+    tokio-tungstenite = "0.20"
+    futures-util = "0.3"
+  '';
+  
+in { # 🦆 says ⮞ YOOOOOOOOOOOOOOOOOO    
+  yo.scripts = { # 🦆 says ⮞ quack quack quack quack quack.... qwack 
+    # 🦆 says ⮞ GO RUST DO I CHOOSE u!!1
+    do = {
+      description = "Brain (do) is a Natural Language to Shell script translator that generates dynamic regex patterns at build time for defined yo.script sentences. At runtime it runs exact and fuzzy pattern matching with automatic parameter resolution and seamless execution";
+      category = "🗣️ Voice"; # 🦆 says ⮞ duckgorize iz zmart wen u hab many scriptz i'd say!     
+      aliases = [ "brain" ];
+      autoStart = false;
+      logLevel = "INFO";
+      helpFooter = ''
+        echo "[🦆🧠]"
+        cat ${voiceSentencesHelpFile} 
+      '';
+      parameters = [ # 🦆 says ⮞ set your mosquitto user & password
+        { name = "input"; description = "Text to translate"; optional = true; } 
+        { name = "fuzzy"; type = "int"; description = "Minimum procentage for considering fuzzy matching sucessful. (1-100)"; default = 60; }
+        { name = "dir"; description = "Directory path to compile in"; default = "/home/pungkula/do-rs"; optional = false; } 
+        { name = "build"; type = "bool"; description = "Flag for building the Rust binary"; optional = true; default = false; }            
+        { name = "realtime"; type = "bool"; description = "Run in real-time mode for voice assistant"; optional = true; default = false; } 
+      ];
+      code = ''
+        set +u  
+        ${cmdHelpers} # 🦆 says ⮞load required bash helper functions 
+        FUZZY_THRESHOLD=$fuzzy
+        YO_FUZZY_INDEX="${fuzzyIndexFlatFile}"
+        text="$input"
+        INTENT_FILE="${intentDataFile}"
+        # 🦆 says ⮞ create the source filez yo 
+        cat ${do-rs} > src/main.rs
+        cat ${cargoToml} > Cargo.toml     
+        ${pkgs.cargo}/bin/cargo generate-lockfile     
+        ${pkgs.cargo}/bin/cargo build --release
+      '';
+    };    
+  };
+  # 🦆 says ⮞ SAFETY FIRST! 
+  assertions = [
+    {
+      assertion = assertionCheckForConflictingSentences.assertion;
+      message = assertionCheckForConflictingSentences.message;
+    } # 🦆 says ⮞ the duck be stateless, the regex be law, and da shell... is my pond.    
+  ];}# 🦆 say ⮞ nobody beat diz nlp nao says sir quack a lot NOBODY I SAY!
+# 🦆 says ⮞ QuackHack-McBLindy out!  
+</span><span class="clean-version hidden">
+  cfg = config.yo;
+  statsDir = "/home/${config.this.user.me.name}/.local/share/yo/stats";
+  failedCommandsLog = "${statsDir}/failed_commands.log";
+  commandStatsDB = "${statsDir}/command_stats.json";
+  
+  scripts = config.yo.scripts; 
+  scriptNames = builtins.attrNames scripts;
+
+  scriptNamesWithIntents = builtins.filter (scriptName:
+    let
+      intent = generatedIntents.${scriptName};
+      hasSentences = builtins.any (data: data ? sentences && data.sentences != []) intent.data;
+    in
+      builtins.hasAttr scriptName generatedIntents && hasSentences
+  ) (builtins.attrNames scriptsWithVoice);
+
+
+  scriptsWithVoice = lib.filterAttrs (_: script: 
+    script.voice != null && (script.voice.enabled or true)
+  ) config.yo.scripts;
+
+  generatedIntents = lib.mapAttrs (name: script: {
+    priority = script.voice.priority or 3;
+    data = [{
+      inherit (script.voice) sentences lists;
+    }];
+  }) scriptsWithVoice;
+
+  fuzzyFlatIndex = lib.flatten (lib.mapAttrsToList (scriptName: intent:
+    lib.concatMap (data:
+      lib.concatMap (sentence:
+        map (expanded: {
+          script = scriptName;
+          sentence = expanded;
+          signature = let
+            words = lib.splitString " " (lib.toLower expanded);
+            sorted = lib.sort (a: b: a < b) words;
+          in builtins.concatStringsSep "|" sorted;
+        }) (expandOptionalWords sentence)
+      ) data.sentences
+    ) intent.data
+  ) (lib.mapAttrs (name: script: {
+    priority = script.voice.priority or 3;
+    data = [{
+      inherit (script.voice) sentences lists;
+    }];
+  }) scriptsWithFuzzy));
+
+  do-rs = pkgs.writeText "do.rs" ''
+    //  ... 
+  '';  
+  cargoToml = pkgs.writeText "Cargo.toml" ''    
+    [package]
+    name = "yo_do"
+    version = "0.2.0"
+    edition = "2021"
+
+    [dependencies]
+    regex = "1.0"
+    serde = { version = "1.0", features = ["derive"] }
+    serde_json = "1.0"
+    chrono = { version = "0.4", features = ["serde", "clock"] }
+    rand = "0.8"
+    tokio = { version = "1.0", features = ["full"] }
+    tokio-tungstenite = "0.20"
+    futures-util = "0.3"
+  '';
+  
+in {
+  yo.scripts = { 
+    do = {
+      description = "Brain (do) is a Natural Language to Shell script translator that generates dynamic regex patterns at build time for defined yo.script sentences. At runtime it runs exact and fuzzy pattern matching with automatic parameter resolution and seamless execution";
+      category = "🗣️ Voice";     
+      aliases = [ "brain" ];
+      autoStart = false;
+      logLevel = "INFO";
+      helpFooter = ''
+        echo "[🦆🧠]"
+        cat ${voiceSentencesHelpFile} 
+      '';
+      parameters = [
+        { name = "input"; description = "Text to translate"; optional = true; } 
+        { name = "fuzzy"; type = "int"; description = "Minimum procentage for considering fuzzy matching sucessful. (1-100)"; default = 60; }
+        { name = "dir"; description = "Directory path to compile in"; default = "/home/pungkula/do-rs"; optional = false; } 
+        { name = "build"; type = "bool"; description = "Flag for building the Rust binary"; optional = true; default = false; }            
+        { name = "realtime"; type = "bool"; description = "Run in real-time mode for voice assistant"; optional = true; default = false; } 
+      ];
+      code = ''
+        set +u  
+        ${cmdHelpers}
+        FUZZY_THRESHOLD=$fuzzy
+        YO_FUZZY_INDEX="${fuzzyIndexFlatFile}"
+        text="$input"
+        INTENT_FILE="${intentDataFile}"
+        cat ${do-rs} > src/main.rs
+        cat ${cargoToml} > Cargo.toml     
+        ${pkgs.cargo}/bin/cargo generate-lockfile     
+        ${pkgs.cargo}/bin/cargo build --release
+      '';
+    };    
+  };
+  
+  assertions = [
+    {
+      assertion = assertionCheckForConflictingSentences.assertion;
+      message = assertionCheckForConflictingSentences.message;
+    }  
+  ];}
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+
+
+
+
+
+
+
+
+
+        <h2 class="section-title">Let's Try It Out!</h2>
+
+        <details class="code-block-container" style="margin-bottom: 1em;">
+          <summary class="code-header">
+              <div class="code-lang">⮞ View Test Run Output</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+🦆🏠  HOME via  via 🐍 v3.12.10 via 🦀 v1.86.0 
+16:38:14 ❯ yo do "vad är det för dag"
+[🦆📜] [16:38:36] ✅INFO✅ ⮞ [🦆🧠] 'vad är det för dag'
+[🦆📜] ✅INFO✅ ⮞ MEMORY ADJUSTMENT: time: base=3 → adjusted=0 (uses=1, confirms=0, context=YES)
+[🦆📜] ✅INFO✅ ⮞ MEMORY ADJUSTMENT: travel: base=3 → adjusted=3 (uses=0, confirms=0, context=NO)
+🦆MEMORY:SCRIPT:time
+🦆MEMORY:ARGS:
+🦆MEMORY:SENTENCE:vad är det för dag
+🦆MEMORY:TYPE:exact
+   ┌─(yo-time)
+   │🦆 qwack!? vad är det för dag
+   └─🦆 says ⮞ no parameters yo
+   └─⏰ do took 6.752782ms
+</span><span class="clean-version hidden">
+🦆🏠  HOME via  via 🐍 v3.12.10 via 🦀 v1.86.0 
+16:38:14 ❯ yo do "vad är det för dag"
+[🦆📜] [16:38:36] ✅INFO✅ ⮞ [🦆🧠] 'vad är det för dag'
+[🦆📜] ✅INFO✅ ⮞ MEMORY ADJUSTMENT: time: base=3 → adjusted=0 (uses=1, confirms=0, context=YES)
+[🦆📜] ✅INFO✅ ⮞ MEMORY ADJUSTMENT: travel: base=3 → adjusted=3 (uses=0, confirms=0, context=NO)
+🦆MEMORY:SCRIPT:time
+🦆MEMORY:ARGS:
+🦆MEMORY:SENTENCE:vad är det för dag
+🦆MEMORY:TYPE:exact
+   ┌─(yo-time)
+   │🦆 qwack!? vad är det för dag
+   └─🦆 says ⮞ no parameters yo
+   └─⏰ do took 6.752782ms
+
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+
+
+            <div class="duck-comment">
+                <p>
+                  🏆⮞ <strong>HOLY 🦆 THAT'S FAST!!1 </strong>
+                </p>
+            </div> 
+        <p>
+           <strong>
+        </p><br>
+
+
+
+        <h2 class="section-title">New Bottleneck</h2>
+
+        <p>
+            Soo... That's rougly around 1500-500x faster.<br>
+            If you would have told me two year's back that my voice assistant's bottleneck would be the TTS generation, I don't think I would have believed you.<brr>
+            This changes everything, and leaves me thinking <i>I might have to take a good look at Text-To-Speech.</i><br>
+            <br><br>
+            As far as I know - this beast is mow the world's fastest open source intent recognition solution available for voice assistants today. <br>
+            Which of course make's me both proud and happy, but to summarize I would be lying if I said it hasn't been a bumpy ride.<br>
+            I never thought one single project could keep my hand's this busy for this long.<br>
+        </p><br>
+
+
+
+            <h2 class="section-title">The Full Source</h2>
+    
             <a href="https://github.com/QuackHack-McBlindy/dotfiles/blob/main/bin/voice/do.nix" class="source-link">
               View source code on GitHub
-            </a><br>       
+            </a><br>   
 
 
 
- 
+            <h2 class="section-title">Keep Reading</h2>
+        
+            <a href="part1.html">Developing a feature rich NLP with jq, Nix & Bash </a><br>
+            <a href="part2.html">Making Good Use of the Combinational Explosion Requires Top Tier Speed - Porting to Rust</a><span class="current-marker">⮜🦆here u are</span><br>   
+            <a href="part3.html">(WIP)Memory - Context-Aware & Self-Learning Voice Assistant</a><br>
+            <a href="part4.html">Sentence Validation - Rapid Fast Testing Framework</a><br>    
 
+            <br><br>
+    
+   
             <section id="comments">
               <h2>Comments on this blog post</h2>
               <script 
