@@ -692,9 +692,16 @@ in { # 🦆 duck say ⮞ autoqwack
             topic = "house/command";
             message = null; # 🦆 says ⮞ match any message on this topic
             actions = [
-              {
+              { # 🦆says⮞ these variables are passed to the shell script for usage 
                 type = "shell";
-                command = "echo 'Command received: $MQTT_MESSAGE'";
+                command = ''
+                  echo "Topic: $MQTT_TOPIC"
+                  echo "Device: $MQTT_DEVICE"
+                  echo "Room: $MQTT_ROOM"
+                  echo "Payload: $MQTT_PAYLOAD"
+                  echo "Action: $MQTT_ACTION"
+                  echo "State: $MQTT_STATE"
+                '';
               }
             ];
           };
@@ -723,7 +730,14 @@ in {
             actions = [
               {
                 type = "shell";
-                command = "echo 'Command received: $MQTT_MESSAGE'";
+                command = ''
+                  echo "Topic: $MQTT_TOPIC"
+                  echo "Device: $MQTT_DEVICE"
+                  echo "Room: $MQTT_ROOM"
+                  echo "Payload: $MQTT_PAYLOAD"
+                  echo "Action: $MQTT_ACTION"
+                  echo "State: $MQTT_STATE"
+                '';
               }
             ];
           };
