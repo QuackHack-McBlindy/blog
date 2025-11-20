@@ -4,6 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🦆🧑‍🦯</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        .gallery img {
+            width: 25%;
+            min-width: 200px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        .gallery img:hover {
+            transform: scale(1.03);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.3s;
+        }
+        .lightbox-content {
+            display: block;
+            margin: auto;
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .lightbox-caption {
+            text-align: center;
+            color: #fff;
+            padding: 10px 0;
+            font-size: 1.2em;
+        }
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .close:hover {
+            color: #bbb;
+        }
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -50px;
+            color: white;
+            font-weight: bold;
+            font-size: 30px;
+            transition: 0.3s;
+            user-select: none;
+            background-color: rgba(0,0,0,0.3);
+            border-radius: 0 5px 5px 0;
+        }
+        .next {
+            right: 0;
+            border-radius: 5px 0 0 5px;
+        }
+        .prev:hover, .next:hover {
+            background-color: rgba(0,0,0,0.8);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        video {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+    </style>
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
@@ -29,14 +130,14 @@
         <details class="toc-details">
             <summary class="toc-header">
                 <span class="toc-duck">🦆</span>
-                <h3>Navigation Quack</h3>
+                <h3>Navigation</h3>
                 <span class="toc-man">🧑‍🦯</span>
                 <span class="toc-toggle">⮟</span>
             </summary>
             <nav class="toc-nav">
                 <a href="../yo/index.html" class="toc-item">
                     <span class="toc-icon">🫀</span>
-                    Yo - Define & Unify
+                    Yo - Define & Unify       
                 </a>
                 <a href="index.html" class="toc-item">
                     <span class="toc-icon">🧠</span>
@@ -46,11 +147,11 @@
                     <span class="toc-icon">🏠</span>
                     House - Declarative Home Automation
                 </a>
-                <a href="../docs/index.html" class="toc-item">
+                <a href="index.html" class="toc-item">
                     <span class="toc-icon">📚</span>
                     Documentation - Automating the README
                 </a>
-                <a href="index.html" class="toc-item current">
+                <a href="../misc/index.html" class="toc-item current">
                     <span class="toc-icon">🧩</span>
                     Miscellaneous
                     <span class="current-marker">⮜🦆</span>                    
@@ -62,32 +163,43 @@
         </details>
     </div>
     
-    
-  
+      
     <div class="content">
         <header class="category-title">
-            <h1>Miscellaneous</h1>
-            <p class="subtitle">Blog posts that don't fit elsewhere and I hope can inspire.<br></p>
+            <h1>Hosts</h1>
+            <p class="subtitle">This section is about my machines.</p>
         </header>
 
-        <h2 class="section-title">Programs</h2>
+  
+
+        <h2 class="section-title">Desktop</h2>
+            
+            <p>I'd like to call it Overkill - case by SteelSeries.</p> 
+
+            <video width="600" controls>
+                <source src="https://raw.githubusercontent.com/QuackHack-McBlindy/dotfiles/main/home/Public/videos/pc.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>   
+
+
+        <h2 class="section-title">Homie</h2>
+            <p>Fanless home automation server - case by Streacom.</p> 
+
+        <div class="gallery">
+            <img src="https://raw.githubusercontent.com/QuackHack-McBlindy/dotfiles/main/home/Public/images/homie.JPG" alt="Fanless" onclick="openLightbox(0)">
+
+        </div><br>
+        <br><br>
         
-
-        <div class="callout">
-            <p>
-                <b><u>Table of Content:</b></u> <br><br>
-                <a href="firefox.html">Declarative Firefox Configuration</a><br>                                
-            </p>
-        </div>
-
-        <h2 class="section-title">Hardware</h2>
-        
-
-        <div class="callout">
-            <p>
-                <b><u>Table of Content:</b></u> <br><br>
-                <a href="hosts.html">Ny Machines</a><br>                                
-            </p>
+        <div id="lightbox" class="lightbox">
+            <span class="close" onclick="closeLightbox()">&times;</span>
+            <span class="prev" onclick="changeImage(-1)">&#10094;</span>
+            <span class="next" onclick="changeImage(1)">&#10095;</span>
+            <div id="lightbox-content-container">
+                <img class="lightbox-content" id="lightbox-img">
+                <div id="lightbox-loading" class="loading" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+            </div>
+            <div class="lightbox-caption" id="lightbox-caption"></div>
         </div>
 
     </div>
@@ -143,10 +255,12 @@
                 setTimeout(() => {
                     duckIcon.style.transform = 'scale(1)';
                 }, 300);
-            }       
+            }
+            
             duckToggle.addEventListener('click', toggleCodeDucks);
         });
         
+        // Scroll animation for images
         document.addEventListener('DOMContentLoaded', function() {
             const scrollImages = document.querySelectorAll('.scroll-image');
     

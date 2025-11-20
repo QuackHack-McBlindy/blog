@@ -731,44 +731,54 @@ EOF
   voice = {
       priority = 1;
       sentences = [
-        # 🦆 says ⮞ multi taskerz
-        "{device} {state} in {room} and [change] color [to] {color} [and] brightness [to] {brightness} percent"
-        "{device} {state} and brightness {brightness} percent"
-        "{device} {state} with {color} color and {brightness} percent brightness"
-        "(make|set|change) {device} [to] {color} [color] [and] {brightness} percent [brightness]"
-        # 🦆 says ⮞ device control
         "(turn on|switch on|activate|start|power on) {device}"
         "(turn off|switch off|deactivate|stop|power off) {device}"
         "(turn|switch) {device} {state}"
         "(turn|switch) {state} {device}"
+        "{device} {state} and brightness {brightness} percent"
+        "{device} {state} with {color} color and {brightness} percent brightness"
+        "{device} {state} in {room} and [change] color [to] {color} [and] brightness [to] {brightness} percent"
+
+        # 🦆 says ⮞ simple room-light control
         "{state} (all|every) light[s] in {room}"
         "{state} {room} light[s]"
         "{state} (all|every) light[s]"
         "{state} (all|every) {device} light[s]"
         "control (all|every) light[s] in {room}"
         "manage {room} lighting"
+
         # 🦆 says ⮞ color control
         "(change|set|adjust) {device} color to {color}"
         "(change|set|adjust) color of {device} to {color}"
         "make {device} {color}"
         "set {device} to {color} color"
-        "apply {color} color to {device}"  
+        "apply {color} color to {device}"
+
         # 🦆 says ⮞ brightness control
         "(adjust|set|change) {device} brightness to {brightness} percent"
         "(adjust|set|change) brightness of {device} to {brightness} percent"
         "make {device} {brightness} percent brightness"
         "set {device} to {brightness} percent brightness"
         "dim {device} to {brightness} percent"
-        "brighten {device} to {brightness} percent"    
+        "brighten {device} to {brightness} percent"
+
         # 🦆 says ⮞ scene/ambiance control
         "create {scene} (scene|mode|atmosphere) in {room}"
         "set {room} to {scene} (scene|mode|atmosphere)"
-        "activate {scene} mode"    
+        "activate {scene} mode"
+
+        # 🦆 says ⮞ multi taskerz (complex, strict patterns LAST)
+        "set {room} lights to {state} with {color} at {brightness} percent and activate {scene}"
+        "{device} {state} in {room} with {color} color at {brightness} percent and temperature {temperature} using scene {scene}"
+        "configure {device} in {room} with {color} color, {brightness} percent brightness, and {temperature} temperature"
+        "create {scene} atmosphere in {room} using {color} lighting at {brightness} percent [in cheap mode]"
+        "adjust all lights in {room} to {color} with {brightness} percent brightness and set {temperature} temperature"
+
         # 🦆 says ⮞ pairing mode
         "{pair} [new] [zigbee] (device|devices|sensor|sensors)"
         "start {pair} [new] device[s]"
         "enable {pair} mode for new devices"
-        "begin device {pair}"    
+        "begin device {pair}"
       ];        
       lists = {
         state.values = [
@@ -840,16 +850,14 @@ EOF
   voice = {
       priority = 1;
       sentences = [
-        "{device} {state} in {room} and [change] color [to] {color} [and] brightness [to] {brightness} percent"
-        "{device} {state} and brightness {brightness} percent"
-        "{device} {state} with {color} color and {brightness} percent brightness"
-        "(make|set|change) {device} [to] {color} [color] [and] {brightness} percent [brightness]"
-
         "(turn on|switch on|activate|start|power on) {device}"
         "(turn off|switch off|deactivate|stop|power off) {device}"
         "(turn|switch) {device} {state}"
         "(turn|switch) {state} {device}"
-    
+        "{device} {state} and brightness {brightness} percent"
+        "{device} {state} with {color} color and {brightness} percent brightness"
+        "{device} {state} in {room} and [change] color [to] {color} [and] brightness [to] {brightness} percent"
+
         "{state} (all|every) light[s] in {room}"
         "{state} {room} light[s]"
         "{state} (all|every) light[s]"
@@ -861,23 +869,29 @@ EOF
         "(change|set|adjust) color of {device} to {color}"
         "make {device} {color}"
         "set {device} to {color} color"
-        "apply {color} color to {device}"  
-        # Brightness control
+        "apply {color} color to {device}"
+
         "(adjust|set|change) {device} brightness to {brightness} percent"
         "(adjust|set|change) brightness of {device} to {brightness} percent"
         "make {device} {brightness} percent brightness"
         "set {device} to {brightness} percent brightness"
         "dim {device} to {brightness} percent"
         "brighten {device} to {brightness} percent"
-    
+
         "create {scene} (scene|mode|atmosphere) in {room}"
         "set {room} to {scene} (scene|mode|atmosphere)"
         "activate {scene} mode"
-    
+
+        "set {room} lights to {state} with {color} at {brightness} percent and activate {scene}"
+        "{device} {state} in {room} with {color} color at {brightness} percent and temperature {temperature} using scene {scene}"
+        "configure {device} in {room} with {color} color, {brightness} percent brightness, and {temperature} temperature"
+        "create {scene} atmosphere in {room} using {color} lighting at {brightness} percent [in cheap mode]"
+        "adjust all lights in {room} to {color} with {brightness} percent brightness and set {temperature} temperature"
+
         "{pair} [new] [zigbee] (device|devices|sensor|sensors)"
         "start {pair} [new] device[s]"
         "enable {pair} mode for new devices"
-        "begin device {pair}"    
+        "begin device {pair}"
       ];                        
       lists = {
         state.values = [
