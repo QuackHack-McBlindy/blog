@@ -184,16 +184,16 @@
 
         <h2 class="section-title">Contribute</h2>
         I'm not really an dashboard kind of guy, but I understand it can have great uses on phone when away.<br>
-        For obvious reasons I am unable to really test this out, if anyone would lend a helping/testing hand that would be cool.<br> 
+        If you feel like this dashboard is insufficient, feel free to contribute.<br> 
 
 
-        <h2 class="section-title">There Is Not Much To Do Here</h2>
+        <h2 class="section-title">Automagi Dashboard</h2>
         <br>This is all automatically generated.<br>
         Connected to Mosquitto over WebSockets.<br>
         The gradient image for each scene is dynamically fetched from every device's color in the scene.<br>
-        I think that's my favourite feature.<br>
+        I think that's my favourite feature in this slimmed dashboard.<br>
         <br><br>
-        It also let's you control defined TV's and manage server files through a cloud page.<br>
+        It also let's you control defined TV's through a remote page.<br>
         <br>
 
 
@@ -205,7 +205,6 @@
             <img src="https://raw.githubusercontent.com/QuackHack-McBlindy/dotfiles/main/home/duckdash2.png" alt="DuckDash 2" onclick="openLightbox(1)">
             <img src="https://raw.githubusercontent.com/QuackHack-McBlindy/dotfiles/main/home/duckdash3.png" alt="DuckDash 3" onclick="openLightbox(2)">
             <img src="https://raw.githubusercontent.com/QuackHack-McBlindy/dotfiles/main/home/duckdash4.png" alt="DuckDash 4" onclick="openLightbox(3)">
-            <img src="https://raw.githubusercontent.com/QuackHack-McBlindy/dotfiles/main/home/duckdash5.png" alt="DuckDash 5" onclick="openLightbox(4)">
 
             <video width="600" controls>
                 <source src="https://raw.githubusercontent.com/QuackHack-McBlindy/dotfiles/main/home/duckdash.mp4" type="video/mp4">
@@ -231,7 +230,194 @@
                 <p>
                     ⮞ <i>if any JS yoda wanna help out...</i> 
                 </p>
-            </div><br>        
+            </div><br>     
+            
+            
+        <h2 class="section-title">Today's Lesson</h2>
+        The dashboard only comes with one built-in status card, which displays the temperature from your sensors.<br>
+        <br>Today I am going to show you how easy it is to configure custom status cards for the home page of the dashboard.<br>
+        <br>
+        For simplicity let's assume you have a energy price script - which data you'd like to publish and display as a status card.<br>
+        Let's say it looks something like this:
+        
+        
+        
+        <details class="code-block-container" style="margin-bottom: 1em;" open>
+          <summary class="code-header">
+              <div class="code-lang">⮞ View Message Processing Handler</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+mqtt_publish \
+  -h 192.168.1.111 \ # 🦆says⮞ MQTT broker IP
+  -u mqtt \ # 🦆says⮞ MQTT user
+  -p "$(cat /run/secrets/mosquitto)" \ # 🦆says⮞ password file
+  -t zigbee2mqtt/energy/price \ # 🦆says⮞ MQTT topic
+  -m "{\"current_price\": \"$CURRENT_PRICE\"}" # 🦆says⮞ MQTT message with variable containing the price data
+</span><span class="clean-version hidden">
+mqtt_publish \
+  -h 192.168.1.111 \
+  -u mqtt \
+  -p "$(cat /run/secrets/mosquitto)" \
+  -t zigbee2mqtt/energy/price \
+  -m "{\"current_price\": \"$CURRENT_PRICE\"}"
+</span></pre>
+            </div>
+        </div>
+    </details>        
+
+        Now the easiest way of getting that displayed on the dashboard is to use what we already have - Nix automations!<br>
+        First let's create a mqtt_triggered automation:<br>
+        
+        
+        <details class="code-block-container" style="margin-bottom: 1em;" open>
+          <summary class="code-header">
+              <div class="code-lang">⮞ View Message Processing Handler</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{ # 🦆 says ⮞ my house - qwack 
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in { # 🦆 duck say ⮞ qwack
+  house = {
+    zigbee = {
+      automations = { 
+        mqtt_triggered = {
+          energy_price = {
+            enable = true;
+            description = "Writes energy data to file for dashboard";
+            topic = "zigbee2mqtt/energy/price";
+            actions = [
+              {
+                type = "shell";
+                command = ''
+                  touch /var/lib/zigduck/energy_price.json
+                  echo "$MQTT_PAYLOAD" > /var/lib/zigduck/energy_price.json
+                '';
+              }
+            ];
+          };     
+        };
+      };
+    };
+  
+  };}
+</span><span class="clean-version hidden">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in {
+  house = {
+    zigbee = {
+      automations = { 
+        mqtt_triggered = {
+          energy_price = {
+            enable = true;
+            description = "Writes energy data to file for dashboard";
+            topic = "zigbee2mqtt/energy/price";
+            actions = [
+              {
+                type = "shell";
+                command = ''
+                  touch /var/lib/zigduck/energy_price.json
+                  echo "$MQTT_PAYLOAD" > /var/lib/zigduck/energy_price.json
+                '';
+              }
+            ];
+          };     
+        };
+      };
+    };
+  
+  };}
+</span></pre>
+            </div>
+        </div>
+    </details>                   
+        
+
+        This simply creates a file containing the mqtt message and saves it as '/var/lib/zigduck/energy_price.json'.<br>
+        Basic stuff huh? Let's move on to step two, which is the last and final step.<br>
+        We're creating a Nix configured status card that reads the file content.<br>
+        
+
+        <details class="code-block-container" style="margin-bottom: 1em;" open>
+          <summary class="code-header">
+              <div class="code-lang">⮞ View Message Processing Handler</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+{ # 🦆 says ⮞ my house - qwack 
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in { # 🦆 says ⮞ qwack
+  house = {
+    dashboard = {
+      statusCards = {
+        energy_price = { # 🦆says⮞ name of card
+          enable = true;
+          title = "Energy"; # 🦆says⮞ title that is displayed inside the card
+          # 🦆says⮞ Font Awesome icon library https://fontawesome.com/icons
+          icon = "fas fa-dollar";
+          color = "#2196f3"; # 🦆says⮞ HEX color for the icon
+          filePath = "/var/lib/zigduck/energy_price.json"; # 🦆says⮞ file path to read data from
+          # 🦆says⮞ since our script had this json field - we read this specific field
+          jsonField = "current_price"; 
+          # 🦆says⮞ format output. {value} is the value of the field we specified above - and i want to display it in SEK/kWh
+          format = "{value} SEK/kWh";
+          details = "Current price"; # 🦆says⮞ footer of the card
+        };
+      };
+    };
+    
+  };}
+</span><span class="clean-version hidden">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} : let
+in {
+  house = {
+    dashboard = {
+      statusCards = {
+        energy_price = {
+          enable = true;
+          title = "Energy";
+          icon = "fas fa-dollar"; # Font Awesome icon library https://fontawesome.com/icons
+          color = "#2196f3";
+          filePath = "/var/lib/zigduck/energy_price.json";
+          jsonField = "current_price";
+          format = "{value} SEK/kWh";
+          details = "Current price";
+        };
+      };
+    };
+      
+  };}
+</span></pre>
+            </div>
+        </div>
+    </details>            
+
+        <div class="duck-comment">
+            <p>⮞ and dat iz it yo! no qwackin' way dat was hard?? </p>
+        </div>        
+
+        Keep adding as many cards as you'd like.<br>
+        That's the only configurable options for this dashboard, if you configured everything from earlier steps everything should <i>just work</i>.<br>
+        Until the next one!<br>
 
             <h2 class="section-title">Source Code</h2>
             <br>
