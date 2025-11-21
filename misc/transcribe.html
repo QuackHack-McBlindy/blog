@@ -29,14 +29,14 @@
         <details class="toc-details">
             <summary class="toc-header">
                 <span class="toc-duck">🦆</span>
-                <h3>Navigation Quack</h3>
+                <h3>Navigation</h3>
                 <span class="toc-man">🧑‍🦯</span>
                 <span class="toc-toggle">⮟</span>
             </summary>
             <nav class="toc-nav">
                 <a href="../yo/index.html" class="toc-item">
                     <span class="toc-icon">🫀</span>
-                    Yo - Define & Unify
+                    Yo - Define & Unify       
                 </a>
                 <a href="index.html" class="toc-item">
                     <span class="toc-icon">🧠</span>
@@ -46,11 +46,11 @@
                     <span class="toc-icon">🏠</span>
                     House - Declarative Home Automation
                 </a>
-                <a href="../docs/index.html" class="toc-item">
+                <a href="index.html" class="toc-item">
                     <span class="toc-icon">📚</span>
                     Documentation - Automating the README
                 </a>
-                <a href="index.html" class="toc-item current">
+                <a href="../misc/index.html" class="toc-item current">
                     <span class="toc-icon">🧩</span>
                     Miscellaneous
                     <span class="current-marker">⮜🦆</span>                    
@@ -62,48 +62,24 @@
         </details>
     </div>
     
-    
-  
+      
     <div class="content">
         <header class="category-title">
-            <h1>Miscellaneous</h1>
-            <p class="subtitle">Blog posts that don't fit elsewhere and I hope can inspire.<br></p>
+            <h1>Speech To Text</h1>
+            <p class="subtitle">This section is about transcribing Speech To Text (STT).</p>
         </header>
 
-        <h2 class="section-title">Hardware</h2>
-        
-
-        <div class="callout">
-            <p>
-                <b><u>Table of Content:</b></u> <br><br>
-                <a href="hosts.html">Ny Machines</a><br>                                
-            </p>
-        </div>
+  
 
 
-        <h2 class="section-title">Programs</h2>
-        
+        <h2 class="section-title">No Text Yet</h2>
+            
+            <p>Until I get my thumb out of my well-feathered ass you can check out the module itself.</p> 
 
-        <div class="callout">
-            <p>
-                <b><u>Table of Content:</b></u> <br><br>
-                <a href="firefox.html">Declarative Firefox Configuration</a><br>                                
-            </p>
-        </div>
+            <a href="https://github.com/QuackHack-McBlindy/dotfiles/blob/main/bin/voice/transcribe.nix" class="source-link">
+              View source code on GitHub
+            </a><br>       
 
-
-        <h2 class="section-title">More Voice Assistant</h2>
-
-        <div class="callout">
-            <p>
-                <b><u>Table of Content:</b></u> <br><br>
-                <a href="wake.html">Wake Word</a><br>      
-                <a href="transcribe.html">Speech To Text</a><br>                
-                <a href="say.html">Text To Speech</a><br>
-
-                                
-            </p>
-        </div>
 
     </div>
     
@@ -158,10 +134,12 @@
                 setTimeout(() => {
                     duckIcon.style.transform = 'scale(1)';
                 }, 300);
-            }       
+            }
+            
             duckToggle.addEventListener('click', toggleCodeDucks);
         });
         
+        // Scroll animation for images
         document.addEventListener('DOMContentLoaded', function() {
             const scrollImages = document.querySelectorAll('.scroll-image');
     
