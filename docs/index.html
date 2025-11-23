@@ -128,7 +128,7 @@
                 if (isOpening) {
                     tocDetails.style.maxHeight = tocDetails.scrollHeight + 'px';
                 } else {
-                    tocDetails.style.maxHeight = '60px'; // Approximate header height
+                    tocDetails.style.maxHeight = '60px';
                 }
             });
     
@@ -138,7 +138,7 @@
                 } else {
                     setTimeout(() => {
                         tocDetails.style.maxHeight = null;
-                    }, 300);
+                    }, 1300);
                 }
             });
         });
@@ -170,7 +170,6 @@
             duckToggle.addEventListener('click', toggleCodeDucks);
         });
         
-        // Scroll animation for images
         document.addEventListener('DOMContentLoaded', function() {
             const scrollImages = document.querySelectorAll('.scroll-image');
     
