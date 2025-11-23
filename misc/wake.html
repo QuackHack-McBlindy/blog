@@ -69,12 +69,23 @@
             <p class="subtitle">This section is about Wake Word detection.</p>
         </header>
 
+
+        <h2 class="section-title">No tflite-runtime</h2>
+            
+            <p>I really wanted to go my own route here.<br>
+            But since there is no tflite-runtime in the nixpkgs, and I was unable to package it myself,<br>
+            I had make multiple workarounds and ended up using the wyoming-openwakeword package.<br>
+            There is nothing wrong with that, it's working well, but the workflow does look a little weird.<br>
+            I had to create a systemd service that reads the output from the wyoming-openwakeword service.<br>
+            It's all described pretty well in the link below.<br>
+            
+            </p> 
+
   
 
-        <h2 class="section-title">No Text Yet</h2>
+        <h2 class="section-title">Source code</h2>
             
-            <p>Until I get my thumb out of my well-feathered ass you can check out the module itself.</p> 
-
+            
             <a href="https://github.com/QuackHack-McBlindy/dotfiles/blob/main/bin/voice/wake.nix" class="source-link">
               View source code on GitHub
             </a><br>       
