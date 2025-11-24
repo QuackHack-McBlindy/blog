@@ -252,15 +252,16 @@ mqtt_publish \
   -h 192.168.1.111 \ # 🦆says⮞ MQTT broker IP
   -u mqtt \ # 🦆says⮞ MQTT user
   -p "$(cat /run/secrets/mosquitto)" \ # 🦆says⮞ password file
-  -t zigbee2mqtt/energy/price \ # 🦆says⮞ MQTT topic
-  -m "{\"current_price\": \"$CURRENT_PRICE\"}" # 🦆says⮞ MQTT message with variable containing the price data
+  -t zigbee2mqtt/energy \ # 🦆says⮞ MQTT topic
+  # 🦆says⮞ MQTT message with variable containing the price & usage data
+  -m "{\"current_price\": \"$TOTAL\", \"monthly_usage\": \"$TOTAL_KWH\"}"
 </span><span class="clean-version hidden">
 mqtt_publish \
   -h 192.168.1.111 \
   -u mqtt \
   -p "$(cat /run/secrets/mosquitto)" \
-  -t zigbee2mqtt/energy/price \
-  -m "{\"current_price\": \"$CURRENT_PRICE\"}"
+  -t zigbee2mqtt/energy \
+  -m "{\"current_price\": \"$TOTAL\", \"monthly_usage\": \"$TOTAL_KWH\"}"
 </span></pre>
             </div>
         </div>
@@ -287,16 +288,16 @@ in { # 🦆 duck say ⮞ qwack
     zigbee = {
       automations = { 
         mqtt_triggered = {
-          energy_price = {
+          energy = {
             enable = true;
             description = "Writes energy data to file for dashboard";
-            topic = "zigbee2mqtt/energy/price";
+            topic = "zigbee2mqtt/energy";
             actions = [
               {
                 type = "shell";
                 command = ''
-                  touch /var/lib/zigduck/energy_price.json
-                  echo "$MQTT_PAYLOAD" > /var/lib/zigduck/energy_price.json
+                  touch /var/lib/zigduck/energy.json
+                  echo "$MQTT_PAYLOAD" > /var/lib/zigduck/energy.json
                 '';
               }
             ];
@@ -318,16 +319,16 @@ in {
     zigbee = {
       automations = { 
         mqtt_triggered = {
-          energy_price = {
+          energy = {
             enable = true;
             description = "Writes energy data to file for dashboard";
-            topic = "zigbee2mqtt/energy/price";
+            topic = "zigbee2mqtt/energy";
             actions = [
               {
                 type = "shell";
                 command = ''
-                  touch /var/lib/zigduck/energy_price.json
-                  echo "$MQTT_PAYLOAD" > /var/lib/zigduck/energy_price.json
+                  touch /var/lib/zigduck/energy.json
+                  echo "$MQTT_PAYLOAD" > /var/lib/zigduck/energy.json
                 '';
               }
             ];
@@ -343,7 +344,7 @@ in {
     </details>                   
         
 
-        This simply creates a file containing the mqtt message and saves it as '/var/lib/zigduck/energy_price.json'.<br>
+        This simply creates a file containing the mqtt message and saves it as '/var/lib/zigduck/energy.json'.<br>
         Basic stuff huh? Let's move on to step two, which is the last and final step.<br>
         We're creating a Nix configured status card that reads the file content.<br>
         
@@ -364,18 +365,21 @@ in { # 🦆 says ⮞ qwack
   house = {
     dashboard = {
       statusCards = {
-        energy_price = { # 🦆says⮞ name of card
+        energy = { # 🦆says⮞ name of card
           enable = true;
           title = "Energy"; # 🦆says⮞ title that is displayed inside the card
           # 🦆says⮞ Font Awesome icon library https://fontawesome.com/icons
           icon = "fas fa-dollar";
           color = "#2196f3"; # 🦆says⮞ HEX color for the icon
-          filePath = "/var/lib/zigduck/energy_price.json"; # 🦆says⮞ file path to read data from
+          filePath = "/var/lib/zigduck/energy.json"; # 🦆says⮞ file path to read data from
           # 🦆says⮞ since our script had this json field - we read this specific field
           jsonField = "current_price"; 
           # 🦆says⮞ format output. {value} is the value of the field we specified above - and i want to display it in SEK/kWh
           format = "{value} SEK/kWh";
-          details = "Current price"; # 🦆says⮞ footer of the card
+          # details = "Current price"; # 🦆says⮞ static footer of the card
+          # 🦆says⮞ or we can read another json field
+          detailsJsonField = "monthly_usage";
+          detailsFormat = "Usage: {value} kWh";
         };
       };
     };
@@ -392,7 +396,7 @@ in {
   house = {
     dashboard = {
       statusCards = {
-        energy_price = {
+        energy = {
           enable = true;
           title = "Energy";
           icon = "fas fa-dollar"; # Font Awesome icon library https://fontawesome.com/icons
@@ -400,7 +404,9 @@ in {
           filePath = "/var/lib/zigduck/energy_price.json";
           jsonField = "current_price";
           format = "{value} SEK/kWh";
-          details = "Current price";
+          # details = "Current price";
+          detailsJsonField = "monthly_usage";
+          detailsFormat = "Usage: {value} kWh";
         };
       };
     };
@@ -411,12 +417,21 @@ in {
         </div>
     </details>            
 
+        <br>
+        Give the card a name, title, icon - choose a file path to read json data from, define the key of the data you want to display and you format the output, where <strong>{value}</strong> show's the actual data.<br>
+        You can either set a static footer <i>(details)</i> or choose to read another json field from the same file.<br>
+        This creates a status card that looks like this:<br><br>
+        <img src="../img/card.jpeg" height="200ppx" width="400px">
+        <br>
+
         <div class="duck-comment">
             <p>⮞ and dat iz it yo! no qwackin' way dat was hard?? </p>
         </div>        
 
+
+
         Keep adding as many cards as you'd like.<br>
-        That's the only configurable options for this dashboard, if you configured everything from earlier steps everything should <i>just work</i>.<br>
+        That's the only configurable option for this dashboard, if you configured everything from earlier steps everything should <i>just work</i>.<br>
         Until the next one!<br>
 
             <h2 class="section-title">Source Code</h2>
