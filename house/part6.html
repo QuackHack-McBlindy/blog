@@ -233,9 +233,57 @@
             </div><br>     
             
             
-        <h2 class="section-title">Today's Lesson</h2>
-        The dashboard only comes with one built-in status card, which displays the temperature from your sensors.<br>
-        <br>Today I am going to show you how easy it is to configure custom status cards for the home page of the dashboard.<br>
+        <h2 class="section-title">Customizing The Dashboard</h2>
+        
+        The dashboard is extremely modular in the sense that extending it with more pages is as easy as:<br>
+
+        <details class="code-block-container" style="margin-bottom: 1em;" open>
+          <summary class="code-header">
+              <div class="code-lang">⮞ View Weather Page Example</div>
+          </summary>
+              <div class="code-block">
+                <pre><span class="duck-version">
+  house = {
+    dashboard = {
+      pages = {
+        "4" = {
+          icon = "fas fa-cloud-sun";
+          title = "Weather";
+          code = ''
+            hello world
+          '';
+        };
+      };
+    };  
+  
+  };}
+</span><span class="clean-version hidden">
+  house = {
+    dashboard = {
+      pages = {
+        "4" = {
+          icon = "fas fa-cloud-sun";
+          title = "Weather";
+          code = ''
+            hello world
+          '';
+        };
+      };
+    };  
+  
+  };}
+</span></pre>
+            </div>
+        </div>
+    </details>        
+        
+        
+        
+        
+        <h2 class="section-title">Status Cards</h2>        
+        
+        The dashboard only comes with one built-in status card, which displays the temperature from your sensors.<br>   
+        <br>Here I am going to show you how easy it is to configure custom status cards for the home page of the dashboard.<br>
         <br>
         For simplicity let's assume you have a energy price script - which data you'd like to publish and display as a status card.<br>
         Let's say it looks something like this:
@@ -424,14 +472,17 @@ in {
         <img src="../img/card.jpeg" height="200ppx" width="400px">
         <br>
 
+
+
+
         <div class="duck-comment">
             <p>⮞ and dat iz it yo! no qwackin' way dat was hard?? </p>
         </div>        
 
 
-
         Keep adding as many cards as you'd like.<br>
-        That's the only configurable option for this dashboard, if you configured everything from earlier steps everything should <i>just work</i>.<br>
+        These are the only configurable options for this dashboard as of now, but they do offer good flexibility.<br>
+        If you have configured everything from earlier steps everything should <i>just work</i>.<br>
         Until the next one!<br>
 
             <h2 class="section-title">Source Code</h2>
