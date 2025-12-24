@@ -20,7 +20,6 @@
     
     <link rel="canonical" href="https://quackhack-mcblindy.github.io/blog/" />
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/styles5.css">
 </head>
 <body>
 
@@ -47,7 +46,7 @@
                 <span class="toc-duck">🦆</span>
                 <h3>Navigation</h3>
                 <span class="toc-man">🧑‍🦯</span>
-                <span class="toc-toggle">⮟</span>
+                <span class="toc-toggle">▼</span>
             </summary>
             <nav class="toc-nav">
                 <a href="yo/index.html" class="toc-item">
@@ -72,7 +71,7 @@
                 </a>
             </nav>
             <div class="toc-footer">
-                <span class="toc-quack">🦆 says ⮞ qwack qwack, plx pick!</span>
+                <span class="toc-quack">🦆 says ▶ qwack qwack, plx pick!</span>
             </div>
         </details>
     </div>
@@ -96,12 +95,18 @@
         <p>
             I am <strong>QuackHack-McBlindy</strong>, a <strong>handiqwacked</strong> duck, struggling with many simple everyday tasks.  <br>
             When it comes to code, I seem to be doing alright though.<br> 
-            I have actively been developing strange and random projects for <strong>two decades</strong> now.<br>
+            I am a self-taught software and full stack developer/engineer, with real hands-on experience.<br>
+            I build websites, web apps, applications, tools and services that solves real problems.<br>
+            I am convinced user experience, security and performance matter and that high-quality solutions pay off over time.<br>          
+            <strong>Dedicated</strong> and always looking for the next big challenge.<br><br>
+            
             The word `<strong>impossible</strong>` is not in my vocabulary.<br> 
             
             <div class="duck-comment">
-                <p> ⮞ dat word.., <strong>REALLY MAKES ME QWACK!!</strong><br>
-            </div>
+                <p>▶ dat word.., <strong>REALLY MAKES ME QWACK!!</strong><br>
+            </div><br>
+
+            I am a strong advocate for <strong>open source</strong>, which I have been an active supporter and contributor to for over <strong>two decades</strong> now.<br>
 
 
             <h2 class="section-title">How I Built My Perfect Smart Home</h2><br>
@@ -113,13 +118,12 @@
             And how I defined <strong>every single electronical device</strong> in my apartment in Nix & integrated it into my voice assistant.<br>
             
             <br>
-            If there's time I might do some qwackin' about the other madness going on - inside my head, <br>
-            but you'll see. <i>(I won't)</i> <br>
+
         </p>
                   
                          
         <div class="duck-comment">
-            <p> ⮞ pick a category up in the navigation for some reading!<br>quack quack quack quack quack quack quack quack</p>
+            <p>▶ pick a category up in the navigation for some reading!<br>quack quack quack quack quack quack quack quack</p>
         </div>
 
     <h2 class="section-title">Skills & Tools</h2>
@@ -158,11 +162,10 @@
     </section>
 
 
-
     </div>
     
     <footer>
-        <p>All thoughts are my own and should not be considered advice of any kind. More likely the opposite.</p>
+        <p>All thoughts are my own and should not be considered advice of any kind.</p>
     </footer>
 
     <script>
@@ -175,7 +178,7 @@
                 if (isOpening) {
                     tocDetails.style.maxHeight = tocDetails.scrollHeight + 'px';
                 } else {
-                    tocDetails.style.maxHeight = '60px'; // Approximate header height
+                    tocDetails.style.maxHeight = '60px';
                 }
             });
     
@@ -217,7 +220,6 @@
             duckToggle.addEventListener('click', toggleCodeDucks);
         });
         
-        // Scroll animation for images
         document.addEventListener('DOMContentLoaded', function() {
             const scrollImages = document.querySelectorAll('.scroll-image');
     
@@ -225,6 +227,8 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('scrolled');
+                    } else {
+                        entry.target.classList.remove('scrolled');
                     }
                 });
             }, {
@@ -232,8 +236,19 @@
             });
     
             scrollImages.forEach(image => {
+                image.classList.remove('scrolled');
                 observer.observe(image);
             });
+            
+            function isElementInViewport(el) {
+                const rect = el.getBoundingClientRect();
+                return (
+                    rect.top >= 0 &&
+                    rect.left >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                );
+            }
         });
     </script>
 </body>

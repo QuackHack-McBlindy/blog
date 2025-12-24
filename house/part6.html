@@ -2,115 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="google-site-verification" content="h0N8wN3LfuoAR-RnBsQbPLp23Eev2TIy5VVBfgFXiyc" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Blog about declarative home automation, smart home systems, and avoiding vendor lock-in with Nix-based solutions">
-    <meta property="og:title" content="Declarative Home Automation with Nix">
-    <meta property="og:description" content="Learn how to define your smart home devices and avoid vendor lock-in">
-    <meta property="og:type" content="article">
+    <title>NixOS dotfiles Tips & Guides | QuackHack-McBlindy's Blog</title>
+    <meta name="description" content="It’s not “just dotfiles” - it's extreme modularity that looks and feels like a NixOS flake. It's Voice-driven DevOps, it's a declarative home automation system, it's a self-contained auto-documenting monster.">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://quackhack-mcblindy.github.io/blog/">
+    <meta property="og:title" content="NixOS dotfiles Tips & Guides | QuackHack-McBlindy's Blog">
+    <meta property="og:description" content="It’s not “just dotfiles” - it's extreme modularity that looks and feels like a NixOS flake. It's Voice-driven DevOps, it's a declarative home automation system, it's a self-contained auto-documenting monster.">
+    <meta property="og:image" content="https://quackhack-mcblindy.github.io/blog/img/logo.png">
+    
     <meta name="twitter:card" content="summary_large_image">
-    <title>🦆🧑‍🦯'blog</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .gallery {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-        }
-        .gallery img {
-            width: 25%;
-            min-width: 200px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            cursor: pointer;
-        }
-        .gallery img:hover {
-            transform: scale(1.03);
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-        }
-        .lightbox {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            animation: fadeIn 0.3s;
-        }
-        .lightbox-content {
-            display: block;
-            margin: auto;
-            max-width: 90%;
-            max-height: 90%;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        }
-        .lightbox-caption {
-            text-align: center;
-            color: #fff;
-            padding: 10px 0;
-            font-size: 1.2em;
-        }
-        .close {
-            position: absolute;
-            top: 20px;
-            right: 35px;
-            color: #fff;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .close:hover {
-            color: #bbb;
-        }
-        .prev, .next {
-            cursor: pointer;
-            position: absolute;
-            top: 50%;
-            width: auto;
-            padding: 16px;
-            margin-top: -50px;
-            color: white;
-            font-weight: bold;
-            font-size: 30px;
-            transition: 0.3s;
-            user-select: none;
-            background-color: rgba(0,0,0,0.3);
-            border-radius: 0 5px 5px 0;
-        }
-        .next {
-            right: 0;
-            border-radius: 5px 0 0 5px;
-        }
-        .prev:hover, .next:hover {
-            background-color: rgba(0,0,0,0.8);
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        video {
-            max-width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-    </style>
-    <link rel="stylesheet" href="../css/styles.css">
+    <meta name="twitter:title" content="NixOS & dotfiles: My Declarative Smart Home">
+    <meta name="twitter:description" content="Beyond dotfiles: A modular, voice-driven DevOps and home automation system built with NixOS.">
+    <meta name="twitter:image" content="https://quackhack-mcblindy.github.io/blog/img/logo.png">
+    
+    <link rel="canonical" href="https://quackhack-mcblindy.github.io/blog/" />
+    <link rel="stylesheet" href="./../css/styles.css">
+    <link rel="stylesheet" href="./../css/styles5.css">
 </head>
 <body>
 
@@ -139,7 +49,7 @@
                 <span class="toc-duck">🦆</span>
                 <h3>Navigation</h3>
                 <span class="toc-man">🧑‍🦯</span>
-                <span class="toc-toggle">⮟</span>
+                <span class="toc-toggle">▼</span>
             </summary>
             <nav class="toc-nav">
                 <a href="../yo/index.html" class="toc-item">
@@ -153,7 +63,7 @@
                 <a href="index.html" class="toc-item current">
                     <span class="toc-icon">🏠</span>
                     House - Declarative Home Automation
-                    <span class="current-marker">⮜🦆</span>
+                    <span class="current-marker">◀🦆</span>
                 </a>
                 <a href="../docs/index.html" class="toc-item">
                     <span class="toc-icon">📚</span>
@@ -165,7 +75,7 @@
                 </a>
             </nav>
             <div class="toc-footer">
-                <span class="toc-quack">🦆 says ⮞ qwack qwack, plx pick!</span>
+                <span class="toc-quack">🦆 says ▶ qwack qwack, plx pick!</span>
             </div>
         </details>
     </div>
@@ -179,7 +89,7 @@
 
         
         <div class="duck-comment">
-            <p>says ⮞ I use 20x magnification when I code and debug. I use emoji to simplify logs for myself. If you can't handle my code style you can disable most of it on this website by toggling the button in the navbar. Shall duck continue? </p>
+            <p>says ▶ I use 20x magnification when I code and debug. I use emoji to simplify logs for myself. If you can't handle my code style you can disable most of it on this website by toggling the button in the navbar. Shall duck continue? </p>
         </div>
 
         <h2 class="section-title">Contribute</h2>
@@ -228,7 +138,7 @@
 
             <div class="duck-comment">
                 <p>
-                    ⮞ <i>if any JS yoda wanna help out...</i> 
+                    ▶ <i>if any JS yoda wanna help out...</i> 
                 </p>
             </div><br>     
             
@@ -239,7 +149,7 @@
 
         <details class="code-block-container" style="margin-bottom: 1em;" open>
           <summary class="code-header">
-              <div class="code-lang">⮞ View Weather Page Example</div>
+              <div class="code-lang">▶ View Weather Page Example</div>
           </summary>
               <div class="code-block">
                 <pre><span class="duck-version">
@@ -292,16 +202,16 @@
         
         <details class="code-block-container" style="margin-bottom: 1em;" open>
           <summary class="code-header">
-              <div class="code-lang">⮞ View Message Processing Handler</div>
+              <div class="code-lang">▶ View Message Processing Handler</div>
           </summary>
               <div class="code-block">
                 <pre><span class="duck-version">
 mqtt_publish \
-  -h 192.168.1.111 \ # 🦆says⮞ MQTT broker IP
-  -u mqtt \ # 🦆says⮞ MQTT user
-  -p "$(cat /run/secrets/mosquitto)" \ # 🦆says⮞ password file
-  -t zigbee2mqtt/energy \ # 🦆says⮞ MQTT topic
-  # 🦆says⮞ MQTT message with variable containing the price & usage data
+  -h 192.168.1.111 \ # 🦆says▶ MQTT broker IP
+  -u mqtt \ # 🦆says▶ MQTT user
+  -p "$(cat /run/secrets/mosquitto)" \ # 🦆says▶ password file
+  -t zigbee2mqtt/energy \ # 🦆says▶ MQTT topic
+  # 🦆says▶ MQTT message with variable containing the price & usage data
   -m "{\"current_price\": \"$TOTAL\", \"monthly_usage\": \"$TOTAL_KWH\"}"
 </span><span class="clean-version hidden">
 mqtt_publish \
@@ -321,17 +231,17 @@ mqtt_publish \
         
         <details class="code-block-container" style="margin-bottom: 1em;" open>
           <summary class="code-header">
-              <div class="code-lang">⮞ View Message Processing Handler</div>
+              <div class="code-lang">▶ View Message Processing Handler</div>
           </summary>
               <div class="code-block">
                 <pre><span class="duck-version">
-{ # 🦆 says ⮞ my house - qwack 
+{ # 🦆 says ▶ my house - qwack 
   config,
   lib,
   pkgs,
   ...
 } : let
-in { # 🦆 duck say ⮞ qwack
+in { # 🦆 duck say ▶ qwack
   house = {
     zigbee = {
       automations = { 
@@ -399,33 +309,33 @@ in {
 
         <details class="code-block-container" style="margin-bottom: 1em;" open>
           <summary class="code-header">
-              <div class="code-lang">⮞ View Message Processing Handler</div>
+              <div class="code-lang">▶ View Message Processing Handler</div>
           </summary>
               <div class="code-block">
                 <pre><span class="duck-version">
-{ # 🦆 says ⮞ my house - qwack 
+{ # 🦆 says ▶ my house - qwack 
   config,
   lib,
   pkgs,
   ...
 } : let
-in { # 🦆 says ⮞ qwack
+in { # 🦆 says ▶ qwack
   house = {
     dashboard = {
       statusCards = {
-        energy = { # 🦆says⮞ name of card
+        energy = { # 🦆says▶ name of card
           enable = true;
-          title = "Energy"; # 🦆says⮞ title that is displayed inside the card
-          # 🦆says⮞ Font Awesome icon library https://fontawesome.com/icons
+          title = "Energy"; # 🦆says▶ title that is displayed inside the card
+          # 🦆says▶ Font Awesome icon library https://fontawesome.com/icons
           icon = "fas fa-dollar";
-          color = "#2196f3"; # 🦆says⮞ HEX color for the icon
-          filePath = "/var/lib/zigduck/energy.json"; # 🦆says⮞ file path to read data from
-          # 🦆says⮞ since our script had this json field - we read this specific field
+          color = "#2196f3"; # 🦆says▶ HEX color for the icon
+          filePath = "/var/lib/zigduck/energy.json"; # 🦆says▶ file path to read data from
+          # 🦆says▶ since our script had this json field - we read this specific field
           jsonField = "current_price"; 
-          # 🦆says⮞ format output. {value} is the value of the field we specified above - and i want to display it in SEK/kWh
+          # 🦆says▶ format output. {value} is the value of the field we specified above - and i want to display it in SEK/kWh
           format = "{value} SEK/kWh";
-          # details = "Current price"; # 🦆says⮞ static footer of the card
-          # 🦆says⮞ or we can read another json field
+          # details = "Current price"; # 🦆says▶ static footer of the card
+          # 🦆says▶ or we can read another json field
           detailsJsonField = "monthly_usage";
           detailsFormat = "Usage: {value} kWh";
         };
@@ -476,7 +386,7 @@ in {
 
 
         <div class="duck-comment">
-            <p>⮞ and dat iz it yo! no qwackin' way dat was hard?? </p>
+            <p>▶ and dat iz it yo! no qwackin' way dat was hard?? </p>
         </div>        
 
 
@@ -491,11 +401,11 @@ in {
         
         <details class="code-block-container" style="margin-bottom: 1em;">
           <summary class="code-header">
-              <div class="code-lang">⮞ View System Monitoring Dashboard Page</div>
+              <div class="code-lang">▶ View System Monitoring Dashboard Page</div>
           </summary>
               <div class="code-block">
                 <pre><span class="duck-version">        
-{ # 🦆 says ⮞ health checks for all hosts automated into dashboard  
+{ # 🦆 says ▶ health checks for all hosts automated into dashboard  
   self,
   lib,
   config,
@@ -503,7 +413,7 @@ in {
   cmdHelpers,
   ... 
 } : let   
-  # 🦆 says ⮞ dis fetch what host has Mosquitto
+  # 🦆 says ▶ dis fetch what host has Mosquitto
   sysHosts = lib.attrNames self.nixosConfigurations; 
   mqttHost = lib.findSingle (host:
       let cfg = self.nixosConfigurations.${host}.config;
@@ -682,7 +592,7 @@ in {
   };
 
   house = {
-    # 🦆 says ⮞ DASHBOARD CONFIOGURATION 
+    # 🦆 says ▶ DASHBOARD CONFIOGURATION 
     dashboard = {
       pages = {
         "4" = {
@@ -1361,7 +1271,8 @@ in {
             <a href ="part3.html">Part 3. Nix Configured Automations</a> <br>           
             <a href ="part4.html">Part 4. Writing a Server Service - in Rust</a>  <br> 
             <a href ="part5.html">Part 5. Writing a Client - With Voice Commands</a> <br>
-            <a href ="part6.html">Part 6. The Auto-Generated Dashboard</a><span class="current-marker">⮜🦆here u are</span><br>    
+            <a href ="part6.html">Part 6. The Auto-Generated Dashboard</a><span class="current-marker">◀🦆here u are</span><br>    
+            <a href ="part7.html">Part 7. Let's Build a ChatBot!</a> <br>
 
             <br><br>
     
@@ -1385,121 +1296,18 @@ in {
     </div>
     
     <footer>
-        <p>All thoughts are my own and should not be considered advice of any kind. More likely the opposite.</p>
+        <p>All thoughts are my own and should not be considered advice of any kind.</p>
     </footer>
 
     <script>
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const lightboxCaption = document.getElementById('lightbox-caption');
-        const galleryImages = document.querySelectorAll('.gallery img');
-        let currentIndex = 0;
-        
-        function openLightbox(index) {
-            currentIndex = index;
-            lightbox.style.display = 'block';
-            lightboxImg.src = galleryImages[index].src;
-            lightboxCaption.textContent = galleryImages[index].alt;
-        }
-        
-        function closeLightbox() {
-            lightbox.style.display = 'none';
-        }
-        
-        function changeImage(direction) {
-            currentIndex += direction;
-            
-            if (currentIndex >= galleryImages.length) {
-                currentIndex = 0;
-            } else if (currentIndex < 0) {
-                currentIndex = galleryImages.length - 1;
-            }
-            
-            lightboxImg.src = galleryImages[currentIndex].src;
-            lightboxCaption.textContent = galleryImages[currentIndex].alt;
-        }
-        
-        lightbox.addEventListener('click', function(event) {
-            if (event.target === lightbox) {
-                closeLightbox();
-            }
-        });
-        
-        document.addEventListener('keydown', function(event) {
-            if (lightbox.style.display === 'block') {
-                if (event.key === 'Escape') {
-                    closeLightbox();
-                } else if (event.key === 'ArrowLeft') {
-                    changeImage(-1);
-                } else if (event.key === 'ArrowRight') {
-                    changeImage(1);
-                }
-            }
-        });
-
         document.addEventListener('DOMContentLoaded', function() {
-            const codeBlocks = document.querySelectorAll('details.code-block-container');
-            
-            codeBlocks.forEach(block => {
-                const summary = block.querySelector('summary');
-                const codeLang = summary.querySelector('.code-lang');
-                const toggleIcon = summary.querySelector('.toggle-icon');
-                
-                const originalText = codeLang.innerHTML;
-                const viewText = originalText.replace('Hide', 'View').replace('⮞', '⮟');
-                const hideText = originalText.replace('View', 'Hide').replace('⮟', '⮞');
-                
-                if (block.open) {
-                    codeLang.innerHTML = hideText;
-                } else {
-                    codeLang.innerHTML = viewText;
-                }
-                
-                block.addEventListener('toggle', function() {
-                    if (this.open) {
-                        codeLang.innerHTML = hideText;
-                    } else {
-                        codeLang.innerHTML = viewText;
-                    }
-                });
+            document.querySelectorAll('pre span').forEach(function(span) {
+                var text = document.createElement('textarea');
+                text.innerHTML = span.innerHTML;
+                span.textContent = text.value;
             });
         });
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            const duckToggle = document.getElementById('duckToggle');
-            let ducksHidden = false;
-            
-            function toggleCodeDucks() {
-                ducksHidden = !ducksHidden;
-                
-                const duckVersions = document.querySelectorAll('.duck-version');
-                const cleanVersions = document.querySelectorAll('.clean-version');
-                
-                duckVersions.forEach(version => {
-                    version.classList.toggle('hidden', ducksHidden);
-                });
-                
-                cleanVersions.forEach(version => {
-                    version.classList.toggle('hidden', !ducksHidden);
-                });
-                
-                duckToggle.innerHTML = ducksHidden ? 
-                    '<span class="duck-icon"></span> Show 🦆 commentary' : 
-                    '<span class="duck-icon"></span> Hide 🦆 commentary';
-                    
-                const duckIcon = duckToggle.querySelector('.duck-icon');
-                duckIcon.style.transform = 'scale(1.2)';
-                setTimeout(() => {
-                    duckIcon.style.transform = 'scale(1)';
-                }, 300);
-            }
-            
-            duckToggle.addEventListener('click', toggleCodeDucks);
-            
-            document.querySelectorAll('.clean-version').forEach(version => {
-                version.classList.add('hidden');
-            });
-        });
-    </script>
+    </script>    
+    <script src="../js/script.js"></script>
 </body>
 </html>

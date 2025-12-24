@@ -2,14 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="google-site-verification" content="h0N8wN3LfuoAR-RnBsQbPLp23Eev2TIy5VVBfgFXiyc" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Blog about declarative home automation, smart home systems, and avoiding vendor lock-in with Nix-based solutions">
-    <meta property="og:title" content="Declarative Home Automation with Nix">
-    <meta property="og:description" content="Learn how to define your smart home devices and avoid vendor lock-in">
-    <meta property="og:type" content="article">
+    <title>NixOS dotfiles Tips & Guides | QuackHack-McBlindy's Blog</title>
+    <meta name="description" content="It’s not “just dotfiles” - it's extreme modularity that looks and feels like a NixOS flake. It's Voice-driven DevOps, it's a declarative home automation system, it's a self-contained auto-documenting monster.">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://quackhack-mcblindy.github.io/blog/">
+    <meta property="og:title" content="NixOS dotfiles Tips & Guides | QuackHack-McBlindy's Blog">
+    <meta property="og:description" content="It’s not “just dotfiles” - it's extreme modularity that looks and feels like a NixOS flake. It's Voice-driven DevOps, it's a declarative home automation system, it's a self-contained auto-documenting monster.">
+    <meta property="og:image" content="https://quackhack-mcblindy.github.io/blog/img/logo.png">
+    
     <meta name="twitter:card" content="summary_large_image">
-    <title>🦆🧑‍🦯'blog</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <meta name="twitter:title" content="NixOS & dotfiles: My Declarative Smart Home">
+    <meta name="twitter:description" content="Beyond dotfiles: A modular, voice-driven DevOps and home automation system built with NixOS.">
+    <meta name="twitter:image" content="https://quackhack-mcblindy.github.io/blog/img/logo.png">
+    
+    <link rel="canonical" href="https://quackhack-mcblindy.github.io/blog/" />
+    <link rel="stylesheet" href="./../css/styles.css">
+    <link rel="stylesheet" href="./../css/styles5.css">
 </head>
 <body>
 
@@ -38,7 +49,7 @@
                 <span class="toc-duck">🦆</span>
                 <h3>Navigation</h3>
                 <span class="toc-man">🧑‍🦯</span>
-                <span class="toc-toggle">⮟</span>
+                <span class="toc-toggle">▼</span>
             </summary>
             <nav class="toc-nav">
                 <a href="../yo/index.html" class="toc-item">
@@ -52,7 +63,7 @@
                 <a href="index.html" class="toc-item current">
                     <span class="toc-icon">🏠</span>
                     House - Declarative Home Automation
-                    <span class="current-marker">⮜🦆</span>
+                    <span class="current-marker">◀🦆</span>
                 </a>
                 <a href="../docs/index.html" class="toc-item">
                     <span class="toc-icon">📚</span>
@@ -64,7 +75,7 @@
                 </a>
             </nav>
             <div class="toc-footer">
-                <span class="toc-quack">🦆 says ⮞ qwack qwack, plx pick!</span>
+                <span class="toc-quack">🦆 says ▶ qwack qwack, plx pick!</span>
             </div>
         </details>
     </div>
@@ -78,7 +89,7 @@
 
         
         <div class="duck-comment">
-            <p>says ⮞ I use 20x magnification when I code and debug. I use emoji to simplify logs for myself. If you can't handle my code style you can disable most of it on this website by toggling the button in the navbar. Shall duck continue? </p>
+            <p>says ▶ I use 20x magnification when I code and debug. I use emoji to simplify logs for myself. If you can't handle my code style you can disable most of it on this website by toggling the button in the navbar. Shall duck continue? </p>
         </div>
 
 
@@ -109,26 +120,26 @@
 
         <details class="code-block-container" style="margin-bottom: 1em;">
           <summary class="code-header">
-              <div class="code-lang">⮞ View Nix File Structure</div>
+              <div class="code-lang">▶ View Nix File Structure</div>
           </summary>
               <div class="code-block">
                 <pre><span class="duck-version">
-  # 🦆 says ⮞ Generate automations configuration
+  # 🦆 says ▶ Generate automations configuration
   automationsJSON = builtins.toJSON config.house.zigbee.automations;
   automationsFile = pkgs.writeText "automations.json" automationsJSON;
 
-  # 🦆 says ⮞ Dark time enabled flag
+  # 🦆 says ▶ Dark time enabled flag
   darkTimeEnabled = if config.house.zigbee.darkTime.enable then "1" else "0";
 
   # 🦆 needz 4 rust  
   devices-json = pkgs.writeText "devices.json" deviceMeta;
-  # 🦆 says ⮞ RUSTY SMART HOME qwack qwack     
+  # 🦆 says ▶ RUSTY SMART HOME qwack qwack     
   zigduck-rs = pkgs.writeText "zigduck-rs" ''        
     use rumqttc::{MqttOptions, Client, QoS, Event, Incoming};
     #🦆...
   '';
 
-  # 🦆 says ⮞ Cargo.toml
+  # 🦆 says ▶ Cargo.toml
   zigduck-toml = pkgs.writeText "zigduck.toml" ''    
     [package]
     name = "zigduck-rs"
@@ -154,11 +165,11 @@ in {
       
       mkdir -p "${zigduckDir}/timers"
       mkdir -p src
-      # 🦆 says ⮞ create the source filez yo 
+      # 🦆 says ▶ create the source filez yo 
       cat ${zigduck-rs} > src/main.rs
       cat ${zigduck-toml} > Cargo.toml
       
-      # 🦆 says ⮞ build
+      # 🦆 says ▶ build
       ${pkgs.cargo}/bin/cargo generate-lockfile      
       ${pkgs.cargo}/bin/cargo build --release   
     '';
@@ -238,11 +249,11 @@ in {
 
         <details class="code-block-container" style="margin-bottom: 1em;">
           <summary class="code-header">
-              <div class="code-lang">⮞ View Main Event Loop Summary</div>
+              <div class="code-lang">▶ View Main Event Loop Summary</div>
           </summary>
               <div class="code-block">
                 <pre><span class="duck-version">
-// 🦆 says ⮞ i dont alwayz qwack i can listenz
+// 🦆 says ▶ i dont alwayz qwack i can listenz
 async fn start_listening(&mut self) -> Result<(), Box<dyn std::error::Error>> {
     let (mut client, mut connection) = Client::new(mqttoptions, 10);
     client.subscribe("zigbee2mqtt/#", QoS::AtMostOnce)?;
@@ -257,9 +268,9 @@ async fn start_listening(&mut self) -> Result<(), Box<dyn std::error::Error>> {
                 }
             }
             Err(e) => {
-                // 🦆 says ⮞ auto reconnect ..
+                // 🦆 says ▶ auto reconnect ..
                 tokio::time::sleep(Duration::from_secs(5)).await;
-                // 🦆 says ⮞ recreate connection & resubscribe
+                // 🦆 says ▶ recreate connection & resubscribe
             }
         }
     }
@@ -294,7 +305,7 @@ async fn start_listening(&mut self) -> Result<(), Box<dyn std::error::Error>> {
 
             <div class="duck-comment">
                 <p>
-                    says ⮞ datz good if ur zigstick is bad qwack!1 
+                    says ▶ datz good if ur zigstick is bad qwack!1 
                 </p>
             </div>            
 
@@ -310,26 +321,26 @@ async fn start_listening(&mut self) -> Result<(), Box<dyn std::error::Error>> {
 
         <details class="code-block-container" style="margin-bottom: 1em;">
           <summary class="code-header">
-              <div class="code-lang">⮞ View Message Processing Handler</div>
+              <div class="code-lang">▶ View Message Processing Handler</div>
           </summary>
               <div class="code-block">
                 <pre><span class="duck-version">
-// 🦆 says ⮞ letzz do diz! 
+// 🦆 says ▶ letzz do diz! 
 async fn process_message(&mut self, topic: &str, payload: &str) -> Result<(), Box<dyn std::error::Error>> {
     let data: Value = serde_json::from_str(payload)?;
     let device_name = topic.strip_prefix("zigbee2mqtt/").unwrap_or(topic);
     
-    // 🦆 says ⮞ update device statez from all dem fields
+    // 🦆 says ▶ update device statez from all dem fields
     self.update_device_state_from_data(device_name, &data)?;
     
     if let Some(device) = self.devices.get(device_name) {
         let room = &device.room;
-        // 🦆 says ⮞ handle all dem sensor typez triggerz!
+        // 🦆 says ▶ handle all dem sensor typez triggerz!
         match device.device_type.as_str() {
-            "motion" => {     //🦆says⮞MOTION SENSORS }
-            "contact" => {    //🦆says⮞DOOR/WINDOW SENSORS }
-            "water_leak" => { //🦆says⮞WATER LEAK SENSORS }
-            // 🦆says⮞ MORE? qwack qwack
+            "motion" => {     //🦆says▶MOTION SENSORS }
+            "contact" => {    //🦆says▶DOOR/WINDOW SENSORS }
+            "water_leak" => { //🦆says▶WATER LEAK SENSORS }
+            // 🦆says▶ MORE? qwack qwack
         }
     }
 }
@@ -370,11 +381,11 @@ async fn process_message(&mut self, topic: &str, payload: &str) -> Result<(), Bo
 
         <details class="code-block-container" style="margin-bottom: 1em;">
           <summary class="code-header">
-              <div class="code-lang">⮞ View Dimmer Switch Action Handler</div>
+              <div class="code-lang">▶ View Dimmer Switch Action Handler</div>
           </summary>
               <div class="code-block">
                 <pre><span class="duck-version">
-// 🦆 says ⮞ letz go yo!
+// 🦆 says ▶ letz go yo!
 fn handle_room_dimmer_action<F>(
     &self, 
     action: &str, 
@@ -383,21 +394,21 @@ fn handle_room_dimmer_action<F>(
     default_action: F
 ) -> Result<(), Box<dyn std::error::Error>> 
 {
-    // 🦆 says ⮞any room configurationz?
+    // 🦆 says ▶any room configurationz?
     if let Some(room_actions) = self.automations.dimmer_actions.get(room) {
         let dimmer_action = match action {
             "on_press_release" => &room_actions.on_press_release,
             "on_hold_release" => &room_actions.on_hold_release,
-            // ... 🦆 says ⮞ da rest actionz
+            // ... 🦆 says ▶ da rest actionz
         };
         
-        // 🦆 says ⮞execute override actionz or default + extra actionz
+        // 🦆 says ▶execute override actionz or default + extra actionz
         if !config.override_actions.is_empty() {
             for override_action in &config.override_actions {
                 self.execute_automation_action(override_action, device_name, room)?;
             }
         } else {
-            default_action(room)?;  // 🦆says⮞run da defaultz
+            default_action(room)?;  // 🦆says▶run da defaultz
             for extra_action in &config.extra_actions {
                 self.execute_automation_action(extra_action, device_name, room)?;
             }
@@ -449,7 +460,7 @@ fn handle_room_dimmer_action<F>(
 
         <details class="code-block-container" style="margin-bottom: 1em;">
           <summary class="code-header">
-              <div class="code-lang">⮞ View COnditions Code Snippet</div>
+              <div class="code-lang">▶ View COnditions Code Snippet</div>
           </summary>
               <div class="code-block">
                 <pre><span class="duck-version">
@@ -521,9 +532,10 @@ async fn check_condition(&self, condition: &Condition) -> bool {
             <a href ="part1.html">Part 1. The module, the options and defining devices</a><br>
             <a href ="part2.html">Part 2. Configure your Mosquitto/Z2MQTT</a><br>
             <a href ="part3.html">Part 3. Nix Configured Automations</a> <br>           
-            <a href ="part4.html">Part 4. Writing a Server Service - in Rust</a><span class="current-marker">⮜🦆here u are</span><br>     
+            <a href ="part4.html">Part 4. Writing a Server Service - in Rust</a><span class="current-marker">◀🦆here u are</span><br>     
             <a href ="part5.html">Part 5. Writing a Client - With Voice Commands</a>   <br>   
-            <a href ="part6.html">Part 6. The Auto-Generated Dashboard</a><br>        
+            <a href ="part6.html">Part 6. The Auto-Generated Dashboard</a><br>     
+            <a href ="part7.html">Part 7. Let's Build a ChatBot!</a> <br>
 
             <br><br>
     
@@ -547,7 +559,7 @@ async fn check_condition(&self, condition: &Condition) -> bool {
     </div>
     
     <footer>
-        <p>All thoughts are my own and should not be considered advice of any kind. More likely the opposite.</p>
+        <p>All thoughts are my own and should not be considered advice of any kind.</p>
     </footer>
 
     <script src="../js/script.js"></script>

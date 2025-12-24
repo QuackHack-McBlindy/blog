@@ -31,13 +31,13 @@
                 <span class="toc-duck">🦆</span>
                 <h3>Navigation</h3>
                 <span class="toc-man">🧑‍🦯</span>
-                <span class="toc-toggle">⮟</span>
+                <span class="toc-toggle">▼</span>
             </summary>
             <nav class="toc-nav">
                 <a href="index.html" class="toc-item current">
                     <span class="toc-icon">🫀</span>
                     Yo - Define & Unify
-                    <span class="current-marker">⮜🦆</span>                    
+                    <span class="current-marker">◀🦆</span>                    
                 </a>
                 <a href="../do/index.html" class="toc-item">
                     <span class="toc-icon">🧠</span>
@@ -57,7 +57,7 @@
                 </a>
             </nav>
             <div class="toc-footer">
-                <span class="toc-quack">🦆 says ⮞ qwack qwack, plx pick!</span>
+                <span class="toc-quack">🦆 says ▶ qwack qwack, plx pick!</span>
             </div>
         </details>
     </div>
@@ -115,38 +115,38 @@
 
         <details class="code-block-container" style="margin-bottom: 1em;" open>
           <summary class="code-header">
-              <div class="code-lang">⮞ Hide Scriot Structure</div>
+              <div class="code-lang">▶ Hide Scriot Structure</div>
           </summary>
               <div class="code-block">
                 <pre><span class="duck-version">
-{ # 🦆says⮞yo! letz do a script yo!
+{ # 🦆says▶yo! letz do a script yo!
   config,
   lib,
   pkgs,
-  cmdHelpers, # 🦆says⮞shared functionz (/bin/helpers.nix)
+  cmdHelpers, # 🦆says▶shared functionz (/bin/helpers.nix)
   ...
 } : let
-in { # 🦆says⮞qwack
+in { # 🦆says▶qwack
   yo = {  
     scripts = {
-      bed = { # 🦆says⮞plx pick da script name
+      bed = { # 🦆says▶plx pick da script name
         description = "Bed controller";
-        # 🦆says⮞for da --help cmd in da terminal md table & README markdown table
+        # 🦆says▶for da --help cmd in da terminal md table & README markdown table
         category = "🛖 Home Automation";
-        autoStart = false; # 🦆says⮞run bed@boot?
-        runEvery = []; # 🦆says⮞periodic start (minutes)
-        runAt = []; # 🦆says⮞scheduled start (list of strings - "HH:MM" 24h format)
-        logLevel = "INFO"; # 🦆says⮞duckTrace loggin'
+        autoStart = false; # 🦆says▶run bed@boot?
+        runEvery = []; # 🦆says▶periodic start (minutes)
+        runAt = []; # 🦆says▶scheduled start (list of strings - "HH:MM" 24h format)
+        logLevel = "INFO"; # 🦆says▶duckTrace loggin'
         parameters = [    
-          { # 🦆says⮞paramz haz extensive validation
+          { # 🦆says▶paramz haz extensive validation
             name = "part";
             description = "Which part of the bed (head/feet)";
             type = "string";
-            values = [ # 🦆says⮞doez not run if $part is something else than
+            values = [ # 🦆says▶doez not run if $part is something else than
               "feet"
               "head"
             ];
-            default = "head"; # 🦆says⮞if --part iz omitted default value iz uzed for --part
+            default = "head"; # 🦆says▶if --part iz omitted default value iz uzed for --part
           }
           { 
             name = "state";
@@ -157,32 +157,32 @@ in { # 🦆says⮞qwack
           }     
         ];
         helpFooter = ''
-          echo "🦆says⮞extra code to be ran and displayed in da scripts --help cmd"     
+          echo "🦆says▶extra code to be ran and displayed in da scripts --help cmd"     
         '';
         code = ''
-          ${cmdHelpers} # 🦆says⮞load da shared functionz yo
-          dt_debug "Sending bed $part $down" # 🦆says⮞ duckTrace logging
-          # 🦆says⮞ rezt of da script code
+          ${cmdHelpers} # 🦆says▶load da shared functionz yo
+          dt_debug "Sending bed $part $down" # 🦆says▶ duckTrace logging
+          # 🦆says▶ rezt of da script code
         '';   
-        voice = { # 🦆says⮞enabled by default if sentences are defined
-          priority = 2; # 🦆says⮞1-5 (5 lowest)
+        voice = { # 🦆says▶enabled by default if sentences are defined
+          priority = 2; # 🦆says▶1-5 (5 lowest)
           fuzzy = {
-            enable = true; # 🦆says⮞ enabled by default if sentences are defined
-            threashhold = 15; # 🦆says⮞set a script specific fuzzy threashhold
+            enable = true; # 🦆says▶ enabled by default if sentences are defined
+            threashhold = 15; # 🦆says▶set a script specific fuzzy threashhold
           };  
           sentences = [
-# 🦆says⮞ [these|words] are optiional & can be omitted
-# 🦆says⮞ (these|words) are alternatives - u have to say one of them
-# 🦆says⮞ {this} word is a parameter (must match BOTH scripts parameter AND entity list 
+# 🦆says▶ [these|words] are optiional & can be omitted
+# 🦆says▶ (these|words) are alternatives - u have to say one of them
+# 🦆says▶ {this} word is a parameter (must match BOTH scripts parameter AND entity list 
             "[send|control] bed[s] {part} {state}"
             "(take|send|control) {state] [the] bed[s] {part}"
           ];
-          lists = { # 🦆says⮞ entity lists
-            part.wildcard = false; # 🦆says⮞ entities can be wildcards (anything)
+          lists = { # 🦆says▶ entity lists
+            part.wildcard = false; # 🦆says▶ entities can be wildcards (anything)
             part.values = [
-              { # 🦆says⮞ if u say one of these words
+              { # 🦆says▶ if u say one of these words
                 "in" = "[head|heads|bedhead|top]";
-                out = "head"; # 🦆says⮞ it becomes this word
+                out = "head"; # 🦆says▶ it becomes this word
               }
               { "in" = "[foot|foots|feet|feets]"; out = "feet"; }
             ];
@@ -231,7 +231,7 @@ in {
           }     
         ];
         helpFooter = ''
-          echo "🦆says⮞extra code to be ran and displayed in da scripts --help cmd"   
+          echo "🦆says▶extra code to be ran and displayed in da scripts --help cmd"   
         '';
         code = ''
           ${cmdHelpers}
@@ -281,7 +281,7 @@ in {
         </p>                
 
         <div class="duck-comment">
-            <p> ⮞ dis is rly helpful if you forget a scripts name or sumeting! quack quack</p>
+            <p> ▶ dis is rly helpful if you forget a scripts name or sumeting! quack quack</p>
         </div><br><br>
 
 
@@ -292,60 +292,60 @@ in {
         </p>                
 
         <div class="duck-comment">
-            <p> ⮞ dis is rly helpful if you forget a scripts parameter or sumeting! quack quack</p>
+            <p> ▶ dis is rly helpful if you forget a scripts parameter or sumeting! quack quack</p>
         </div><br><br><br>
 
 
 
         <details class="code-block-container" style="margin-bottom: 1em;">
           <summary class="code-header">
-              <div class="code-lang">⮞ View Complete yo Structure</div>
+              <div class="code-lang">▶ View Complete yo Structure</div>
           </summary>
               <div class="code-block">
                 <pre><span class="duck-version">
-{ # 🦆 duck say ⮞ yo! letz do a script yo!
+{ # 🦆 duck say ▶ yo! letz do a script yo!
   config,
   lib,
   pkgs,
   ...
 } : let
-in { # 🦆 duck say ⮞ qwack
+in { # 🦆 duck say ▶ qwack
   yo = {
-    pkgs                # 🦆 duck say ⮞ read-only - final yo scripts package
-    sorryPhrases        # 🦆 duck say ⮞ TTS phrases when no voice match found
-    SplitWords          # 🦆 duck say ⮞ Words used for command chaining
-    wakeWord            # 🦆 duck say ⮞ path to .tflite wake word model
-    generatedPatterns   # 🦆 duck say ⮞ read-only - generated regex patterns count
-    understandsPhrases  # 🦆 duck say ⮞ read-only - understood phrases count
+    pkgs                # 🦆 duck say ▶ read-only - final yo scripts package
+    sorryPhrases        # 🦆 duck say ▶ TTS phrases when no voice match found
+    SplitWords          # 🦆 duck say ▶ Words used for command chaining
+    wakeWord            # 🦆 duck say ▶ path to .tflite wake word model
+    generatedPatterns   # 🦆 duck say ▶ read-only - generated regex patterns count
+    understandsPhrases  # 🦆 duck say ▶ read-only - understood phrases count
     
     scripts = {
       example = {
-        description     # 🦆 duck say ⮞ script description
-        category        # 🦆 duck say ⮞ category for sorting/grouping
-        aliases         # 🦆 duck say ⮞ alternative command names
-        logLevel        # 🦆 duck say ⮞ duckTrace log level
-        helpFooter      # 🦆 duck say ⮞ extra code for --help output
-        autoStart       # 🦆 duck say ⮞ run at startup via systemd
-        runEvery        # 🦆 duck say ⮞ run periodically every X minutes
-        runAt           # 🦆 duck say ⮞ run at specific times daily
-        code            # 🦆 duck say ⮞ the actual script cod
+        description     # 🦆 duck say ▶ script description
+        category        # 🦆 duck say ▶ category for sorting/grouping
+        aliases         # 🦆 duck say ▶ alternative command names
+        logLevel        # 🦆 duck say ▶ duckTrace log level
+        helpFooter      # 🦆 duck say ▶ extra code for --help output
+        autoStart       # 🦆 duck say ▶ run at startup via systemd
+        runEvery        # 🦆 duck say ▶ run periodically every X minutes
+        runAt           # 🦆 duck say ▶ run at specific times daily
+        code            # 🦆 duck say ▶ the actual script cod
         
-        voicePatterns   # 🦆 duck say ⮞ read-only - generated regex patterns
-        voicePhrases    # 🦆 duck say ⮞ read-only - theoretical phrase coverage
-        voiceReady      # 🦆 duck say ⮞ read-only - has voice commands configured
+        voicePatterns   # 🦆 duck say ▶ read-only - generated regex patterns
+        voicePhrases    # 🦆 duck say ▶ read-only - theoretical phrase coverage
+        voiceReady      # 🦆 duck say ▶ read-only - has voice commands configured
         voice = {
-          enabled       # 🦆 duck say ⮞ generate voice intents
-          priority      # 🦆 duck say ⮞ processing priority (1=highest)
+          enabled       # 🦆 duck say ▶ generate voice intents
+          priority      # 🦆 duck say ▶ processing priority (1=highest)
           fuzzy = {
-            enable      # 🦆 duck say ⮞ enable fuzzy voice matching
-            threshold   # 🦆 duck say ⮞ similarity threshold (0.0-1.0)
+            enable      # 🦆 duck say ▶ enable fuzzy voice matching
+            threshold   # 🦆 duck say ▶ similarity threshold (0.0-1.0)
           };
-          sentences     # 🦆 duck say ⮞ voice command patterns
-          lists         # 🦆 duck say ⮞ entity lists for parameters
-            wildcard    # 🦆 duck say ⮞ accept free-form text / wildcard parameter
-            values      # 🦆 duck say ⮞ value mappings
-              "in" =    # 🦆 duck say ⮞ input value
-              out =     # 🦆 duck say ⮞ output value  
+          sentences     # 🦆 duck say ▶ voice command patterns
+          lists         # 🦆 duck say ▶ entity lists for parameters
+            wildcard    # 🦆 duck say ▶ accept free-form text / wildcard parameter
+            values      # 🦆 duck say ▶ value mappings
+              "in" =    # 🦆 duck say ▶ input value
+              out =     # 🦆 duck say ▶ output value  
             };
           };
         };        
@@ -429,7 +429,7 @@ in {
     </div>
     
     <footer>
-        <p>All thoughts are my own and should not be considered advice of any kind. More likely the opposite.</p>
+        <p>All thoughts are my own and should not be considered advice of any kind.</p>
     </footer>
 
     <script src="../js/script.js"></script>
