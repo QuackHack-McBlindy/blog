@@ -96,7 +96,12 @@
         <p>
             Today we'll add another page to our dashboard. <br>
             We will dive deeper into JS and at first glance it will look more advanced and a bit messy - but it will be well worth the time, because we will implement a chat interface.<br>
-            Let's build a bridge between our natural language processor <i>(do)</i> and our frontend dashboard.<br>
+            Let's build a bridge between our natural language processor <i><a href="https://github.com/QuackHack-McBlindy/dotfiles/blob/main/bin/voice/do.nix">(do)</a></i> and our frontend dashboard.<br>
+            <br>
+            I have done a lot of work on traditional LLM agents designed to execute custom scripts, and even writing it on it's own, mostly using Lang Chain.<br>
+            I however, never gained any trust for it, and don't see much or any potential there to be honest.<br>
+            My opinion on high power usage LLM agents for private smart home automations is that it can be achieved in cheaper, safer and faster solutions.<br> 
+            
             
         </p>
 
@@ -105,7 +110,8 @@
         <h2 class="section-title">Why?</h2>
         
         <p>
-            I wanted to build something that not only gives full access to all my <i>(yo)</i> scripts while on the run, but also gave appropriate responses, rendered beautifully right in the chat. Text to speech is of course crucial here as well. At first I was struggling to get a good voice for TTS - I needed it to sound just as good on desktop as on mobile, which seemed really hard to achieve since to my surprise I realized Apple has yet to release Siri on any open API. I ended up using what I already use on desktop, Piper and just create the wav server-side and playing the audio client-side.<br><br> My original thought for the chat was to build something that felt like ChatGPT - but faster, more reliable and without the thinking process. In simple terms:<br>
+             
+            I wanted to build something that not only gives full access to all my <i><a href="https://github.com/QuackHack-McBlindy/dotfiles/blob/main/modules/yo.nix">(yo)</a></i> scripts while on the run, but also gave appropriate responses, rendered beautifully right in the chat. Text to speech is of course crucial here as well. At first I was struggling to get a good voice for TTS - I needed it to sound just as good on desktop as on mobile, which seemed really hard to achieve since to my surprise I realized Apple has yet to release Siri on any open API. I ended up using what I already use on desktop, Piper and just create the wav server-side and playing the audio client-side.<br><br> My original thought for the chat was to build something that felt like ChatGPT - but faster, more reliable and without the thinking process. In simple terms:<br>
             <strong>Less thinking - more doing!</strong> <br><br>
             But before we start - I'll throw you a <strong>video teaser</strong> so you know what's what! <i>(turn on your sound)</i>
         </p><br>
@@ -6393,6 +6399,9 @@ in {
             
             We now have a chat that you can communicate with using natural language, depending on your yo scripts, you can ask it questions, tell it to execute commands like control your lights, TV's, ask about your calendar events, check when your local train departures, check how your local sports team is doing etc etc.<br>
             As I am writing this I have <strong>60</strong> scripts available for use within the chat, so the possibilities are pretty much endless.<br><br>
+            
+            I can't see myself using it really, but I do have a command to trigger local Ollama response too.<br> 
+            
             The chat response bubbles automatically renderes any possible tables or structured layouts as markdown for best possible look.<br>  
             It can even play media, like music or movies right in the chat response bubble. The chat will automatically recognize .m3u/m3u8 or video URL's from the yo scripts output and play them in the chat bubble. <br><br>
             
@@ -6409,7 +6418,11 @@ in {
                 Your browser does not support the video tag.
             </video><br><br>
                  
-            <br>
+            <br><br>
+
+                   
+            <strong>So what do you say?</strong><br>
+            <strong>Goodbye, traditional LLM chatbots?</strong><br><br>
            
             <h2 class="section-title">The Full Source</h2>
     
